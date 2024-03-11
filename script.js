@@ -33,3 +33,12 @@ const routes = [
 
 const router = new VueRouter({ routes });
 const app = new Vue({ router, }).$mount('#app');
+
+const routerLinks = document.querySelectorAll("#navigation .link");
+
+routerLinks.forEach(element => {
+    element.addEventListener("click", function() {
+        document.querySelector("#navigation .link.active")?.classList.remove("active");
+        element.classList.add("active");
+    })
+});
