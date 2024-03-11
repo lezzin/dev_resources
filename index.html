@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-router@3"></script>
     <title>Ferramentas Dev</title>
@@ -17,11 +18,11 @@
                 <div class="sticky">
                     <h2 class="title">Tópicos</h2>
                     <nav>
-                        <router-link class="link" to="/">Início</router-link>
-                        <router-link class="link" to="/aprender">Aprender programação</router-link>
-                        <router-link class="link" to="/materiais">Materiais gratuitos</router-link>
-                        <router-link class="link" to="/ferramentas">Ferramentas</router-link>
-                        <router-link class="link" to="/plataformas">Plataformas de vagas</router-link>
+                        <router-link class="link" to="/"><i class="fa-solid fa-house"></i> Início</router-link>
+                        <router-link class="link" to="/aprender"><i class="fa-solid fa-brain"></i> Aprender programação</router-link>
+                        <router-link class="link" to="/materiais"><i class="fa-solid fa-book"></i> Materiais gratuitos</router-link>
+                        <router-link class="link" to="/ferramentas"><i class="fa-solid fa-hammer"></i> Ferramentas</router-link>
+                        <router-link class="link" to="/plataformas"><i class="fa-solid fa-globe"></i> Plataformas de vagas</router-link>
                     </nav>
                 </div>
             </aside>
@@ -29,19 +30,21 @@
                 <router-view></router-view>
             </main>
         </div>
-    </div> <template id="s_inicio">
-        <section class="centered">
+    </div> 
+    <template id="s_inicio">
+        <section>
             <div class="background"> <i class="fa-solid fa-house"></i> </div>
             <h2 class="title">Início</h2>
             <p class="text">Navegue pelos tópicos através do menu. </p>
         </section>
-    </template> <template id="s_materiais">
+    </template> 
+    <template id="s_materiais">
         <section>
             <div class="background"> <i class="fa-solid fa-book"></i> </div>
             <h2 class="title">Materiais gratuitos</h2>
             <p class="text"> <a class="link" href="https://ebookfoundation.github.io/free-programming-books/" target="_blank" rel="noopener noreferrer">Free Programming Books</a>: repositório com diversos livros e cursos de programação gratuitos. </p>
             <p class="text"> <a class="link" href="https://roadmap.sh/get-started" target="_blank" rel="noopener noreferrer">Developers Roadmap</a>: Roadmap para diversas linguagens de programação.
-                <hr>
+            <hr>
             <p class="text"> <a class="link" href="https://3dicons.co/" target="_blank" rel="noopener noreferrer">3dicons</a>: Ícones 3D. </p>
             <p class="text"> <a class="link" href="https://storyset.com/" target="_blank" rel="noopener noreferrer">Storyset</a>: Ilustrações customizáveis </p>
             <p class="text"> <a class="link" href="https://shapefest.com/" target="_blank" rel="noopener noreferrer">Shapefest</a>: Elementos 3D. </p>
@@ -53,14 +56,16 @@
             <p class="text"> <a class="link" href="https://svgrepo.com/" target="_blank" rel="noopener noreferrer">SVGrepo</a>: Elementos SVG. </p>
             <p class="text"> <a class="link" href="https://www.humaaans.com/" target="_blank" rel="noopener noreferrer">Humaaans</a>: Ilustrações de seres humanos. </p>
         </section>
-    </template> <template id="s_aprender">
+    </template> 
+    <template id="s_aprender">
         <section>
             <div class="background"> <i class="fa-solid fa-brain"></i> </div>
             <h2 class="title">Aprender programação</h2>
             <p class="text"> <a class="link" href="https://www.coursera.org/" target="_blank" rel="noopener noreferrer">Coursera</a>: cursos gratuitos e com certificados. </p>
             <div class="text"> <a class="link" href="https://leetcode.com/" target="_blank" rel="noopener noreferrer">Leetcode</a> e <a class="link" href="https://www.hackerrank.com/" target="_blank" rel="noopener noreferrer">Hackerrank</a>: Plataformas para praticar programação. </div>
         </section>
-    </template> <template id="s_ferramentas">
+    </template> 
+    <template id="s_ferramentas">
         <section>
             <div class="background"> <i class="fa-solid fa-hammer"></i> </div>
             <h2 class="title">Ferramentas</h2>
@@ -74,7 +79,8 @@
             <p class="text"> <a class="link" href="https://keyframes.app/" target="_blank" rel="noopener noreferrer">Keyframes.app</a>: Criação de keyframes. </p>
             <p class="text"> <a class="link" href="https://animista.net/" target="_blank" rel="noopener noreferrer">Animista</a>; <a class="link" href="https://animate.style/" target="_blank" rel="noopener noreferrer">animate.CSS</a>; <a class="link" href="https://tilomitra.github.io/infinite/" target="_blank" rel="noopener noreferrer">Infinite</a>; <a class="link" href="https://animxyz/" target="_blank" rel="noopener noreferrer">Animxyz</a>; <a class="link" href="https://jonsuh.com/hamburgers/" target="_blank" rel="noopener noreferrer">Hamburgers</a>: Ferramentas de animação para CSS. </p>
         </section>
-    </template> <template id="s_plataformas">
+    </template> 
+    <template id="s_plataformas">
         <section>
             <div class="background"> <i class="fa-solid fa-globe"></i> </div>
             <h2 class="title"> Plataformas para estágios e trainee</h2>
