@@ -17,48 +17,52 @@
                 <div class="sticky">
                     <h2 class="title">Tópicos</h2>
                     <nav>
-                        <router-link class="link dark" to="/">Início</router-link>
-                        <router-link class="link dark" to="/materiais">Materiais</router-link>
-                        <router-link class="link dark" to="/aprender">Aprender</router-link>
-                        <router-link class="link dark" to="/ferramentas">Ferramentas</router-link>
-                        <router-link class="link dark" to="/design">Design</router-link>
-                        <router-link class="link dark" to="/plataformas">Plataformas</router-link>
+                        <router-link class="link" to="/">Início</router-link>
+                        <router-link class="link" to="/aprender">Aprender programação</router-link>
+                        <router-link class="link" to="/materiais">Materiais gratuitos</router-link>
+                        <router-link class="link" to="/ferramentas">Ferramentas</router-link>
+                        <router-link class="link" to="/plataformas">Plataformas de vagas</router-link>
                     </nav>
                 </div>
             </aside>
-
             <main>
                 <router-view></router-view>
             </main>
         </div>
-    </div> 
-
-    <template id="s_inicio">
-        <section>
+    </div> <template id="s_inicio">
+        <section class="centered">
+            <div class="background"> <i class="fa-solid fa-house"></i> </div>
             <h2 class="title">Início</h2>
-
-            <p class="text">Navegue pelos tópicos através do menu ao lado. </p>
+            <p class="text">Navegue pelos tópicos através do menu. </p>
         </section>
-    </template> 
-
-    <template id="s_materiais">
+    </template> <template id="s_materiais">
         <section>
+            <div class="background"> <i class="fa-solid fa-book"></i> </div>
             <h2 class="title">Materiais gratuitos</h2>
             <p class="text"> <a class="link" href="https://ebookfoundation.github.io/free-programming-books/" target="_blank" rel="noopener noreferrer">Free Programming Books</a>: repositório com diversos livros e cursos de programação gratuitos. </p>
             <p class="text"> <a class="link" href="https://roadmap.sh/get-started" target="_blank" rel="noopener noreferrer">Developers Roadmap</a>: Roadmap para diversas linguagens de programação.
+                <hr>
+            <p class="text"> <a class="link" href="https://3dicons.co/" target="_blank" rel="noopener noreferrer">3dicons</a>: Ícones 3D. </p>
+            <p class="text"> <a class="link" href="https://storyset.com/" target="_blank" rel="noopener noreferrer">Storyset</a>: Ilustrações customizáveis </p>
+            <p class="text"> <a class="link" href="https://shapefest.com/" target="_blank" rel="noopener noreferrer">Shapefest</a>: Elementos 3D. </p>
+            <p class="text"> <a class="link" href="https://screenlane.com/" target="_blank" rel="noopener noreferrer">Screenlane</a>: Mobile UI Design. </p>
+            <p class="text"> <a class="link" href="https://lookup.design/" target="_blank" rel="noopener noreferrer">Lookup.design</a>: Inspirações para design. </p>
+            <p class="text"> <a class="link" href="https://designjunction.xyz/" target="_blank" rel="noopener noreferrer">Designjunction</a>: Elementos de design. </p>
+            <p class="text"> <a class="link" href="https://animatedbackgrounds.me/" target="_blank" rel="noopener noreferrer">AnimatedBackgrounds</a>: Fundos de tela animados. </p>
+            <p class="text"> <a class="link" href="https://chartscss.org/" target="_blank" rel="noopener noreferrer">Chartscss</a>: Gráficos. </p>
+            <p class="text"> <a class="link" href="https://svgrepo.com/" target="_blank" rel="noopener noreferrer">SVGrepo</a>: Elementos SVG. </p>
+            <p class="text"> <a class="link" href="https://www.humaaans.com/" target="_blank" rel="noopener noreferrer">Humaaans</a>: Ilustrações de seres humanos. </p>
         </section>
-    </template> 
-
-    <template id="s_aprender">
+    </template> <template id="s_aprender">
         <section>
+            <div class="background"> <i class="fa-solid fa-brain"></i> </div>
             <h2 class="title">Aprender programação</h2>
             <p class="text"> <a class="link" href="https://www.coursera.org/" target="_blank" rel="noopener noreferrer">Coursera</a>: cursos gratuitos e com certificados. </p>
             <div class="text"> <a class="link" href="https://leetcode.com/" target="_blank" rel="noopener noreferrer">Leetcode</a> e <a class="link" href="https://www.hackerrank.com/" target="_blank" rel="noopener noreferrer">Hackerrank</a>: Plataformas para praticar programação. </div>
         </section>
-    </template> 
-
-    <template id="s_ferramentas">
+    </template> <template id="s_ferramentas">
         <section>
+            <div class="background"> <i class="fa-solid fa-hammer"></i> </div>
             <h2 class="title">Ferramentas</h2>
             <p class="text"> <a class="link" href="https://hiddentools.dev/" target="_blank" rel="noopener noreferrer">Hiddentools</a>: Site com diversas ferramentas, desde estilização até produtividade. </p>
             <p class="text"> <a class="link" href="https://smalldev.tools/" target="_blank" rel="noopener noreferrer">Smalldev</a>: Site com diversas ferramentas. </p>
@@ -66,35 +70,22 @@
             <p class="text"> <a class="link" href="https://unbug.github.io/codelf/" target="_blank" rel="noopener noreferrer">Codelf</a>: Gerador de nome para variáveis. </p>
             <p class="text"> <a class="link" href="https://readme.so/" target="_blank" rel="noopener noreferrer">ReadMe</a>: Criar arquivo readme. </p>
             <p class="text"> <a class="link" href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener noreferrer">Public APIs</a>: APIs públicas para estudos/trabalho. </p>
-        </section>
-    </template> 
-
-    <template id="s_design">
-        <section>
-            <h2 class="title">Design</h2>
-            <p class="text"> Ferramentas de animação para CSS: <a class="link" href="https://animate.style/" target="_blank" rel="noopener noreferrer">animate.CSS</a>; <a class="link" href="https://animista.net/" target="_blank" rel="noopener noreferrer">Animista</a>; <a class="link" href="https://tilomitra.github.io/infinite/" target="_blank" rel="noopener noreferrer">Infinite</a>; <a class="link" href="https://animxyz/" target="_blank" rel="noopener noreferrer">Animxyz</a>; <a class="link" href="https://jonsuh.com/hamburgers/" target="_blank" rel="noopener noreferrer">Hamburgers</a>. </p>
-            <p class="text"> <a class="link" href="https://3dicons.co/" target="_blank" rel="noopener noreferrer">3dicons</a>: Ícones 3D. </p>
-            <p class="text"> <a class="link" href="https://storyset.com/" target="_blank" rel="noopener noreferrer">Storyset</a>: Ilustrações customizáveis </p>
-            <p class="text"> <a class="link" href="https://shapefest.com/" target="_blank" rel="noopener noreferrer">Shapefest</a>: Elementos 3D. </p>
-            <p class="text"> <a class="link" href="https://screenlane.com/" target="_blank" rel="noopener noreferrer">Screenlane</a>: Mobile UI Design. </p>
-            <p class="text"> <a class="link" href="https://lookup.design/" target="_blank" rel="noopener noreferrer">Lookup.design</a>: Inspirações para design. </p>
-            <p class="text"> <a class="link" href="https://designjunction.xyz/" target="_blank" rel="noopener noreferrer">Designjunction</a>: Elementos de design. </p>
+            <hr>
             <p class="text"> <a class="link" href="https://keyframes.app/" target="_blank" rel="noopener noreferrer">Keyframes.app</a>: Criação de keyframes. </p>
-            <p class="text"> <a class="link" href="https://animatedbackgrounds.me/" target="_blank" rel="noopener noreferrer">AnimatedBackgrounds</a>: Fundos de tela animados. </p>
-            <p class="text"> <a class="link" href="https://chartscss.org/" target="_blank" rel="noopener noreferrer">Designjunction</a>: Gráficos. </p>
-            <p class="text"> <a class="link" href="https://svgrepo.com/" target="_blank" rel="noopener noreferrer">Designjunction</a>: Elementos SVG. </p>
-            <p class="text"> <a class="link" href="https://www.humaaans.com/" target="_blank" rel="noopener noreferrer">Humaaans</a>: Ilustrações de seres humanos. </p>
+            <p class="text"> <a class="link" href="https://animista.net/" target="_blank" rel="noopener noreferrer">Animista</a>; <a class="link" href="https://animate.style/" target="_blank" rel="noopener noreferrer">animate.CSS</a>; <a class="link" href="https://tilomitra.github.io/infinite/" target="_blank" rel="noopener noreferrer">Infinite</a>; <a class="link" href="https://animxyz/" target="_blank" rel="noopener noreferrer">Animxyz</a>; <a class="link" href="https://jonsuh.com/hamburgers/" target="_blank" rel="noopener noreferrer">Hamburgers</a>: Ferramentas de animação para CSS. </p>
         </section>
-    </template> 
-
-    <template id="s_plataformas">
+    </template> <template id="s_plataformas">
         <section>
-            <h2 class="title">Plataformas para estágios e trainee</h2>
-            <p class="text"> <a class="link" href="https://ciadetalentos.com.br/" target="_blank" rel="noopener noreferrer">Cia de talentos</a>; <a class="link" href="https://ciadeestagios.com.br/" target="_blank" rel="noopener noreferrer">Cia de estagios</a>; <a class="link" href="https://vagas.com.br/" target="_blank" rel="noopener noreferrer">Vagas</a>; <a class="link" href="https://99jobs.com/" target="_blank" rel="noopener noreferrer">99jobs</a>. </p>
+            <div class="background"> <i class="fa-solid fa-globe"></i> </div>
+            <h2 class="title"> Plataformas para estágios e trainee</h2>
+            <p class="text"> <a class="link" href="https://ciadetalentos.com.br/" target="_blank" rel="noopener noreferrer">ciadetalentos.com.br</a></p>
+            <p class="text"> <a class="link" href="https://ciadeestagios.com.br/" target="_blank" rel="noopener noreferrer">ciadeestagios.com.br</a></p>
+            <p class="text"> <a class="link" href="https://vagas.com.br/" target="_blank" rel="noopener noreferrer">vagas.com.br</a></p>
+            <p class="text"> <a class="link" href="https://99jobs.com/" target="_blank" rel="noopener noreferrer">99jobs.com </a></p>
         </section>
     </template>
-
     <script src="script.js"></script>
+    <script src="https://kit.fontawesome.com/1614cc0d63.js" crossorigin="anonymous"></script>
 </body>
 
 </html>
