@@ -4,25 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-router@3"></script>
-    <title>Ferramentas Dev</title>
+    <script src="https://kit.fontawesome.com/1614cc0d63.js" crossorigin="anonymous"></script>
+    <title>Ferramentas para Dev</title>
 </head>
 
 <body>
     <div id="app">
         <div class="container">
+            <div class="loader-container" v-if="loading">
+                <div class="loader"></div>
+            </div>
+
             <aside>
                 <div class="sticky">
-                    <h2 class="title">Tópicos</h2>
-                    <nav id="navigation">
-                        <router-link class="link active" to="/"><i class="fa-solid fa-house"></i> Início</router-link>
-                        <router-link class="link" to="/aprender"><i class="fa-solid fa-brain"></i> Aprender programação</router-link>
-                        <router-link class="link" to="/materiais"><i class="fa-solid fa-book"></i> Materiais gratuitos</router-link>
-                        <router-link class="link" to="/ferramentas"><i class="fa-solid fa-hammer"></i> Ferramentas</router-link>
-                        <router-link class="link" to="/plataformas"><i class="fa-solid fa-globe"></i> Plataformas de vagas</router-link>
+                    <div class="header-top">
+                        <h2 class="title">Tópicos</h2>
+                        <div class="header-top-buttons"> 
+                            <router-link class="btn-primary" to="/topic-form" v-if="user" title="Ir para o formulário de tópicos"><i class="fa-solid fa-plus"></i></router-link>
+                            
+                            <router-link class="btn-primary" to="/profile" v-if="user" title="Acessar perfil de administrador"><i class="fa-solid fa-user"></i></router-link>
+
+                            <button class="btn-danger" @click="logoutUser" v-if="user" title="Sair do modo administrador"><i class="fa-solid fa-sign-out"></i></button>
+                            <router-link class="btn-primary" to="/login" v-if="!user" title="Entrar no modo administrador"><i class="fa-solid fa-sign-in"></i></router-link>
+                        </div>
+                    </div>
+                    <nav id="navigation">        
+                        <router-link class="link" to="/" title="Ir para a página inicial">Início</router-link>
+                        <router-link class="link" v-for="topic in topics" :key="topic.id" :to="'/topic/' + topic.id" title="Ir para o tópico">{{ topic.title }}</router-link>
                     </nav>
                 </div>
             </aside>
@@ -31,67 +43,119 @@
             </main>
         </div>
     </div> 
+
+    <template id="s_form_topic">
+        <form @submit.prevent="addTopic">
+            <div class="header-top">
+                <h2 class="title">Adicionar Tópico</h2>
+                <a class="btn-outline-primary btn-back" href="javascript:history.back()" title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
+            </div>
+
+            <div class="input-group"> 
+                <label for="topic-title">Título</label> 
+                <input type="text" id="topic-title" v-model="topicTitle" autocomplete="off" :class="{ 'error-input': titleError }" placeholder="Estudos, materiais...">
+                <p class="error-text" v-if="titleError">{{ titleError }}</p>
+            </div> 
+
+            <button class="btn-primary" title="Adicionar tópico">Adicionar</button>
+        </form>
+    </template>
+    <template id="s_add_content">
+        <form @submit.prevent="addContent">
+            <p class="error-text" v-if="topicError">{{ topicError }}</p> 
+
+            <div class="header-top">
+                <h2 class="title">Adicionar conteúdo</h2>
+                <a class="btn-outline-primary btn-back" href="javascript:history.back()" title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
+            </div>
+            
+            <div class="input-group">
+                <label for="content-title">Título</label>
+                <input type="text" id="content-title" v-model="contentTitle" autocomplete="off"  :class="{ 'error-input': contentTitleError }" placeholder="Título do site/material">
+                <p class="error-text" v-if="contentTitleError">{{ contentTitleError }}</p> 
+            </div>
+            <div class="input-group">
+                <label for="content-link">Link</label>
+                <input type="text" id="content-link" v-model="contentLink" autocomplete="off"  :class="{ 'error-input': contentLinkError }" placeholder="https://www.site.com">
+                <p class="error-text" v-if="contentLinkError">{{ contentLinkError }}</p> 
+            </div>
+            <div class="input-group">
+                <label for="content-description">Descrição</label>
+                <input type="text" id="content-description" v-model="contentDescription" autocomplete="off"  :class="{ 'error-input': contentDescriptionError }" placeholder="Descrição do site/material">
+                <p class="error-text" v-if="contentDescriptionError">{{ contentDescriptionError }}</p> 
+            </div> 
+            <button class="btn-primary" title="Adicionar contéudo">Adicionar</button>
+        </form>
+    </template>
     <template id="s_inicio">
         <section>
             <div class="background"> <i class="fa-solid fa-house"></i> </div>
             <h2 class="title">Início</h2>
-            <p class="text">Navegue pelos tópicos através do menu. </p>
+
+            <div class="text-content">
+                <p class="text">Olá, usuário! Bem-vindo ao site de ferramentas para desenvolvedores.<br>Aqui você encontra diversos materiais e links úteis para estudos e desenvolvimento de projetos.</p>
+                <p class="text">Navegue pelos tópicos através do menu. </p>
+            </div>
         </section>
     </template> 
-    <template id="s_materiais">
+    <template id="s_topic">
         <section>
-            <div class="background"> <i class="fa-solid fa-book"></i> </div>
-            <h2 class="title">Materiais gratuitos</h2>
-            <p class="text"> <a class="link" href="https://ebookfoundation.github.io/free-programming-books/" target="_blank" rel="noopener noreferrer">Free Programming Books</a>: repositório com diversos livros e cursos de programação gratuitos. </p>
-            <p class="text"> <a class="link" href="https://roadmap.sh/get-started" target="_blank" rel="noopener noreferrer">Developers Roadmap</a>: Roadmap para diversas linguagens de programação.
-            <hr>
-            <p class="text"> <a class="link" href="https://3dicons.co/" target="_blank" rel="noopener noreferrer">3dicons</a>: Ícones 3D. </p>
-            <p class="text"> <a class="link" href="https://storyset.com/" target="_blank" rel="noopener noreferrer">Storyset</a>: Ilustrações customizáveis </p>
-            <p class="text"> <a class="link" href="https://shapefest.com/" target="_blank" rel="noopener noreferrer">Shapefest</a>: Elementos 3D. </p>
-            <p class="text"> <a class="link" href="https://screenlane.com/" target="_blank" rel="noopener noreferrer">Screenlane</a>: Mobile UI Design. </p>
-            <p class="text"> <a class="link" href="https://lookup.design/" target="_blank" rel="noopener noreferrer">Lookup.design</a>: Inspirações para design. </p>
-            <p class="text"> <a class="link" href="https://designjunction.xyz/" target="_blank" rel="noopener noreferrer">Designjunction</a>: Elementos de design. </p>
-            <p class="text"> <a class="link" href="https://animatedbackgrounds.me/" target="_blank" rel="noopener noreferrer">AnimatedBackgrounds</a>: Fundos de tela animados. </p>
-            <p class="text"> <a class="link" href="https://chartscss.org/" target="_blank" rel="noopener noreferrer">Chartscss</a>: Gráficos. </p>
-            <p class="text"> <a class="link" href="https://svgrepo.com/" target="_blank" rel="noopener noreferrer">SVGrepo</a>: Elementos SVG. </p>
-            <p class="text"> <a class="link" href="https://www.humaaans.com/" target="_blank" rel="noopener noreferrer">Humaaans</a>: Ilustrações de seres humanos. </p>
-        </section>
-    </template> 
-    <template id="s_aprender">
-        <section>
-            <div class="background"> <i class="fa-solid fa-brain"></i> </div>
-            <h2 class="title">Aprender programação</h2>
-            <p class="text"> <a class="link" href="https://www.coursera.org/" target="_blank" rel="noopener noreferrer">Coursera</a>: cursos gratuitos e com certificados. </p>
-            <div class="text"> <a class="link" href="https://leetcode.com/" target="_blank" rel="noopener noreferrer">Leetcode</a> e <a class="link" href="https://www.hackerrank.com/" target="_blank" rel="noopener noreferrer">Hackerrank</a>: Plataformas para praticar programação. </div>
-        </section>
-    </template> 
-    <template id="s_ferramentas">
-        <section>
-            <div class="background"> <i class="fa-solid fa-hammer"></i> </div>
-            <h2 class="title">Ferramentas</h2>
-            <p class="text"> <a class="link" href="https://hiddentools.dev/" target="_blank" rel="noopener noreferrer">Hiddentools</a>: Site com diversas ferramentas, desde estilização até produtividade. </p>
-            <p class="text"> <a class="link" href="https://smalldev.tools/" target="_blank" rel="noopener noreferrer">Smalldev</a>: Site com diversas ferramentas. </p>
-            <p class="text"> <a class="link" href="https://devhints.io/" target="_blank" rel="noopener noreferrer">Devhints</a>: Diversas documentações. </p>
-            <p class="text"> <a class="link" href="https://unbug.github.io/codelf/" target="_blank" rel="noopener noreferrer">Codelf</a>: Gerador de nome para variáveis. </p>
-            <p class="text"> <a class="link" href="https://readme.so/" target="_blank" rel="noopener noreferrer">ReadMe</a>: Criar arquivo readme. </p>
-            <p class="text"> <a class="link" href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener noreferrer">Public APIs</a>: APIs públicas para estudos/trabalho. </p>
-            <hr>
-            <p class="text"> <a class="link" href="https://keyframes.app/" target="_blank" rel="noopener noreferrer">Keyframes.app</a>: Criação de keyframes. </p>
-            <p class="text"> <a class="link" href="https://animista.net/" target="_blank" rel="noopener noreferrer">Animista</a>; <a class="link" href="https://animate.style/" target="_blank" rel="noopener noreferrer">animate.CSS</a>; <a class="link" href="https://tilomitra.github.io/infinite/" target="_blank" rel="noopener noreferrer">Infinite</a>; <a class="link" href="https://animxyz/" target="_blank" rel="noopener noreferrer">Animxyz</a>; <a class="link" href="https://jonsuh.com/hamburgers/" target="_blank" rel="noopener noreferrer">Hamburgers</a>: Ferramentas de animação para CSS. </p>
-        </section>
-    </template> 
-    <template id="s_plataformas">
-        <section>
-            <div class="background"> <i class="fa-solid fa-globe"></i> </div>
-            <h2 class="title"> Plataformas para estágios e trainee</h2>
-            <p class="text"> <a class="link" href="https://ciadetalentos.com.br/" target="_blank" rel="noopener noreferrer">ciadetalentos.com.br</a></p>
-            <p class="text"> <a class="link" href="https://ciadeestagios.com.br/" target="_blank" rel="noopener noreferrer">ciadeestagios.com.br</a></p>
-            <p class="text"> <a class="link" href="https://vagas.com.br/" target="_blank" rel="noopener noreferrer">vagas.com.br</a></p>
-            <p class="text"> <a class="link" href="https://99jobs.com/" target="_blank" rel="noopener noreferrer">99jobs.com </a></p>
+            <div class="topic">
+                <div class="header-top">
+                    <h2 class="title">{{ title }}</h2> 
+
+                    <div class="header-top-buttons">
+                        <button class="btn-danger" v-if="user" @click="deleteTopic(id)" title="Remover tópico"><i class="fa-solid fa-trash"></i></button>
+                        <router-link class="btn-primary" v-if="user" :to="`/topic/${id}/content-form`"><i class="fa-solid fa-plus"></i></router-link>
+                    </div>
+                </div>
+                <div class="contents">
+                    <div class="content" v-for="content in contents" :key="content.id">
+                        <p><a :href="content.link" target="_blank" rel="noopener noreferrer" class="link" title="Acessar site">{{ content.title }}</a>: {{ content.description }}</p>
+                        <button class="btn-danger" v-if="user" @click="deleteContent(content.id)" title="Remover conteúdo"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
         </section>
     </template>
-    <script src="script.js"></script>
-    <script src="https://kit.fontawesome.com/1614cc0d63.js" crossorigin="anonymous"></script>
+    <template id="s_login">
+        <form @submit.prevent="loginUser" class="centered">
+            <h2 class="title">Login</h2>
+            <p class="error-text" v-if="loginError">{{ loginError }}</p>
+            <div class="input-group"> 
+                <label for="email">E-mail</label> 
+                <input type="email" id="email" v-model="email" autocomplete="off"> 
+            </div>
+            <div class="input-group"> 
+                <label for="password">Senha</label> 
+                <input type="password" id="password" v-model="password" autocomplete="off"> 
+            </div> 
+            <button class="btn-primary" title="Entrar como administrador">Entrar</button>
+        </form>
+    </template>
+    <template id="s_profile">
+        <form onsubmit="return false">
+            <h2 class="title">Seu perfil de usuário</h2>
+
+            <p class="box-text success-text" v-if="formMessage">{{ formMessage }}</p>
+
+            <p style="margin-bottom: 1rem" v-if="!formMessage">Para alterar sua senha, basta preencher o campo abaixo com um email válido e clicar no botão. Uma mensagem será enviada para o email informado com um link para alteração de senha.</p>
+
+            <div class="input-group"> 
+                <label for="email">E-mail</label> 
+                <input type="email" id="email" v-model="email" autocomplete="off" :class="{ 'error-input': emailError }" placeholder="E-mail"> 
+                <p class="error-text" v-if="emailError">{{ emailError }}</p>
+            </div>
+            
+            <button class="btn-primary" @click="updatePassword" title="Alterar senha">Alterar senha</button>
+        </form>
+    </template>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js" type="text/javascript"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-auth-compat.js" type="text/javascript"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js" type="text/javascript"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-analytics-compat.js" type="text/javascript"></script>
+    <script src="assets/js/script.js" type="module"></script>
 </body>
 
 </html>
