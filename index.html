@@ -67,19 +67,22 @@
                 </figure>
             </div>
         </section>
-        
     </template> 
     <template id="s_login">
         <form @submit.prevent="loginUser">
-            <h2 class="title">Login</h2>
-            <p class="error-text" v-if="loginError">{{ loginError }}</p>
+            <h2 class="title">Entrar como administrador</h2>
+
+            <p class="box-text" :class="formMessage ? `${formMessage.type}-text` : ''" v-if="formMessage">{{ formMessage.text }}</p>
+
             <div class="input-group"> 
                 <label for="email">E-mail</label> 
-                <input type="email" id="email" v-model="email" autocomplete="off"> 
+                <input type="email" id="email" v-model="email" autocomplete="off" :class="{ 'error-input': emailError }" placeholder="seuemail@email.com">
+                <p class="error-text" v-if="emailError">{{ emailError }}</p>
             </div>
             <div class="input-group"> 
                 <label for="password">Senha</label> 
-                <input type="password" id="password" v-model="password" autocomplete="off"> 
+                <input type="password" id="password" v-model="password" autocomplete="off" :class="{ 'error-input': passwordError }" placeholder="******">
+                <p class="error-text" v-if="passwordError">{{ passwordError }}</p>
             </div> 
             <button class="btn-primary" title="Entrar como administrador">Entrar</button>
         </form>

@@ -146,6 +146,9 @@ form .box-text {
 form .box-text.success-text {
   background-color: #d9fffc;
 }
+form .box-text.error-text {
+  background-color: #fff3f3;
+}
 form .error-text {
   color: #FF5A5F;
 }

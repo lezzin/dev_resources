@@ -4,7 +4,7 @@ $success-color: #00A699;
 $success-color-light: lighten($success-color, 60%);
 
 $danger-color: #FF5A5F;
-$danger-color-light: lighten($danger-color, 60%);
+$danger-color-light: lighten($danger-color, 30%);
 
 $background-color: #646bd4;
 
@@ -176,6 +176,10 @@ form {
 
         &.success-text {
             background-color: $success-color-light;
+        }
+
+        &.error-text {
+            background-color: $danger-color-light;
         }
     }
 

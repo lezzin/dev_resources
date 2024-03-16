@@ -304,17 +304,26 @@ const Login = {
     data() {
         return {
             email: '',
+            emailError: '',
             password: '',
-            loginError: ''
+            passwordError: '',
+            formMessage: null,
         };
     },
     methods: {
         async loginUser() {
-            this.loginError = '';
+            this.formMessage = null;
+            this.emailError = '';
+            this.passwordError = '';
 
             try {
-                if (!this.email || !this.password) {
-                    this.loginError = 'Preencha todos os campos';
+                if (!this.email) {
+                    this.emailError = 'Preencha o campo de e-mail';
+                    return;
+                }
+
+                if (!this.password) {
+                    this.passwordError = 'Preencha o campo de senha';
                     return;
                 }
 
@@ -327,7 +336,9 @@ const Login = {
                     "auth/too-many-requests": "Muitas tentativas. Tente novamente mais tarde",
                 }
 
-                this.loginError = FIREBASE_ERRORS[error.code] || error.message;
+                if (FIREBASE_ERRORS[error.code]) {
+                    this.formMessage = { type: 'error', text: FIREBASE_ERRORS[error.code] };
+                }
             }
         }
     }
