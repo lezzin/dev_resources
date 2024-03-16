@@ -4,10 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Site com ferramentas para desenvolvedores">
+    <meta name="keywords" content="ferramentas, desenvolvedores, programação, estudos, materiais">
+    <meta name="author" content="Leandro Adrian da Silva">
+    <meta name="theme-color" content="#777BB3">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue-router@3"></script>
     <script src="https://kit.fontawesome.com/1614cc0d63.js" crossorigin="anonymous"></script>
     <title>Ferramentas para Dev</title>
 </head>
@@ -18,21 +20,21 @@
             <div class="loader-container" v-if="loading">
                 <div class="loader"></div>
             </div>
-
             <aside>
-                <div class="sticky">
+                <div class="fixed">
                     <div class="header-top">
-                        <h2 class="title">Tópicos</h2>
+                        <router-link to="/" class="title"><i class="fa-solid fa-tools"></i></router-link>
+                        <button class="btn-primary" @click="toggleMenu" title="Abrir/fechar menu" v-if="isMobile">
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
                         <div class="header-top-buttons"> 
                             <router-link class="btn-primary" to="/topic-form" v-if="user" title="Ir para o formulário de tópicos"><i class="fa-solid fa-plus"></i></router-link>
-                            
                             <router-link class="btn-primary" to="/profile" v-if="user" title="Acessar perfil de administrador"><i class="fa-solid fa-user"></i></router-link>
-
                             <button class="btn-danger" @click="logoutUser" v-if="user" title="Sair do modo administrador"><i class="fa-solid fa-sign-out"></i></button>
                             <router-link class="btn-primary" to="/login" v-if="!user" title="Entrar no modo administrador"><i class="fa-solid fa-sign-in"></i></router-link>
                         </div>
                     </div>
-                    <nav id="navigation">        
+                    <nav id="navigation" v-if="mobileMenuOpen || !isMobile">        
                         <router-link class="link" to="/" title="Ir para a página inicial">Início</router-link>
                         <router-link class="link" v-for="topic in topics" :key="topic.id" :to="'/topic/' + topic.id" title="Ir para o tópico">{{ topic.title }}</router-link>
                     </nav>
@@ -44,6 +46,85 @@
         </div>
     </div> 
 
+    <template id="s_inicio">
+        <section>
+            <h2 class="title">Início</h2>
+            <div class="text-content">
+                <p class="text">Olá, usuário! Bem-vindo ao site de ferramentas para desenvolvedores.<br>Aqui você encontra diversos materiais e links úteis para estudos e desenvolvimento de projetos.</p>
+                <p class="text">Navegue pelos tópicos através do menu. </p>
+            </div>
+            <figure class="home-image">
+                <img src="./assets/img/einstein.webp" alt="Albert Einstein">
+                <figcaption>Imagem gerada por inteligência artificial</figcaption>
+            </figure>
+
+            <h3 class="tecnologies-title">Desenvolvido com:</h3>
+
+            <div class="tecnologies">
+                <figure class="tecnology" title="Firebase">
+                    <img src="./assets/img/firebase.svg" alt="Firebase" width="48" height="48">
+                    <figcaption><a class="link" rel="noopener noreferrer" target="_blank" href="https://icons8.com/icon/62452/firebase">Firebase</a> icon by <a class="link" rel="noopener noreferrer" target="_blank" href="https://icons8.com">Icons8</a></figcaption>
+                </figure>
+
+                <figure class="tecnology" title="Vue.js">
+                    <img src="./assets/img/vue.svg" alt="Vue.js" width="48" height="48">
+                    <figcaption><a class="link" rel="noopener noreferrer" target="_blank" href="https://icons8.com/icon/rY6agKizO9eb/vue-js">Vue Js</a> icon by <a class="link" rel="noopener noreferrer" target="_blank" href="https://icons8.com">Icons8</a></figcaption>
+                </figure>
+            </div>
+        </section>
+    </template> 
+    <template id="s_login">
+        <form @submit.prevent="loginUser">
+            <h2 class="title">Login</h2>
+            <p class="error-text" v-if="loginError">{{ loginError }}</p>
+            <div class="input-group"> 
+                <label for="email">E-mail</label> 
+                <input type="email" id="email" v-model="email" autocomplete="off"> 
+            </div>
+            <div class="input-group"> 
+                <label for="password">Senha</label> 
+                <input type="password" id="password" v-model="password" autocomplete="off"> 
+            </div> 
+            <button class="btn-primary" title="Entrar como administrador">Entrar</button>
+        </form>
+    </template>
+    <template id="s_profile">
+        <form onsubmit="return false">
+            <h2 class="title">Seu perfil de usuário</h2>
+
+            <p class="box-text success-text" v-if="formMessage">{{ formMessage }}</p>
+
+            <p style="margin-bottom: 1rem" v-if="!formMessage">Para alterar sua senha, basta preencher o campo abaixo com um email válido e clicar no botão. Uma mensagem será enviada para o email informado com um link para alteração de senha.</p>
+
+            <div class="input-group"> 
+                <label for="email">E-mail</label> 
+                <input type="email" id="email" v-model="email" autocomplete="off" :class="{ 'error-input': emailError }" placeholder="E-mail"> 
+                <p class="error-text" v-if="emailError">{{ emailError }}</p>
+            </div>
+            
+            <button class="btn-primary" @click="updatePassword" title="Alterar senha">Alterar senha</button>
+        </form>
+    </template>
+    <template id="s_topic">
+        <section>
+            <div class="topic">
+                <div class="header-top">
+                    <h2 class="title">{{ title }}</h2> 
+
+                    <div class="header-top-buttons">
+                        <button class="btn-danger" v-if="user" @click="deleteTopic(id)" title="Remover tópico"><i class="fa-solid fa-trash"></i></button>
+                        <router-link class="btn-primary" v-if="user" :to="`/topic/${id}/content-form`"><i class="fa-solid fa-plus"></i></router-link>
+                    </div>
+                </div>
+                <div class="contents">
+                    <div class="content" v-for="content in contents" :key="content.id">
+                        <p><a :href="content.link" target="_blank" rel="noopener noreferrer" class="link" title="Acessar site">{{ content.title }}</a>: {{ content.description }}</p>
+                        <button class="btn-danger" v-if="user" @click="deleteContent(content.id)" title="Remover conteúdo"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
     <template id="s_form_topic">
         <form @submit.prevent="addTopic">
             <div class="header-top">
@@ -87,70 +168,9 @@
             <button class="btn-primary" title="Adicionar contéudo">Adicionar</button>
         </form>
     </template>
-    <template id="s_inicio">
-        <section>
-            <div class="background"> <i class="fa-solid fa-house"></i> </div>
-            <h2 class="title">Início</h2>
 
-            <div class="text-content">
-                <p class="text">Olá, usuário! Bem-vindo ao site de ferramentas para desenvolvedores.<br>Aqui você encontra diversos materiais e links úteis para estudos e desenvolvimento de projetos.</p>
-                <p class="text">Navegue pelos tópicos através do menu. </p>
-            </div>
-        </section>
-    </template> 
-    <template id="s_topic">
-        <section>
-            <div class="topic">
-                <div class="header-top">
-                    <h2 class="title">{{ title }}</h2> 
-
-                    <div class="header-top-buttons">
-                        <button class="btn-danger" v-if="user" @click="deleteTopic(id)" title="Remover tópico"><i class="fa-solid fa-trash"></i></button>
-                        <router-link class="btn-primary" v-if="user" :to="`/topic/${id}/content-form`"><i class="fa-solid fa-plus"></i></router-link>
-                    </div>
-                </div>
-                <div class="contents">
-                    <div class="content" v-for="content in contents" :key="content.id">
-                        <p><a :href="content.link" target="_blank" rel="noopener noreferrer" class="link" title="Acessar site">{{ content.title }}</a>: {{ content.description }}</p>
-                        <button class="btn-danger" v-if="user" @click="deleteContent(content.id)" title="Remover conteúdo"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </template>
-    <template id="s_login">
-        <form @submit.prevent="loginUser" class="centered">
-            <h2 class="title">Login</h2>
-            <p class="error-text" v-if="loginError">{{ loginError }}</p>
-            <div class="input-group"> 
-                <label for="email">E-mail</label> 
-                <input type="email" id="email" v-model="email" autocomplete="off"> 
-            </div>
-            <div class="input-group"> 
-                <label for="password">Senha</label> 
-                <input type="password" id="password" v-model="password" autocomplete="off"> 
-            </div> 
-            <button class="btn-primary" title="Entrar como administrador">Entrar</button>
-        </form>
-    </template>
-    <template id="s_profile">
-        <form onsubmit="return false">
-            <h2 class="title">Seu perfil de usuário</h2>
-
-            <p class="box-text success-text" v-if="formMessage">{{ formMessage }}</p>
-
-            <p style="margin-bottom: 1rem" v-if="!formMessage">Para alterar sua senha, basta preencher o campo abaixo com um email válido e clicar no botão. Uma mensagem será enviada para o email informado com um link para alteração de senha.</p>
-
-            <div class="input-group"> 
-                <label for="email">E-mail</label> 
-                <input type="email" id="email" v-model="email" autocomplete="off" :class="{ 'error-input': emailError }" placeholder="E-mail"> 
-                <p class="error-text" v-if="emailError">{{ emailError }}</p>
-            </div>
-            
-            <button class="btn-primary" @click="updatePassword" title="Alterar senha">Alterar senha</button>
-        </form>
-    </template>
-
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js" type="text/javascript"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-auth-compat.js" type="text/javascript"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js" type="text/javascript"></script>

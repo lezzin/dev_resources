@@ -1,5 +1,6 @@
 import { auth, db } from "./firebase.js";
 
+// Components
 const Profile = {
     template: "#s_profile",
     data() {
@@ -153,6 +154,8 @@ const Login = {
     },
     methods: {
         async loginUser() {
+            this.loginError = '';
+
             try {
                 if (!this.email || !this.password) {
                     this.loginError = 'Preencha todos os campos';
@@ -163,8 +166,12 @@ const Login = {
                 this.$root.user = user;
                 this.$router.push('/');
             } catch (error) {
-                console.error('Erro ao fazer login:', error);
-                this.loginError = error.message;
+                const FIREBASE_ERRORS = {
+                    "auth/invalid-credential": "Email ou senha inválidos",
+                    "auth/too-many-requests": "Muitas tentativas. Tente novamente mais tarde",
+                }
+
+                this.loginError = FIREBASE_ERRORS[error.code] || error.message;
             }
         }
     }
@@ -201,6 +208,8 @@ const Topic = {
             }
         },
         async deleteContent(id) {
+            if(!confirm('Tem certeza que deseja deletar esse conteúdo?')) return;
+
             try {
                 const topicId = this.$route.params.id;
                 const topicRef = db.collection('topics').doc(topicId);
@@ -219,6 +228,8 @@ const Topic = {
             }
         },
         async deleteTopic(id) {
+            if(!confirm('Tem certeza que deseja deletar esse tópico? Todos os conteúdos serão perdidos.')) return;
+
             try {
                 await db.collection('topics').doc(id).delete();
                 this.$root.fetchTopics();
@@ -247,6 +258,7 @@ const Topic = {
     }
 };
 
+// Router
 const routes = [
     { path: '/', component: Home },
     { path: '/login', component: Login },
@@ -258,6 +270,7 @@ const routes = [
 
 const router = new VueRouter({ routes });
 
+// App
 const app = new Vue({
     router,
     data() {
@@ -265,6 +278,8 @@ const app = new Vue({
             topics: [],
             user: null,
             loading: true,
+            mobileMenuOpen: false,
+            isMobile: window.innerWidth <= 768,
         };
     },
     methods: {
@@ -290,6 +305,9 @@ const app = new Vue({
                 console.error('Erro ao carregar tópicos:', error);
             }
         },
+        toggleMenu() {
+            this.mobileMenuOpen = !this.mobileMenuOpen;
+        }
     },
     async created() {
         try {
@@ -303,5 +321,9 @@ const app = new Vue({
         } catch (error) {
             console.error('Erro durante a inicialização:', error);
         }
+
+        window.addEventListener('resize', () => {
+            this.isMobile = window.innerWidth <= 768;
+        });
     }
 }).$mount('#app');

@@ -122,11 +122,6 @@ form {
   flex-direction: column;
   gap: 1.2rem;
 }
-form.centered {
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
 form .input-group {
   display: grid;
   width: 100%;
@@ -163,7 +158,7 @@ form .error-input {
 }
 
 .title {
-  color: #22233c;
+  color: #34375d;
   font-size: 2.4rem;
   font-weight: 600;
   margin-bottom: 1.6rem;
@@ -196,100 +191,89 @@ hr {
 }
 
 body {
-  background-color: #777BB3;
-  background-image: linear-gradient(135deg, #777BB3 0%, #8BC6EC 100%);
+  background-color: #fff;
   font-size: 1.6rem;
 }
 
 .container {
   position: relative;
-  background-color: #fff;
-  border: 1px solid #d9daea;
-  margin: 3rem auto;
-  border-radius: 1rem;
-  display: grid;
-  grid-template-columns: 1fr 3fr;
+  min-height: 100vh;
   width: 100%;
-  max-width: 1080px;
-  height: calc(100vh - 6rem);
-  overflow-y: auto;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-}
-@media (max-width: 768px) {
-  .container {
-    place-content: start;
-    grid-template-columns: 1fr;
-    overflow-y: unset;
-    min-height: 100vh;
-    height: auto;
-    margin: 0 auto;
-    border: none;
-  }
 }
 
 aside {
-  border-right: 1px solid #d9daea;
   position: relative;
 }
+aside .fixed {
+  border-right: 1px solid #d9daea;
+  position: fixed;
+  max-width: 25%;
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+}
 @media (max-width: 768px) {
-  aside {
+  aside .fixed {
+    position: relative;
+    max-width: unset;
+    border-right: unset;
+    border-bottom: 1px solid #d9daea;
+    height: auto;
+  }
+}
+@media (max-width: 768px) {
+  aside .fixed {
     border-right: unset;
     border-bottom: 1px solid #d9daea;
   }
 }
-aside .title {
-  padding-left: 3rem;
-}
 @media (max-width: 768px) {
-  aside .title {
+  aside .fixed .title {
     display: none;
   }
 }
-aside .sticky {
-  position: sticky;
-  top: 3rem;
-}
-aside .sticky .header-top {
-  padding: 0 1.5rem;
+aside .fixed .header-top {
+  padding: 0.9rem 3rem;
+  border-bottom: 1px solid #d9daea;
 }
 @media (max-width: 768px) {
-  aside .sticky .header-top {
+  aside .fixed .header-top {
     padding: 1.5rem;
     margin-bottom: 0;
     border-bottom: 1px solid #d9daea;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   }
-  aside .sticky .header-top .header-top-buttons {
+  aside .fixed .header-top .header-top-buttons {
     margin-left: auto;
   }
 }
-aside .sticky nav {
+aside .fixed nav {
   display: flex;
   flex-direction: column;
 }
 @media (max-width: 768px) {
-  aside .sticky nav {
-    margin-top: 1.5rem;
+  aside .fixed nav {
+    margin: 1.5rem 0;
   }
 }
-aside .sticky nav .link,
-aside .sticky nav .router-link-active {
+aside .fixed nav .link,
+aside .fixed nav .router-link-active {
   text-decoration: none;
   padding: 1rem 1rem 1rem 3rem;
   overflow: hidden;
   position: relative;
   font-weight: 400;
 }
-aside .sticky nav .link:hover:not(.router-link-exact-active),
-aside .sticky nav .router-link-active:hover:not(.router-link-exact-active) {
+aside .fixed nav .link:hover:not(.router-link-exact-active),
+aside .fixed nav .router-link-active:hover:not(.router-link-exact-active) {
   text-decoration: none;
 }
-aside .sticky nav .link:hover:not(.router-link-exact-active):before,
-aside .sticky nav .router-link-active:hover:not(.router-link-exact-active):before {
+aside .fixed nav .link:hover:not(.router-link-exact-active):before,
+aside .fixed nav .router-link-active:hover:not(.router-link-exact-active):before {
   opacity: 0.3;
 }
-aside .sticky nav .link::before,
-aside .sticky nav .router-link-active::before {
+aside .fixed nav .link::before,
+aside .fixed nav .router-link-active::before {
   z-index: -1;
   content: "";
   position: absolute;
@@ -302,20 +286,13 @@ aside .sticky nav .router-link-active::before {
   transform: translateX(-3rem);
   transition: all 0.3s ease;
 }
-@media (max-width: 768px) {
-  aside .sticky nav .link::before,
-  aside .sticky nav .router-link-active::before {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-}
-aside .sticky nav .link.router-link-exact-active,
-aside .sticky nav .router-link-active.router-link-exact-active {
+aside .fixed nav .link.router-link-exact-active,
+aside .fixed nav .router-link-active.router-link-exact-active {
   color: #fff;
   pointer-events: none;
 }
-aside .sticky nav .link.router-link-exact-active::before,
-aside .sticky nav .router-link-active.router-link-exact-active::before {
+aside .fixed nav .link.router-link-exact-active::before,
+aside .fixed nav .router-link-active.router-link-exact-active::before {
   transform: translateX(0);
   opacity: 1;
 }
@@ -323,22 +300,53 @@ aside .sticky nav .router-link-active.router-link-exact-active::before {
 main {
   position: relative;
   padding: 3rem;
+  margin-left: 25%;
+  min-height: 100vh;
 }
-main section .background {
-  position: absolute;
-  inset: 0;
+@media (max-width: 768px) {
+  main {
+    margin-left: 0;
+    min-height: unset;
+  }
+}
+main section .home-image {
+  max-width: 100%;
+  aspect-ratio: 16/6;
+  margin-top: 1.8rem;
+}
+main section .home-image img {
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 20rem;
-  opacity: 0.05;
-  color: #777BB3;
-  pointer-events: none;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 1rem;
+  -o-object-position: center;
+     object-position: center;
 }
-main section:not(:last-of-type) {
-  margin-bottom: 3rem;
+main section .home-image figcaption {
+  font-size: 1.4rem;
+  color: #555;
+}
+main section .tecnologies-title {
+  margin-top: 3rem;
+  margin-bottom: 1.6rem;
+  color: #34375d;
+  font-weight: 600;
+}
+main section .tecnologies {
+  display: flex;
+  gap: 3rem;
+}
+main section .tecnologies .tecnology {
+  text-align: center;
+  background-color: #f5f5f5;
+  border: 1px solid #d9daea;
+  border-radius: 0.3rem;
+  padding: 1.2rem;
+}
+main section .tecnologies .tecnology figcaption {
+  font-size: 1.4rem;
+  color: #555;
 }
 main section .topic .contents {
   display: grid;
@@ -347,7 +355,7 @@ main section .topic .contents {
 main section .topic .contents .content {
   display: flex;
   justify-content: space-between;
-  align-items: start;
+  align-items: flex-start;
 }
 main section .topic .contents .content button {
   height: 2.5rem;

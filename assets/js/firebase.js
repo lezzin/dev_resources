@@ -16,5 +16,4 @@ const analytics = firebaseApp.analytics();
 export {
     auth,
     db,
-    firebaseApp
 };
