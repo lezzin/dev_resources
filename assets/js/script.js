@@ -474,6 +474,7 @@ const app = new Vue({
             try {
                 await auth.signOut();
                 this.user = null;
+                this.$router.push('/');
             } catch (error) {
                 console.error('Erro ao fazer logout:', error);
             }
