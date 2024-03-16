@@ -23,7 +23,7 @@
             <aside>
                 <div class="fixed">
                     <div class="header-top">
-                        <router-link to="/" class="title"><i class="fa-solid fa-tools"></i></router-link>
+                        <router-link to="/" class="title" title="Ir para a página inicial"><i class="fa-solid fa-tools"></i></router-link>
                         <button class="btn-primary" @click="toggleMenu" title="Abrir/fechar menu" v-if="isMobile">
                             <i class="fa-solid fa-bars"></i>
                         </button>
@@ -48,27 +48,23 @@
 
     <template id="s_inicio">
         <section>
-            <h2 class="title">Início</h2>
+            <figure class="home-image">
+                <img src="./assets/img/einstein.jpg" alt="Albert Einstein" loading="lazy">
+                <figcaption>Imagem gerada por inteligência artificial</figcaption>
+            </figure>
             <div class="text-content">
                 <p class="text">Olá, usuário! Bem-vindo ao site de ferramentas para desenvolvedores.<br>Aqui você encontra diversos materiais e links úteis para estudos e desenvolvimento de projetos.</p>
                 <p class="text">Navegue pelos tópicos através do menu. </p>
             </div>
-            <figure class="home-image">
-                <img src="./assets/img/einstein.webp" alt="Albert Einstein">
-                <figcaption>Imagem gerada por inteligência artificial</figcaption>
-            </figure>
-
             <h3 class="tecnologies-title">Desenvolvido com:</h3>
-
             <div class="tecnologies">
                 <figure class="tecnology" title="Firebase">
-                    <img src="./assets/img/firebase.svg" alt="Firebase" width="48" height="48">
-                    <figcaption><a class="link" rel="noopener noreferrer" target="_blank" href="https://icons8.com/icon/62452/firebase">Firebase</a> icon by <a class="link" rel="noopener noreferrer" target="_blank" href="https://icons8.com">Icons8</a></figcaption>
+                    <img src="./assets/img/firebase.svg" alt="Firebase" width="48" height="48" loading="lazy">
+                    <figcaption><a rel="noopener noreferrer" target="_blank" href="https://icons8.com/icon/62452/firebase" class="link" title="Firebase">icons8</a></figcaption>
                 </figure>
-
                 <figure class="tecnology" title="Vue.js">
-                    <img src="./assets/img/vue.svg" alt="Vue.js" width="48" height="48">
-                    <figcaption><a class="link" rel="noopener noreferrer" target="_blank" href="https://icons8.com/icon/rY6agKizO9eb/vue-js">Vue Js</a> icon by <a class="link" rel="noopener noreferrer" target="_blank" href="https://icons8.com">Icons8</a></figcaption>
+                    <img src="./assets/img/vue.svg" alt="Vue.js" width="48" height="48" loading="lazy">
+                    <figcaption><a rel="noopener noreferrer" target="_blank" href="https://icons8.com/icon/rY6agKizO9eb/vue-js" class="link" title="Vue.js">icons8</a></figcaption>
                 </figure>
             </div>
         </section>
@@ -110,8 +106,8 @@
             <div class="topic">
                 <div class="header-top">
                     <h2 class="title">{{ title }}</h2> 
-
                     <div class="header-top-buttons">
+                        <button class="btn-primary" @click="openEditTopic(id)" v-if="user" title="Editar tópico"><i class="fa-solid fa-edit"></i></button>
                         <button class="btn-danger" v-if="user" @click="deleteTopic(id)" title="Remover tópico"><i class="fa-solid fa-trash"></i></button>
                         <router-link class="btn-primary" v-if="user" :to="`/topic/${id}/content-form`"><i class="fa-solid fa-plus"></i></router-link>
                     </div>
@@ -119,7 +115,10 @@
                 <div class="contents">
                     <div class="content" v-for="content in contents" :key="content.id">
                         <p><a :href="content.link" target="_blank" rel="noopener noreferrer" class="link" title="Acessar site">{{ content.title }}</a>: {{ content.description }}</p>
-                        <button class="btn-danger" v-if="user" @click="deleteContent(content.id)" title="Remover conteúdo"><i class="fa-solid fa-trash"></i></button>
+                        <div class="content-actions">
+                            <button class="btn-primary" @click="openEditContent(content.id)" v-if="user" title="Editar conteúdo"><i class="fa-solid fa-edit"></i></button>
+                            <button class="btn-danger" v-if="user" @click="deleteContent(content.id)" title="Remover conteúdo"><i class="fa-solid fa-trash"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -141,6 +140,34 @@
             <button class="btn-primary" title="Adicionar tópico">Adicionar</button>
         </form>
     </template>
+    <template id="s_edit_content">
+        <form @submit.prevent="editContent">
+            <div class="header-top">
+                <h2 class="title">Editar Conteúdo</h2>
+                <a class="btn-outline-primary btn-back" href="javascript:history.back()" title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
+            </div>
+
+            <div class="input-group"> 
+                <label for="content-title">Título</label> 
+                <input type="text" id="content-title" v-model="contentTitle" autocomplete="off" :class="{ 'error-input': contentTitleError }" placeholder="Título do site/material">
+                <p class="error-text" v-if="contentTitleError">{{ contentTitleError }}</p>
+            </div>
+
+            <div class="input-group"> 
+                <label for="content-link">Link</label> 
+                <input type="text" id="content-link" v-model="contentLink" autocomplete="off" :class="{ 'error-input': contentLinkError }" placeholder="https://www.site.com">
+                <p class="error-text" v-if="contentLinkError">{{ contentLinkError }}</p>
+            </div>
+
+            <div class="input-group"> 
+                <label for="content-description">Descrição</label> 
+                <input type="text" id="content-description" v-model="contentDescription" autocomplete="off" :class="{ 'error-input': contentDescriptionError }" placeholder="Descrição do site/material">
+                <p class="error-text" v-if="contentDescriptionError">{{ contentDescriptionError }}</p>
+            </div>
+
+            <button class="btn-primary" title="Editar conteúdo">Editar</button>
+        </form>
+    </template> 
     <template id="s_add_content">
         <form @submit.prevent="addContent">
             <p class="error-text" v-if="topicError">{{ topicError }}</p> 
@@ -166,6 +193,20 @@
                 <p class="error-text" v-if="contentDescriptionError">{{ contentDescriptionError }}</p> 
             </div> 
             <button class="btn-primary" title="Adicionar contéudo">Adicionar</button>
+        </form>
+    </template>
+    <template id="s_edit_topic">
+        <form @submit.prevent="editTopic">
+            <div class="header-top">
+                <h2 class="title">Editar Tópico</h2>
+                <a class="btn-outline-primary btn-back" href="javascript:history.back()" title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
+            </div>
+            <div class="input-group"> 
+                <label for="topic-title">Título</label> 
+                <input type="text" id="topic-title" v-model="topicTitle" autocomplete="off" :class="{ 'error-input': titleError }" placeholder="Estudos, materiais...">
+                <p class="error-text" v-if="titleError">{{ titleError }}</p>
+            </div>
+            <button class="btn-primary" title="Editar tópico">Editar</button>
         </form>
     </template>
 

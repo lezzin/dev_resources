@@ -12,7 +12,7 @@ const Profile = {
     },
     methods: {
         updatePassword() {
-            if(!this.email) {
+            if (!this.email) {
                 this.emailError = 'Preencha o campo de e-mail';
                 return;
             }
@@ -64,6 +64,60 @@ const FormTopic = {
                 this.titleError = error.message;
             }
         }
+    }
+};
+
+const formEditTopic = {
+    template: "#s_edit_topic",
+    data() {
+        return {
+            topicTitle: '',
+            titleError: '',
+        };
+    },
+    methods: {
+        async loadTopic() {
+            try {
+                const doc = await db.collection('topics').doc(this.$route.params.id).get();
+                if (doc.exists) {
+                    const topicData = doc.data();
+                    this.topicTitle = topicData.title;
+                } else {
+                    this.$router.push('/');
+                }
+            } catch (error) {
+                console.error('Erro ao carregar tópico:', error);
+            }
+        },
+        async editTopic() {
+            try {
+                if (!this.topicTitle) {
+                    this.titleError = 'Preencha o título';
+                    return;
+                }
+
+                const querySnapshot = await db.collection('topics').where('title', '==', this.topicTitle).get();
+                if (querySnapshot.size > 0) {
+                    this.titleError = 'Esse tópico já existe';
+                    return;
+                }
+
+                await db.collection('topics').doc(this.$route.params.id).update({
+                    title: this.topicTitle,
+                });
+
+                this.topicTitle = '';
+                this.titleError = '';
+                this.$root.fetchTopics();
+                this.$router.push(`/topic/${this.$route.params.id}`);
+            } catch (error) {
+                console.error('Erro ao editar tópico:', error);
+                this.titleError = error.message;
+            }
+        }
+    },
+    created() {
+        this.loadTopic();
     }
 };
 
@@ -140,8 +194,110 @@ const FormContent = {
             this.contentLink = '';
             this.contentLinkError = '';
         }
-    }
+    },
 };
+
+const formEditContent = {
+    template: "#s_edit_content",
+    data() {
+        return {
+            topicError: '',
+            contentDescriptionError: '',
+            contentDescription: '',
+            contentLinkError: '',
+            contentLink: '',
+            contentTitleError: '',
+            contentTitle: '',
+            contentTopicId: this.$route.params.id,
+        };
+    },
+    methods: {
+        async loadContent() {
+            try {
+                const topicId = this.$route.params.id;
+                const contentId = this.$route.params.contentId;
+                const doc = await db.collection('topics').doc(topicId).get();
+
+                if (!doc.exists) {
+                    this.topicError = 'Esse tópico não existe';
+                    return;
+                }
+
+                const topicData = doc.data();
+                const content = topicData.contents.find(content => content.id === contentId);
+
+                if (!content) {
+                    this.$router.push(`/topic/${topicId}`);
+                    return;
+                }
+
+                this.contentDescription = content.description;
+                this.contentLink = content.link;
+                this.contentTitle = content.title;
+            } catch (error) {
+                console.error('Erro ao carregar conteúdo:', error);
+                this.topicError = error.message;
+            }
+        },
+        async editContent() {
+            try {
+                if (!this.contentTitle) {
+                    this.contentTitleError = 'Preencha o título';
+                    return;
+                }
+
+                if (!this.contentLink) {
+                    this.contentLinkError = 'Preencha o link';
+                    return;
+                }
+
+                const urlRegex = /^(http|https):\/\//i;
+                if (!urlRegex.test(this.contentLink)) {
+                    this.contentLinkError = 'Inicie o link com http:// ou https://';
+                    return;
+                }
+
+                if (!this.contentDescription) {
+                    this.contentDescriptionError = 'Preencha a descrição';
+                    return;
+                }
+
+                const topicId = this.$route.params.id;
+                const contentId = this.$route.params.contentId;
+                const topicRef = db.collection('topics').doc(topicId);
+                const doc = await topicRef.get();
+
+                if (!doc.exists) {
+                    this.topicError = 'Esse tópico não existe';
+                    return;
+                }
+
+                const topicData = doc.data();
+                const newContents = topicData.contents.map(content => {
+                    if (content.id === contentId) {
+                        return {
+                            id: contentId,
+                            description: this.contentDescription,
+                            link: this.contentLink,
+                            title: this.contentTitle,
+                        };
+                    };
+                    return content;
+                });
+
+                await topicRef.update({ contents: newContents });
+                this.$router.push(`/topic/${topicId}`);
+
+                this.clearFields();
+            } catch (error) {
+                this.topicError = error.message;
+            }
+        }
+    },
+    created() {
+        this.loadContent();
+    },
+}
 
 const Login = {
     template: '#s_login',
@@ -208,7 +364,7 @@ const Topic = {
             }
         },
         async deleteContent(id) {
-            if(!confirm('Tem certeza que deseja deletar esse conteúdo?')) return;
+            if (!confirm('Tem certeza que deseja deletar esse conteúdo?')) return;
 
             try {
                 const topicId = this.$route.params.id;
@@ -228,7 +384,7 @@ const Topic = {
             }
         },
         async deleteTopic(id) {
-            if(!confirm('Tem certeza que deseja deletar esse tópico? Todos os conteúdos serão perdidos.')) return;
+            if (!confirm('Tem certeza que deseja deletar esse tópico? Todos os conteúdos serão perdidos.')) return;
 
             try {
                 await db.collection('topics').doc(id).delete();
@@ -237,6 +393,12 @@ const Topic = {
             } catch (error) {
                 console.error('Erro ao deletar tópico:', error);
             }
+        },
+        openEditTopic(id) {
+            this.$router.push(`/topic/${id}/edit`);
+        },
+        openEditContent(id) {
+            this.$router.push(`/topic/${this.$route.params.id}/content/${id}/edit`);
         }
     },
     created() {
@@ -266,6 +428,8 @@ const routes = [
     { path: '/topic-form', component: FormTopic },
     { path: '/topic/:id', component: Topic, props: true },
     { path: '/topic/:id/content-form', component: FormContent },
+    { path: '/topic/:id/edit', component: formEditTopic },
+    { path: '/topic/:id/content/:contentId/edit', component: formEditContent },
 ];
 
 const router = new VueRouter({ routes });
@@ -278,7 +442,7 @@ const app = new Vue({
             topics: [],
             user: null,
             loading: true,
-            mobileMenuOpen: false,
+            mobileMenuOpen: true,
             isMobile: window.innerWidth <= 768,
         };
     },
@@ -307,7 +471,7 @@ const app = new Vue({
         },
         toggleMenu() {
             this.mobileMenuOpen = !this.mobileMenuOpen;
-        }
+        },
     },
     async created() {
         try {

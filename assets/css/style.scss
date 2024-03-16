@@ -6,7 +6,7 @@ $success-color-light: lighten($success-color, 60%);
 $danger-color: #FF5A5F;
 $danger-color-light: lighten($danger-color, 60%);
 
-$background-color: #777BB3;
+$background-color: #646bd4;
 
 $link-color: $background-color;
 $link-color-hover: darken($link-color, 30%);
@@ -350,8 +350,7 @@ main {
     section {
         .home-image {
             max-width: 100%;
-            aspect-ratio: 16/6;
-            margin-top: 1.8rem;
+            margin-bottom: 1.8rem;
 
             img {
                 width: 100%;
@@ -369,24 +368,24 @@ main {
 
         .tecnologies-title {
             margin-top: 3rem;
-            margin-bottom: 1.6rem;
+            margin-bottom: .8rem;
             color: $title-color;
             font-weight: 600;
         }
 
         .tecnologies {
             display: flex;
-            gap: 3rem;
+            gap: .5rem;
 
             .tecnology {
-                text-align: center;
-
-                background-color: #f5f5f5;
-                border: 1px solid $border-color;
-                border-radius: .3rem;
-                padding: 1.2rem;
+                img {
+                    background-color: #f5f5f5;
+                    border: 1px solid $border-color;
+                    border-radius: .3rem;
+                }
 
                 figcaption {
+                    text-align: center;
                     font-size: 1.4rem;
                     color: $text-color;
                 }
@@ -403,10 +402,15 @@ main {
                     justify-content: space-between;
                     align-items: flex-start;
 
-                    button {
-                        @extend .btn-sm;
-                        height: 2.5rem;
-                        font-size: 1rem;
+                    .content-actions {
+                        display: flex;
+                        gap: 0.6rem;
+
+                        button {
+                            @extend .btn-sm;
+                            height: 2.5rem;
+                            font-size: 1rem;
+                        }
                     }
                 }
             }
