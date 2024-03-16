@@ -1,6 +1,7 @@
-import { auth, db } from "./firebase.js";
-
-// Components
+import {
+    auth,
+    db
+} from "./firebase.js";
 const Profile = {
     template: "#s_profile",
     data() {
@@ -16,11 +17,9 @@ const Profile = {
                 this.emailError = 'Preencha o campo de e-mail';
                 return;
             }
-
             auth.sendPasswordResetEmail(this.email).then(() => {
                 this.formMessage = 'E-mail enviado com sucesso';
             }).catch((error) => {
-                console.error('Erro ao enviar email:', error);
                 this.emailError = error.message;
             });
         }
@@ -31,7 +30,6 @@ const Profile = {
         }
     }
 }
-
 const FormTopic = {
     template: '#s_form_topic',
     data() {
@@ -47,31 +45,26 @@ const FormTopic = {
                     this.titleError = 'Preencha o título';
                     return;
                 }
-
                 const querySnapshot = await db.collection('topics').where('title', '==', this.topicTitle).get();
                 if (querySnapshot.size > 0) {
                     this.titleError = 'Esse tópico já existe';
                     return;
                 }
-
                 await db.collection('topics').add({
                     id: this.topicTitle.toLowerCase().replace(/ /g, '-'),
                     title: this.topicTitle,
                     contents: [],
                     created_at: new Date(),
                 });
-
                 this.topicTitle = '';
                 this.titleError = '';
                 this.$root.fetchTopics();
             } catch (error) {
-                console.error('Erro ao adicionar tópico:', error);
                 this.titleError = error.message;
             }
         }
     }
 };
-
 const formEditTopic = {
     template: "#s_edit_topic",
     data() {
@@ -91,7 +84,7 @@ const formEditTopic = {
                     this.$router.push('/');
                 }
             } catch (error) {
-                console.error('Erro ao carregar tópico:', error);
+                this.titleError = error.message;
             }
         },
         async editTopic() {
@@ -100,23 +93,19 @@ const formEditTopic = {
                     this.titleError = 'Preencha o título';
                     return;
                 }
-
                 const querySnapshot = await db.collection('topics').where('title', '==', this.topicTitle).get();
                 if (querySnapshot.size > 0) {
                     this.titleError = 'Esse tópico já existe';
                     return;
                 }
-
                 await db.collection('topics').doc(this.$route.params.id).update({
                     title: this.topicTitle,
                 });
-
                 this.topicTitle = '';
                 this.titleError = '';
                 this.$root.fetchTopics();
                 this.$router.push(`/topic/${this.$route.params.id}`);
             } catch (error) {
-                console.error('Erro ao editar tópico:', error);
                 this.titleError = error.message;
             }
         }
@@ -125,7 +114,6 @@ const formEditTopic = {
         this.loadTopic();
     }
 };
-
 const FormContent = {
     template: "#s_add_content",
     data() {
@@ -147,32 +135,26 @@ const FormContent = {
                     this.contentTitleError = 'Preencha o título';
                     return;
                 }
-
                 if (!this.contentLink) {
                     this.contentLinkError = 'Preencha o link';
                     return;
                 }
-
                 const urlRegex = /^(http|https):\/\//i;
                 if (!urlRegex.test(this.contentLink)) {
                     this.contentLinkError = 'Inicie o link com http:// ou https://';
                     return;
                 }
-
                 if (!this.contentDescription) {
                     this.contentDescriptionError = 'Preencha a descrição';
                     return;
                 }
-
                 const topicId = this.$route.params.id;
                 const topicRef = db.collection('topics').doc(topicId);
                 const doc = await topicRef.get();
-
                 if (!doc.exists) {
                     this.topicError = 'Esse tópico não existe';
                     return;
                 }
-
                 const topicData = doc.data();
                 topicData.contents.push({
                     id: Date.now().toString(36),
@@ -180,13 +162,12 @@ const FormContent = {
                     link: this.contentLink,
                     title: this.contentTitle,
                 });
-
-                await topicRef.update({ contents: topicData.contents });
+                await topicRef.update({
+                    contents: topicData.contents
+                });
                 this.$router.push(`/topic/${topicId}`);
-
                 this.clearFields();
             } catch (error) {
-                console.error('Erro ao adicionar conteúdo:', error);
                 this.topicError = error.message;
             }
         },
@@ -201,7 +182,6 @@ const FormContent = {
         }
     },
 };
-
 const formEditContent = {
     template: "#s_edit_content",
     data() {
@@ -222,25 +202,20 @@ const formEditContent = {
                 const topicId = this.$route.params.id;
                 const contentId = this.$route.params.contentId;
                 const doc = await db.collection('topics').doc(topicId).get();
-
                 if (!doc.exists) {
                     this.topicError = 'Esse tópico não existe';
                     return;
                 }
-
                 const topicData = doc.data();
                 const content = topicData.contents.find(content => content.id === contentId);
-
                 if (!content) {
                     this.$router.push(`/topic/${topicId}`);
                     return;
                 }
-
                 this.contentDescription = content.description;
                 this.contentLink = content.link;
                 this.contentTitle = content.title;
             } catch (error) {
-                console.error('Erro ao carregar conteúdo:', error);
                 this.topicError = error.message;
             }
         },
@@ -250,33 +225,27 @@ const formEditContent = {
                     this.contentTitleError = 'Preencha o título';
                     return;
                 }
-
                 if (!this.contentLink) {
                     this.contentLinkError = 'Preencha o link';
                     return;
                 }
-
                 const urlRegex = /^(http|https):\/\//i;
                 if (!urlRegex.test(this.contentLink)) {
                     this.contentLinkError = 'Inicie o link com http:// ou https://';
                     return;
                 }
-
                 if (!this.contentDescription) {
                     this.contentDescriptionError = 'Preencha a descrição';
                     return;
                 }
-
                 const topicId = this.$route.params.id;
                 const contentId = this.$route.params.contentId;
                 const topicRef = db.collection('topics').doc(topicId);
                 const doc = await topicRef.get();
-
                 if (!doc.exists) {
                     this.topicError = 'Esse tópico não existe';
                     return;
                 }
-
                 const topicData = doc.data();
                 const newContents = topicData.contents.map(content => {
                     if (content.id === contentId) {
@@ -289,10 +258,10 @@ const formEditContent = {
                     };
                     return content;
                 });
-
-                await topicRef.update({ contents: newContents });
+                await topicRef.update({
+                    contents: newContents
+                });
                 this.$router.push(`/topic/${topicId}`);
-
                 this.clearFields();
             } catch (error) {
                 this.topicError = error.message;
@@ -303,7 +272,6 @@ const formEditContent = {
         this.loadContent();
     },
 }
-
 const Login = {
     template: '#s_login',
     data() {
@@ -320,20 +288,16 @@ const Login = {
             this.formMessage = null;
             this.emailError = '';
             this.passwordError = '';
-
             try {
                 if (!this.email) {
                     this.emailError = 'Preencha o campo de e-mail';
                     return;
                 }
-
                 if (!this.password) {
                     this.passwordError = 'Preencha o campo de senha';
                     return;
                 }
-
                 const user = await auth.signInWithEmailAndPassword(this.email, this.password);
-
                 auth.onAuthStateChanged((user) => {
                     if (user) {
                         this.$root.user = user;
@@ -345,19 +309,19 @@ const Login = {
                     "auth/invalid-credential": "Email ou senha inválidos",
                     "auth/too-many-requests": "Muitas tentativas. Tente novamente mais tarde",
                 }
-
                 if (FIREBASE_ERRORS[error.code]) {
-                    this.formMessage = { type: 'error', text: FIREBASE_ERRORS[error.code] };
+                    this.formMessage = {
+                        type: 'error',
+                        text: FIREBASE_ERRORS[error.code]
+                    };
                 }
             }
         }
     }
 };
-
 const Home = {
     template: '#s_inicio'
 };
-
 const Topic = {
     template: "#s_topic",
     data() {
@@ -381,40 +345,46 @@ const Topic = {
                     this.$router.push('/');
                 }
             } catch (error) {
-                console.error('Erro ao carregar tópico:', error);
+                this.$root.toast = {
+                    type: 'error',
+                    text: 'Erro ao carregar tópico. Recarregue a página',
+                }
             }
         },
         async deleteContent(id) {
             if (!confirm('Tem certeza que deseja deletar esse conteúdo?')) return;
-
             try {
                 const topicId = this.$route.params.id;
                 const topicRef = db.collection('topics').doc(topicId);
                 const doc = await topicRef.get();
-
                 if (!doc.exists) {
                     this.$router.push('/');
                     return;
                 }
-
                 const topicData = doc.data();
                 const newContents = topicData.contents.filter(content => content.id !== id);
-                await topicRef.update({ contents: newContents });
-                
+                await topicRef.update({
+                    contents: newContents
+                });
                 this.$router.push(`/topic/${topicId}`);
             } catch (error) {
-                console.error('Erro ao deletar conteúdo:', error);
+                this.$root.toast = {
+                    type: 'error',
+                    text: 'Erro ao deletar conteúdo. Recarregue a página',
+                }
             }
         },
         async deleteTopic(id) {
             if (!confirm('Tem certeza que deseja deletar esse tópico? Todos os conteúdos serão perdidos.')) return;
-
             try {
                 await db.collection('topics').doc(id).delete();
                 this.$root.fetchTopics();
                 this.$router.push('/');
             } catch (error) {
-                console.error('Erro ao deletar tópico:', error);
+                this.$root.toast = {
+                    type: 'error',
+                    text: 'Erro ao deletar tópico. Recarregue a página',
+                }
             }
         },
         openEditTopic(id) {
@@ -427,37 +397,55 @@ const Topic = {
     created() {
         const topicId = this.$route.params.id;
         this.loadTopic(topicId);
-
         db.collection('topics').doc(topicId).onSnapshot((doc) => {
             const topicData = doc.data();
             this.title = topicData.title;
             this.contents = topicData.contents;
         });
-
         this.user = this.$root.user;
     },
     watch: {
-        '$route.params.id': function (newId) {
+        '$route.params.id': function(newId) {
             this.loadTopic(newId);
         }
     }
 };
-
-// Router
-const routes = [
-    { path: '/', component: Home },
-    { path: '/login', component: Login },
-    { path: '/profile', component: Profile },
-    { path: '/topic-form', component: FormTopic },
-    { path: '/topic/:id', component: Topic, props: true },
-    { path: '/topic/:id/content-form', component: FormContent },
-    { path: '/topic/:id/edit', component: formEditTopic },
-    { path: '/topic/:id/content/:contentId/edit', component: formEditContent },
+const routes = [{
+        path: '/',
+        component: Home
+    },
+    {
+        path: '/login',
+        component: Login
+    },
+    {
+        path: '/profile',
+        component: Profile
+    },
+    {
+        path: '/topic-form',
+        component: FormTopic
+    },
+    {
+        path: '/topic/:id',
+        component: Topic
+    },
+    {
+        path: '/topic/:id/content-form',
+        component: FormContent
+    },
+    {
+        path: '/topic/:id/edit',
+        component: formEditTopic
+    },
+    {
+        path: '/topic/:id/content/:contentId/edit',
+        component: formEditContent
+    },
 ];
-
-const router = new VueRouter({ routes });
-
-// App
+const router = new VueRouter({
+    routes
+});
 const app = new Vue({
     router,
     data() {
@@ -467,6 +455,7 @@ const app = new Vue({
             loading: true,
             mobileMenuOpen: true,
             isMobile: window.innerWidth <= 768,
+            toast: null,
         };
     },
     methods: {
@@ -476,7 +465,10 @@ const app = new Vue({
                 this.user = null;
                 this.$router.push('/');
             } catch (error) {
-                console.error('Erro ao fazer logout:', error);
+                this.toast = {
+                    type: 'error',
+                    text: 'Erro ao deslogar, se o erro persistir, recarregue a página',
+                }
             }
         },
         async fetchTopics() {
@@ -489,12 +481,15 @@ const app = new Vue({
                 }));
                 this.loading = false;
             } catch (error) {
-                console.error('Erro ao carregar tópicos:', error);
+                throw new Error('Erro ao carregar tópicos');
             }
         },
         toggleMenu() {
             this.mobileMenuOpen = !this.mobileMenuOpen;
         },
+        closeToast() {
+            this.toast = null;
+        }
     },
     async created() {
         try {
@@ -506,9 +501,11 @@ const app = new Vue({
             await this.fetchTopics();
             this.loading = false;
         } catch (error) {
-            console.error('Erro durante a inicialização:', error);
+            this.toast = {
+                type: 'error',
+                text: 'Erro ao carregar tópicos. Recarregue a página',
+            }
         }
-
         window.addEventListener('resize', () => {
             this.isMobile = window.innerWidth <= 768;
         });

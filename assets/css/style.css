@@ -41,7 +41,6 @@ button {
   aspect-ratio: 1;
   height: 3rem;
   border-radius: 0.3rem;
-  text-decoration: none;
 }
 
 .btn-primary {
@@ -77,6 +76,42 @@ button {
   background-color: #ff272e;
 }
 
+.btn-close {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+}
+.btn-close:hover {
+  color: #e6e6e6;
+}
+
+.toast {
+  position: fixed;
+  bottom: 1.6rem;
+  right: 1.6rem;
+  background-color: #646bd4;
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+.toast .toast-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #fff;
+}
+.toast.success-toast {
+  background-color: #00A699;
+}
+.toast.error-toast {
+  background-color: #FF5A5F;
+}
+
 .loader-container {
   position: fixed;
   inset: 0;
@@ -105,7 +140,7 @@ button {
 .header-top {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 1.8rem;
 }
 .header-top .title {
@@ -222,12 +257,6 @@ aside .fixed {
     border-right: unset;
     border-bottom: 1px solid #dcddf5;
     height: auto;
-  }
-}
-@media (max-width: 768px) {
-  aside .fixed {
-    border-right: unset;
-    border-bottom: 1px solid #dcddf5;
   }
 }
 @media (max-width: 768px) {
@@ -363,6 +392,7 @@ main section .topic .contents .content {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 2rem;
 }
 main section .topic .contents .content .content-actions {
   display: flex;
