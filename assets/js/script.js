@@ -5,7 +5,7 @@ const Profile = {
     template: "#s_profile",
     data() {
         return {
-            email: this.$root.user.email,
+            email: this.$root.user?.email,
             emailError: '',
             formMessage: '',
         }
@@ -23,6 +23,11 @@ const Profile = {
                 console.error('Erro ao enviar email:', error);
                 this.emailError = error.message;
             });
+        }
+    },
+    created() {
+        if (!this.email) {
+            this.$router.push('/');
         }
     }
 }
@@ -328,8 +333,13 @@ const Login = {
                 }
 
                 const user = await auth.signInWithEmailAndPassword(this.email, this.password);
-                this.$root.user = user;
-                this.$router.push('/');
+
+                auth.onAuthStateChanged((user) => {
+                    if (user) {
+                        this.$root.user = user;
+                        this.$router.push('/');
+                    }
+                });
             } catch (error) {
                 const FIREBASE_ERRORS = {
                     "auth/invalid-credential": "Email ou senha inválidos",
@@ -390,6 +400,8 @@ const Topic = {
                 const topicData = doc.data();
                 const newContents = topicData.contents.filter(content => content.id !== id);
                 await topicRef.update({ contents: newContents });
+                
+                this.$router.push(`/topic/${topicId}`);
             } catch (error) {
                 console.error('Erro ao deletar conteúdo:', error);
             }
@@ -462,7 +474,6 @@ const app = new Vue({
             try {
                 await auth.signOut();
                 this.user = null;
-                this.$router.push('/');
             } catch (error) {
                 console.error('Erro ao fazer logout:', error);
             }

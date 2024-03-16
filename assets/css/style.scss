@@ -7,6 +7,7 @@ $danger-color: #FF5A5F;
 $danger-color-light: lighten($danger-color, 30%);
 
 $background-color: #646bd4;
+$body-color: #fff;
 
 $link-color: $background-color;
 $link-color-hover: darken($link-color, 30%);
@@ -14,6 +15,7 @@ $link-color-hover: darken($link-color, 30%);
 $title-color: darken($background-color, 30%);
 
 $padding: 3rem;
+
 $border-color: lighten($background-color, 30%);
 
 $sidebarWidth: 25%;
@@ -98,7 +100,7 @@ button {
     inset: 0;
     display: grid;
     place-items: center;
-    background-color: #fff;
+    background-color: $body-color;
     z-index: 1000;
 
     .loader {
@@ -232,7 +234,7 @@ hr {
 }
 
 body {
-    background-color: #fff;
+    background-color: $body-color;
     font-size: 1.6rem;
 }
 
@@ -275,12 +277,11 @@ aside {
         .header-top {
             padding: calc($padding / 2 - .6rem) $padding;
             border-bottom: 1px solid $border-color;
-
+            
             @media (max-width: 768px) {
-                padding: calc($padding / 2);
-                margin-bottom: 0;
-                border-bottom: 1px solid $border-color;
                 box-shadow: 0 .5rem 1rem rgb(0 0 0 /.15);
+                margin-bottom: 0;
+                padding: calc($padding / 3);
 
                 .header-top-buttons {
                     margin-left: auto;
@@ -303,6 +304,10 @@ aside {
                 overflow: hidden;
                 position: relative;
                 font-weight: 400;
+
+                @media (max-width: 768px) {
+                    padding-left: calc($padding / 2);
+                }
 
                 &:hover:not(.router-link-exact-active) {
                     text-decoration: none;
@@ -347,8 +352,9 @@ main {
     min-height: 100vh;
 
     @media (max-width: 768px) {
-        margin-left: 0;
+        padding: calc($padding / 3);
         min-height: unset;
+        margin-left: 0;
     }
 
     section {
@@ -383,7 +389,7 @@ main {
 
             .tecnology {
                 img {
-                    background-color: #f5f5f5;
+                    background-color: darken($body-color, 5%);
                     border: 1px solid $border-color;
                     border-radius: .3rem;
                 }

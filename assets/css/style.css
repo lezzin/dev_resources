@@ -241,10 +241,9 @@ aside .fixed .header-top {
 }
 @media (max-width: 768px) {
   aside .fixed .header-top {
-    padding: 1.5rem;
-    margin-bottom: 0;
-    border-bottom: 1px solid #dcddf5;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    margin-bottom: 0;
+    padding: 1rem;
   }
   aside .fixed .header-top .header-top-buttons {
     margin-left: auto;
@@ -266,6 +265,12 @@ aside .fixed nav .router-link-active {
   overflow: hidden;
   position: relative;
   font-weight: 400;
+}
+@media (max-width: 768px) {
+  aside .fixed nav .link,
+  aside .fixed nav .router-link-active {
+    padding-left: 1.5rem;
+  }
 }
 aside .fixed nav .link:hover:not(.router-link-exact-active),
 aside .fixed nav .router-link-active:hover:not(.router-link-exact-active) {
@@ -308,8 +313,9 @@ main {
 }
 @media (max-width: 768px) {
   main {
-    margin-left: 0;
+    padding: 1rem;
     min-height: unset;
+    margin-left: 0;
   }
 }
 main section .home-image {
@@ -340,7 +346,7 @@ main section .tecnologies {
   gap: 0.5rem;
 }
 main section .tecnologies .tecnology img {
-  background-color: #f5f5f5;
+  background-color: #f2f2f2;
   border: 1px solid #dcddf5;
   border-radius: 0.3rem;
 }
