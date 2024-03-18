@@ -62,12 +62,15 @@ const FormTopic = {
     },
     methods: {
         async addTopic() {
+            if (!this.topicTitle) {
+                this.titleError = ERROR_MESSAGES.requiredTitle;
+                return;
+            }
+
             try {
-                if (!this.topicTitle) {
-                    this.titleError = ERROR_MESSAGES.requiredTitle;
-                    return;
-                }
                 const querySnapshot = await db.collection('topics').where('title', '==', this.topicTitle).get();
+                let createdTopicId = null;
+
                 if (querySnapshot.size > 0) {
                     this.titleError = ERROR_MESSAGES.topicExists;
                     return;
@@ -78,10 +81,15 @@ const FormTopic = {
                     title: this.topicTitle,
                     contents: [],
                     created_at: new Date(),
-                });
+                }).then(function (docRef) {
+                    createdTopicId = docRef.id;
+                })
                 this.topicTitle = '';
                 this.titleError = '';
                 this.$root.toast = { type: 'success', text: 'Tópico adicionado com sucesso' };
+                if (createdTopicId) {
+                    this.$router.push(`/topic/${createdTopicId}`);
+                }
             } catch (error) {
                 this.titleError = error.message;
             }
@@ -133,6 +141,7 @@ const formEditTopic = {
                 this.topicTitle = '';
                 this.titleError = '';
                 this.$router.push(`/topic/${this.$route.params.id}`);
+                this.$root.toast = { type: 'success', text: 'Tópico editado com sucesso' };
             } catch (error) {
                 this.titleError = error.message;
             }
@@ -165,24 +174,29 @@ const FormContent = {
     },
     methods: {
         async addContent() {
+            this.contentDescriptionError = this.contentLinkError = this.contentTitleError = "";
+
+            if (!this.contentTitle) {
+                this.contentTitleError = ERROR_MESSAGES.requiredTitle;
+            }
+
+            if (!this.contentLink) {
+                this.contentLinkError = ERROR_MESSAGES.requiredLink;
+            }
+
+            if (!this.contentDescription) {
+                this.contentDescriptionError = ERROR_MESSAGES.requiredDescription;
+            }
+
+            if (!this.contentTitle | !this.contentLink | !this.contentDescription) return;
+
+            const urlRegex = /^(http|https):\/\//i;
+            if (!urlRegex.test(this.contentLink)) {
+                this.contentLinkError = ERROR_MESSAGES.invalidLink;
+                return;
+            }
+
             try {
-                if (!this.contentTitle) {
-                    this.contentTitleError = ERROR_MESSAGES.requiredTitle;
-                    return;
-                }
-                if (!this.contentLink) {
-                    this.contentLinkError = ERROR_MESSAGES.requiredLink;
-                    return;
-                }
-                const urlRegex = /^(http|https):\/\//i;
-                if (!urlRegex.test(this.contentLink)) {
-                    this.contentLinkError = ERROR_MESSAGES.invalidLink;
-                    return;
-                }
-                if (!this.contentDescription) {
-                    this.contentDescriptionError = ERROR_MESSAGES.requiredDescription;
-                    return;
-                }
                 const topicId = this.$route.params.id;
                 const topicRef = db.collection('topics').doc(topicId);
                 const doc = await topicRef.get();
@@ -200,6 +214,7 @@ const FormContent = {
                 await topicRef.update({ contents: topicData.contents });
                 this.$router.push(`/topic/${topicId}`);
                 this.clearFields();
+                this.$root.toast = { type: 'success', text: "Conteúdo adicionado com sucesso" };
             } catch (error) {
                 this.topicError = error.message;
             }
@@ -300,6 +315,7 @@ const formEditContent = {
                     return content;
                 });
                 await topicRef.update({ contents: newContents });
+                this.$root.toast = { type: 'success', text: 'Conteúdo editado com sucesso' };
                 this.$router.push(`/topic/${topicId}`);
                 this.clearFields();
             } catch (error) {
@@ -332,29 +348,28 @@ const Login = {
     methods: {
         async loginUser() {
             this.formMessage = null;
-            this.emailError = '';
-            this.passwordError = '';
-            try {
-                if (!this.email) {
-                    this.emailError = ERROR_MESSAGES.requiredEmail;
-                    return;
-                }
-                if (!this.password) {
-                    this.passwordError = ERROR_MESSAGES.requiredPassword;
-                    return;
-                }
+            this.emailError = this.passwordError = '';
 
-                await auth.signInWithEmailAndPassword(this.email, this.password);
-                auth.onAuthStateChanged((user) => {
-                    if (user) {
-                        this.$root.user = user;
-                        this.$router.push('/');
-                    }
-                });
+            if (!this.email) {
+                this.emailError = ERROR_MESSAGES.requiredEmail;
+            }
+
+            if (!this.password) {
+                this.passwordError = ERROR_MESSAGES.requiredPassword;
+            }
+
+            if (!this.email | !this.password) {
+                return;
+            }
+
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(this.email, this.password);
+                const user = userCredential.user;
+                this.$root.user = user;
+                this.$router.push('/');
             } catch (error) {
-                console.log(error)
                 if (ERROR_MESSAGES[error.code]) {
-                    this.formMessage = { type: 'error', text: ERROR_MESSAGES[error.code] };
+                    this.formMessage = { type: 'error', text: ERROR_MESSAGES[error.code] ?? "Erro desconhecido. Tente novamente mais tarde." };
                 }
             }
         },
@@ -395,6 +410,7 @@ const Topic = {
             if (!confirm('Tem certeza que deseja deletar esse tópico? Todos os conteúdos serão perdidos.')) return;
             try {
                 await db.collection('topics').doc(id).delete();
+                this.$root.toast = { type: 'success', text: "Tópico removido com sucesso" };
                 this.$router.push('/');
             } catch (error) {
                 this.$root.toast = { type: 'error', text: ERROR_MESSAGES.deleteTopicError };
@@ -402,6 +418,7 @@ const Topic = {
         },
         async deleteContent(id) {
             if (!confirm('Tem certeza que deseja deletar esse conteúdo?')) return;
+
             try {
                 const topicId = this.$route.params.id;
                 const topicRef = db.collection('topics').doc(topicId);
@@ -413,6 +430,7 @@ const Topic = {
                 const topicData = doc.data();
                 const newContents = topicData.contents.filter(content => content.id !== id);
                 await topicRef.update({ contents: newContents });
+                this.$root.toast = { type: 'success', text: "Conteúdo removido com sucesso" };
             } catch (error) {
                 this.$root.toast = { type: 'error', text: ERROR_MESSAGES.deleteContentError };
             }
@@ -503,8 +521,11 @@ const app = new Vue({
     },
     async created() {
         auth.onAuthStateChanged((user) => {
-            this.user = user || null;
+            if(user) {
+                this.user = user;
+            }
         });
+
 
         try {
             await this.fetchTopicsMenu();
@@ -523,5 +544,12 @@ const app = new Vue({
         });
 
         this.loading = false;
+    },
+    watch: {
+        toast: function (_) {
+            setTimeout(() => {
+                this.toast = null;
+            }, 5000);
+        }
     }
 }).$mount('#app');
