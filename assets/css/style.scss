@@ -330,6 +330,7 @@ aside {
 
             @media(max-width: 768px) {
                 margin: calc($padding / 2) 0;
+                border-bottom: 1px solid $border-color;
             }
 
             .link,
