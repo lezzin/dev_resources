@@ -298,7 +298,6 @@ aside {
             position: relative;
             max-width: unset;
             border-right: unset;
-            border-bottom: 1px solid $border-color;
             height: auto;
         }
 
@@ -329,7 +328,7 @@ aside {
 
             @media(max-width: 768px) {
                 margin: calc($padding / 2) 0;
-    }
+            }
 
             .link,
             .router-link-active {

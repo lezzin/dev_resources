@@ -255,7 +255,6 @@ aside .fixed {
     position: relative;
     max-width: unset;
     border-right: unset;
-    border-bottom: 1px solid #dcddf5;
     height: auto;
   }
 }
