@@ -286,7 +286,6 @@ aside .fixed nav {
 @media (max-width: 768px) {
   aside .fixed nav {
     margin: 1.5rem 0;
-    border-bottom: 1px solid #dcddf5;
   }
 }
 aside .fixed nav .link,
@@ -344,6 +343,7 @@ main {
 }
 @media (max-width: 768px) {
   main {
+    border-top: 1px solid #dcddf5;
     padding: 1rem;
     min-height: unset;
     margin-left: 0;

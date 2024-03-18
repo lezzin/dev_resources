@@ -330,7 +330,6 @@ aside {
 
             @media(max-width: 768px) {
                 margin: calc($padding / 2) 0;
-                border-bottom: 1px solid $border-color;
             }
 
             .link,
@@ -388,6 +387,7 @@ main {
     min-height: 100vh;
 
     @media (max-width: 768px) {
+        border-top: 1px solid $border-color;
         padding: calc($padding / 3);
         min-height: unset;
         margin-left: 0;
