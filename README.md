@@ -12,8 +12,12 @@ Um aplicativo com diversos materiais/ferramentas para devs.
 
 ## Guia de instalação
 
-Para usar o aplicativo:
+Localmente:<br>
+Para usar o aplicativo, é necessário a utilização de algum servidor, como o XAMPP ou o Live Server (Extensão VSCODE). 
+* Caso utilize o XAMPP, adicione a pasta do projeto, inicie o servidor e acesse o arquivo `index.html` em um navegador da web. <br>
+* Caso utilize a extensão Live Server, abra o VSCode e clique em Go Live no canto inferior esquerdo da tela.
 
+Hospedagem:<br>
 Basta acessar o link: [clique aqui para acessar](https://ferramentas-dev.vercel.app/)
 
 ## Tecnologias utilizadas:
