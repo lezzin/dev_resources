@@ -387,6 +387,7 @@ main section .tecnologies .tecnology figcaption {
 main section .topic .contents {
   display: grid;
   gap: 0.6rem;
+  padding-bottom: 5rem;
 }
 main section .topic .contents .content {
   display: flex;
