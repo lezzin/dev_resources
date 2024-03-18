@@ -43,7 +43,7 @@
                     </nav>
                 </div>
             </aside>
-            <main>
+            <main :class="{ 'with-shadow' : mobileMenuOpen && isMobile }">
                 <router-view></router-view>
             </main>
         </div>
@@ -121,8 +121,8 @@
                     <div :class="['content', user ? 'content-hover' : '']" v-for="(content, index) in contents" :key="content.id">
                         <p><a :href="content.link" target="_blank" rel="noopener noreferrer" class="link" title="Acessar site">{{ content.title }}</a>: {{ content.description }}</p>
                         <div class="content-actions">
-                            <button class="btn-primary" @click="moveContentUp(index)" v-if="user" title="Mover conteúdo para cima"><i class="fa-solid fa-arrow-up"></i></button>
-                            <button class="btn-primary" @click="moveContentDown(index)" v-if="user" title="Mover conteúdo para baixo"><i class="fa-solid fa-arrow-down"></i></button>
+                            <button class="btn-primary" @click="moveContentUp(index)" v-if="shouldDisplayMoveUpButton(index)" title="Mover conteúdo para cima"><i class="fa-solid fa-arrow-up"></i></button>
+                            <button class="btn-primary" @click="moveContentDown(index)" v-if="shouldDisplayMoveDownButton(index)"  title="Mover conteúdo para baixo"><i class="fa-solid fa-arrow-down"></i></button>
                             <button class="btn-primary" @click="openEditContent(content.id)" v-if="user" title="Editar conteúdo"><i class="fa-solid fa-edit"></i></button>
                             <button class="btn-danger" v-if="user" @click="deleteContent(content.id)" title="Remover conteúdo"><i class="fa-solid fa-trash"></i></button>
                         </div>

@@ -425,6 +425,12 @@ const Topic = {
                 this.$root.toast = { type: 'error', text: ERROR_MESSAGES.deleteContentError };
             }
         },
+        shouldDisplayMoveUpButton(index) {
+            return this.user && index > 0;
+        },
+        shouldDisplayMoveDownButton(index) {
+            return this.user && index < this.contents.length - 1;
+        },
         async moveContentUp(index) {
             if (index > 0) {
                 const temp = this.contents[index];
@@ -512,7 +518,9 @@ const app = new Vue({
             try {
                 await auth.signOut();
                 this.user = null;
-                this.$router.push('/');
+                if(this.$router.history.current.fullPath != '/') {
+                    this.$router.push('/');
+                }
             } catch (error) {
                 this.toast = { type: 'error', text: ERROR_MESSAGES.logoutError };
             }
@@ -558,7 +566,6 @@ const app = new Vue({
                 this.closeToast();
             }
         });
-
         this.loading = false;
     },
     watch: {
