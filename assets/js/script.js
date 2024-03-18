@@ -502,7 +502,7 @@ const app = new Vue({
             topics: [],
             user: null,
             loading: true,
-            mobileMenuOpen: true,
+            mobileMenuOpen: false,
             isMobile: window.innerWidth <= 768,
             toast: null,
         };
