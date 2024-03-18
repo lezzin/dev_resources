@@ -311,7 +311,7 @@ aside {
         .header-top {
             padding: calc($padding / 2 - .6rem) $padding;
             border-bottom: 1px solid $border-color;
-            
+
             @media (max-width: 768px) {
                 box-shadow: 0 .5rem 1rem rgb(0 0 0 /.15);
                 margin-bottom: 0;
@@ -446,6 +446,15 @@ main {
                     justify-content: space-between;
                     align-items: flex-start;
                     gap: 2rem;
+
+                    &.content-hover {
+                        padding: 0.3rem;
+                        border-radius: 3px;
+
+                        &:hover {
+                            background-color: darken($body-color, 10%);
+                        }
+                    }
 
                     .content-actions {
                         display: flex;

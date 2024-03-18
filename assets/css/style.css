@@ -394,6 +394,13 @@ main section .topic .contents .content {
   align-items: flex-start;
   gap: 2rem;
 }
+main section .topic .contents .content.content-hover {
+  padding: 0.3rem;
+  border-radius: 3px;
+}
+main section .topic .contents .content.content-hover:hover {
+  background-color: #e6e6e6;
+}
 main section .topic .contents .content .content-actions {
   display: flex;
   gap: 0.6rem;

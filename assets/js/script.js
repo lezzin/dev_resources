@@ -406,16 +406,6 @@ const Topic = {
                 this.$root.toast = { type: 'error', text: ERROR_MESSAGES.loadTopicError };
             }
         },
-        async deleteTopic(id) {
-            if (!confirm('Tem certeza que deseja deletar esse tópico? Todos os conteúdos serão perdidos.')) return;
-            try {
-                await db.collection('topics').doc(id).delete();
-                this.$root.toast = { type: 'success', text: "Tópico removido com sucesso" };
-                this.$router.push('/');
-            } catch (error) {
-                this.$root.toast = { type: 'error', text: ERROR_MESSAGES.deleteTopicError };
-            }
-        },
         async deleteContent(id) {
             if (!confirm('Tem certeza que deseja deletar esse conteúdo?')) return;
 
@@ -433,6 +423,31 @@ const Topic = {
                 this.$root.toast = { type: 'success', text: "Conteúdo removido com sucesso" };
             } catch (error) {
                 this.$root.toast = { type: 'error', text: ERROR_MESSAGES.deleteContentError };
+            }
+        },
+        async moveContentUp(index) {
+            if (index > 0) {
+                const temp = this.contents[index];
+                this.$set(this.contents, index, this.contents[index - 1]);
+                this.$set(this.contents, index - 1, temp);
+                await this.updateContentOrder();
+            }
+        },
+        async moveContentDown(index) {
+            if (index < this.contents.length - 1) {
+                const temp = this.contents[index];
+                this.$set(this.contents, index, this.contents[index + 1]);
+                this.$set(this.contents, index + 1, temp);
+                await this.updateContentOrder();
+            }
+        },
+        async updateContentOrder() {
+            try {
+                const topicId = this.id;
+                await db.collection('topics').doc(topicId).update({ contents: this.contents });
+                this.$root.toast = { type: 'success', text: 'Ordem dos conteúdos atualizada com sucesso' };
+            } catch (error) {
+                this.$root.toast = { type: 'error', text: 'Erro ao atualizar a ordem dos conteúdos' };
             }
         },
         openEditTopic(id) {
@@ -462,6 +477,7 @@ const Topic = {
         }
     }
 };
+
 
 // Vue Router routes
 const routes = [
@@ -521,7 +537,7 @@ const app = new Vue({
     },
     async created() {
         auth.onAuthStateChanged((user) => {
-            if(user) {
+            if (user) {
                 this.user = user;
             }
         });
