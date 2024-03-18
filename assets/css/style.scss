@@ -458,8 +458,6 @@ main {
                     }
 
                     &.content-hover {
-                        border: none;
-
                         &:hover {
                             background-color: darken($body-color, 10%);
                         }

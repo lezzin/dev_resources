@@ -404,9 +404,6 @@ main section .topic .contents .content {
     border-radius: 3px;
   }
 }
-main section .topic .contents .content.content-hover {
-  border: none;
-}
 main section .topic .contents .content.content-hover:hover {
   background-color: #e6e6e6;
 }
