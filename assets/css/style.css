@@ -347,6 +347,9 @@ main {
     margin-left: 0;
   }
 }
+main.with-shadow {
+  box-shadow: 0 -0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
 main section .home-image {
   max-width: 100%;
   margin-bottom: 1.8rem;
