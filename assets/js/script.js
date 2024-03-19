@@ -1,5 +1,7 @@
 import { auth, db } from "./firebase.js";
 
+const DEFAULT_TITLE = "Ferramentas para Devs";
+
 // Common error messages
 const ERROR_MESSAGES = {
     "requiredEmail": "Preencha o campo de e-mail",
@@ -48,6 +50,8 @@ const Profile = {
         if (!this.$root.user) {
             this.$router.push('/');
         }
+
+        document.title = `${DEFAULT_TITLE} | Perfil`;
     },
 };
 
@@ -99,6 +103,8 @@ const FormTopic = {
         if (!this.$root.user) {
             this.$router.push('/');
         }
+
+        document.title = `${DEFAULT_TITLE} | Adicionar tópico`;
     }
 };
 
@@ -154,6 +160,7 @@ const formEditTopic = {
         }
 
         this.loadTopic();
+        document.title = `${DEFAULT_TITLE} | Editar tópico`;
     },
 };
 
@@ -234,6 +241,8 @@ const FormContent = {
             this.$router.push('/');
             return;
         }
+
+        document.title = `${DEFAULT_TITLE} | Adicionar conteúdo`;
     },
 };
 
@@ -330,6 +339,7 @@ const formEditContent = {
         }
 
         this.loadContent();
+        document.title = `${DEFAULT_TITLE} | Editar conteúdo`;
     },
 };
 
@@ -374,6 +384,9 @@ const Login = {
             }
         },
     },
+    created() {
+        document.title = `${DEFAULT_TITLE} | Login`;
+    }
 };
 
 // Vue component for the home page
@@ -406,6 +419,7 @@ const Home = {
     },
     created() {
         this.loadArticles();
+        document.title = DEFAULT_TITLE;
     }
 };
 
@@ -429,6 +443,7 @@ const Topic = {
                     this.id = topicId;
                     this.title = topicData.title;
                     this.contents = topicData.contents;
+                    document.title = `${DEFAULT_TITLE} | ${this.title}`;
                 }
             } catch (error) {
                 this.$root.toast = { type: 'error', text: ERROR_MESSAGES.loadTopicError };
