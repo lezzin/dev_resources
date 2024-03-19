@@ -215,11 +215,11 @@ form .error-input {
 
 .subtitle {
   color: #23287c;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .text-display {
-  color: #555;
+  color: #23287c;
   font-size: 3rem;
   font-weight: 300;
 }

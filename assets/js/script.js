@@ -1,4 +1,7 @@
-import { auth, db } from "./firebase.js";
+import {
+    auth,
+    db
+} from "./firebase.js";
 
 const DEFAULT_TITLE = "Ferramentas para Devs";
 
@@ -87,12 +90,15 @@ const FormTopic = {
                     title: this.topicTitle,
                     contents: [],
                     created_at: new Date(),
-                }).then(function (docRef) {
+                }).then(function(docRef) {
                     createdTopicId = docRef.id;
                 })
                 this.topicTitle = '';
                 this.titleError = '';
-                this.$root.toast = { type: 'success', text: 'Tópico adicionado com sucesso' };
+                this.$root.toast = {
+                    type: 'success',
+                    text: 'Tópico adicionado com sucesso'
+                };
                 if (createdTopicId) {
                     this.$router.push(`/topic/${createdTopicId}`);
                 }
@@ -145,11 +151,16 @@ const formEditTopic = {
                     this.titleError = ERROR_MESSAGES.topicExists;
                     return;
                 }
-                await db.collection('topics').doc(this.$route.params.id).update({ title: this.topicTitle });
+                await db.collection('topics').doc(this.$route.params.id).update({
+                    title: this.topicTitle
+                });
                 this.topicTitle = '';
                 this.titleError = '';
                 this.$router.push(`/topic/${this.$route.params.id}`);
-                this.$root.toast = { type: 'success', text: 'Tópico editado com sucesso' };
+                this.$root.toast = {
+                    type: 'success',
+                    text: 'Tópico editado com sucesso'
+                };
             } catch (error) {
                 this.titleError = error.message;
             }
@@ -220,10 +231,15 @@ const FormContent = {
                     link: this.contentLink,
                     title: this.contentTitle,
                 });
-                await topicRef.update({ contents: topicData.contents });
+                await topicRef.update({
+                    contents: topicData.contents
+                });
                 this.$router.push(`/topic/${topicId}`);
                 this.clearFields();
-                this.$root.toast = { type: 'success', text: "Conteúdo adicionado com sucesso" };
+                this.$root.toast = {
+                    type: 'success',
+                    text: "Conteúdo adicionado com sucesso"
+                };
             } catch (error) {
                 this.topicError = error.message;
             }
@@ -325,8 +341,13 @@ const formEditContent = {
                     }
                     return content;
                 });
-                await topicRef.update({ contents: newContents });
-                this.$root.toast = { type: 'success', text: 'Conteúdo editado com sucesso' };
+                await topicRef.update({
+                    contents: newContents
+                });
+                this.$root.toast = {
+                    type: 'success',
+                    text: 'Conteúdo editado com sucesso'
+                };
                 this.$router.push(`/topic/${topicId}`);
                 this.clearFields();
             } catch (error) {
@@ -381,7 +402,10 @@ const Login = {
                 this.$router.push('/');
             } catch (error) {
                 if (ERROR_MESSAGES[error.code]) {
-                    this.formMessage = { type: 'error', text: ERROR_MESSAGES[error.code] ?? "Erro desconhecido. Tente novamente mais tarde." };
+                    this.formMessage = {
+                        type: 'error',
+                        text: ERROR_MESSAGES[error.code] ?? "Erro desconhecido. Tente novamente mais tarde."
+                    };
                 }
             }
         },
@@ -448,7 +472,10 @@ const Topic = {
                     document.title = `${DEFAULT_TITLE} | ${this.title}`;
                 }
             } catch (error) {
-                this.$root.toast = { type: 'error', text: ERROR_MESSAGES.loadTopicError };
+                this.$root.toast = {
+                    type: 'error',
+                    text: ERROR_MESSAGES.loadTopicError
+                };
             }
         },
         async deleteTopic(topicId) {
@@ -459,10 +486,16 @@ const Topic = {
                 const doc = await topicRef.get();
                 if (!doc.exists) return false;
                 await topicRef.delete();
-                this.$root.toast = { type: 'success', text: "Tópico removido com sucesso" };
+                this.$root.toast = {
+                    type: 'success',
+                    text: "Tópico removido com sucesso"
+                };
                 this.$router.push('/');
             } catch (error) {
-                this.$root.toast = { type: 'error', text: ERROR_MESSAGES.deleteTopicError };
+                this.$root.toast = {
+                    type: 'error',
+                    text: ERROR_MESSAGES.deleteTopicError
+                };
             }
         },
         async deleteContent(id) {
@@ -478,10 +511,18 @@ const Topic = {
                 }
                 const topicData = doc.data();
                 const newContents = topicData.contents.filter(content => content.id !== id);
-                await topicRef.update({ contents: newContents });
-                this.$root.toast = { type: 'success', text: "Conteúdo removido com sucesso" };
+                await topicRef.update({
+                    contents: newContents
+                });
+                this.$root.toast = {
+                    type: 'success',
+                    text: "Conteúdo removido com sucesso"
+                };
             } catch (error) {
-                this.$root.toast = { type: 'error', text: ERROR_MESSAGES.deleteContentError };
+                this.$root.toast = {
+                    type: 'error',
+                    text: ERROR_MESSAGES.deleteContentError
+                };
             }
         },
         shouldDisplayMoveUpButton(index) {
@@ -509,10 +550,18 @@ const Topic = {
         async updateContentOrder() {
             try {
                 const topicId = this.id;
-                await db.collection('topics').doc(topicId).update({ contents: this.contents });
-                this.$root.toast = { type: 'success', text: 'Ordem dos conteúdos atualizada com sucesso' };
+                await db.collection('topics').doc(topicId).update({
+                    contents: this.contents
+                });
+                this.$root.toast = {
+                    type: 'success',
+                    text: 'Ordem dos conteúdos atualizada com sucesso'
+                };
             } catch (error) {
-                this.$root.toast = { type: 'error', text: 'Erro ao atualizar a ordem dos conteúdos' };
+                this.$root.toast = {
+                    type: 'error',
+                    text: 'Erro ao atualizar a ordem dos conteúdos'
+                };
             }
         },
         openEditTopic(id) {
@@ -535,31 +584,55 @@ const Topic = {
         });
     },
     watch: {
-        '$route.params.id': function (newId) {
+        '$route.params.id': function(newId) {
             this.loadTopic(newId);
         },
 
-        '$root.user': function (user) {
+        '$root.user': function(user) {
             this.user = user;
         }
     }
 };
 
-
 // Vue Router routes
-const routes = [
-    { path: '/', component: Home },
-    { path: '/login', component: Login },
-    { path: '/profile', component: Profile },
-    { path: '/topic-form', component: FormTopic },
-    { path: '/topic/:id', component: Topic },
-    { path: '/topic/:id/content-form', component: FormContent },
-    { path: '/topic/:id/edit', component: formEditTopic },
-    { path: '/topic/:id/content/:contentId/edit', component: formEditContent },
+const routes = [{
+        path: '/',
+        component: Home
+    },
+    {
+        path: '/login',
+        component: Login
+    },
+    {
+        path: '/profile',
+        component: Profile
+    },
+    {
+        path: '/topic-form',
+        component: FormTopic
+    },
+    {
+        path: '/topic/:id',
+        component: Topic
+    },
+    {
+        path: '/topic/:id/content-form',
+        component: FormContent
+    },
+    {
+        path: '/topic/:id/edit',
+        component: formEditTopic
+    },
+    {
+        path: '/topic/:id/content/:contentId/edit',
+        component: formEditContent
+    },
 ];
 
 // Vue Router instance
-const router = new VueRouter({ routes });
+const router = new VueRouter({
+    routes
+});
 
 // Vue app instance
 const app = new Vue({
@@ -582,14 +655,20 @@ const app = new Vue({
                 await auth.signOut();
                 this.user = null;
             } catch (error) {
-                this.toast = { type: 'error', text: ERROR_MESSAGES.logoutError };
+                this.toast = {
+                    type: 'error',
+                    text: ERROR_MESSAGES.logoutError
+                };
             }
         },
         async fetchTopicsMenu() {
             try {
                 this.loading = true;
                 db.collection('topics').orderBy('title').onSnapshot((querySnapshot) => {
-                    this.topics = querySnapshot.docs.map((doc) => ({ id: doc.id, title: doc.data().title }));
+                    this.topics = querySnapshot.docs.map((doc) => ({
+                        id: doc.id,
+                        title: doc.data().title
+                    }));
                     this.loading = false;
                 });
             } catch (error) {
@@ -613,7 +692,10 @@ const app = new Vue({
         try {
             await this.fetchTopicsMenu();
         } catch (error) {
-            this.toast = { type: 'error', text: ERROR_MESSAGES.fetchTopicsError };
+            this.toast = {
+                type: 'error',
+                text: ERROR_MESSAGES.fetchTopicsError
+            };
         }
 
         addEventListener('resize', () => {
@@ -627,7 +709,7 @@ const app = new Vue({
         });
     },
     watch: {
-        toast: function (_) {
+        toast: function(_) {
             if (this.toastTimer) {
                 clearTimeout(this.toastTimer);
             }

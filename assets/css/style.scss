@@ -1,24 +1,16 @@
 $text-color: #555;
 $text-muted-color: #888;
-
 $success-color: #00A699;
 $success-color-light: lighten($success-color, 60%);
-
 $danger-color: #FF5A5F;
 $danger-color-light: lighten($danger-color, 30%);
-
 $background-color: #646bd4;
 $body-color: #fff;
-
 $link-color: $background-color;
 $link-color-hover: darken($link-color, 30%);
-
 $title-color: darken($background-color, 30%);
-
 $padding: 3rem;
-
 $border-color: lighten($background-color, 30%);
-
 $sidebarWidth: 25%;
 
 * {
@@ -159,7 +151,6 @@ button {
 .loader {
     $loader-size: 3.8rem;
     $border-size: 4px;
-
     border: $border-size solid #f3f3f3;
     border-top: $border-size solid $background-color;
     border-radius: 50%;
@@ -265,11 +256,11 @@ form {
 
 .subtitle {
     color: $title-color;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .text-display {
-    color: $text-color;
+    color: $title-color;
     font-size: 3rem;
     font-weight: 300;
 }

@@ -32,7 +32,7 @@
                         <button class="btn-primary" @click="toggleMenu" title="Abrir/fechar menu" v-if="isMobile">
                             <i class="fa-solid fa-bars"></i>
                         </button>
-                        <div class="header-top-buttons"> 
+                        <div class="header-top-buttons">
                             <router-link class="btn-primary" to="/topic-form" v-if="user" title="Ir para o formulário de tópicos"><i class="fa-solid fa-plus"></i></router-link>
                             <router-link class="btn-primary" to="/profile" v-if="user" title="Acessar perfil de administrador"><i class="fa-solid fa-user"></i></router-link>
                             <button class="btn-danger" @click="logoutUser" v-if="user" title="Sair do modo administrador"><i class="fa-solid fa-sign-out"></i></button>
@@ -49,19 +49,19 @@
                 <router-view></router-view>
             </main>
         </div>
-    </div> 
+    </div>
 
     <template id="s_inicio">
         <section>
             <figure class="home-image">
-                <img src="./assets/img/einstein.webp" alt="Albert Einstein utilizando um computador - IA" width="900" height="454"/>
+                <img src="./assets/img/einstein.webp" alt="Albert Einstein utilizando um computador - IA" width="900" height="454" />
                 <figcaption>Imagem gerada por inteligência artificial</figcaption>
             </figure>
 
             <div class="home-content">
                 <h2 class="text-display">
                     Olá, usuário! Bem-vindo ao site de ferramentas para desenvolvedores.<br>
-                    Aqui você encontrará diversos materiais e links úteis para estudos e desenvolvimento de projetos. 
+                    Aqui você encontrará diversos materiais e links úteis para estudos e desenvolvimento de projetos.
                 </h2>
             </div>
 
@@ -118,21 +118,21 @@
                 </figure>
             </div>
         </section>
-    </template> 
+    </template>
     <template id="s_login">
         <form @submit.prevent="loginUser">
             <h2 class="title">Entrar como administrador</h2>
             <p class="box-text" :class="formMessage ? `${formMessage.type}-text` : ''" v-if="formMessage">{{ formMessage.text }}</p>
-            <div class="input-group"> 
-                <label for="email">E-mail</label> 
+            <div class="input-group">
+                <label for="email">E-mail</label>
                 <input type="email" id="email" v-model="email" autocomplete="off" :class="{ 'error-input': emailError }" placeholder="seuemail@email.com">
                 <p class="error-text" v-if="emailError">{{ emailError }}</p>
             </div>
-            <div class="input-group"> 
-                <label for="password">Senha</label> 
+            <div class="input-group">
+                <label for="password">Senha</label>
                 <input type="password" id="password" v-model="password" autocomplete="off" :class="{ 'error-input': passwordError }" placeholder="******" minlength="6">
                 <p class="error-text" v-if="passwordError">{{ passwordError }}</p>
-            </div> 
+            </div>
             <button class="btn-primary" title="Entrar como administrador">Entrar</button>
         </form>
     </template>
@@ -144,12 +144,12 @@
 
             <p style="margin-bottom: 1rem" v-if="!formMessage">Para alterar sua senha, basta preencher o campo abaixo com um email válido e clicar no botão. Uma mensagem será enviada para o email informado com um link para alteração de senha.</p>
 
-            <div class="input-group"> 
-                <label for="email">E-mail</label> 
-                <input type="email" id="email" v-model="email" autocomplete="off" :class="{ 'error-input': emailError }" placeholder="E-mail"> 
+            <div class="input-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" v-model="email" autocomplete="off" :class="{ 'error-input': emailError }" placeholder="E-mail">
                 <p class="error-text" v-if="emailError">{{ emailError }}</p>
             </div>
-            
+
             <button class="btn-primary" @click="updatePassword" title="Alterar senha">Alterar senha</button>
         </form>
     </template>
@@ -157,7 +157,7 @@
         <section>
             <div class="topic">
                 <div class="header-top">
-                    <h2 class="title">{{ title }}</h2> 
+                    <h2 class="title">{{ title }}</h2>
                     <div class="header-top-buttons">
                         <button class="btn-primary" @click="openEditTopic(id)" v-if="user" title="Editar tópico"><i class="fa-solid fa-edit"></i></button>
                         <button class="btn-danger" v-if="user" @click="deleteTopic(id)" title="Remover tópico"><i class="fa-solid fa-trash"></i></button>
@@ -169,7 +169,7 @@
                         <p><a :href="content.link" target="_blank" rel="noopener noreferrer" class="link" title="Acessar site">{{ content.title }}</a>: {{ content.description }}</p>
                         <div class="content-actions">
                             <button class="btn-primary" @click="moveContentUp(index)" v-if="shouldDisplayMoveUpButton(index)" title="Mover conteúdo para cima"><i class="fa-solid fa-arrow-up"></i></button>
-                            <button class="btn-primary" @click="moveContentDown(index)" v-if="shouldDisplayMoveDownButton(index)"  title="Mover conteúdo para baixo"><i class="fa-solid fa-arrow-down"></i></button>
+                            <button class="btn-primary" @click="moveContentDown(index)" v-if="shouldDisplayMoveDownButton(index)" title="Mover conteúdo para baixo"><i class="fa-solid fa-arrow-down"></i></button>
                             <button class="btn-primary" @click="openEditContent(content.id)" v-if="user" title="Editar conteúdo"><i class="fa-solid fa-edit"></i></button>
                             <button class="btn-danger" v-if="user" @click="deleteContent(content.id)" title="Remover conteúdo"><i class="fa-solid fa-trash"></i></button>
                         </div>
@@ -185,11 +185,11 @@
                 <a class="btn-outline-primary btn-back" href="javascript:history.back()" title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
             </div>
 
-            <div class="input-group"> 
-                <label for="topic-title">Título</label> 
+            <div class="input-group">
+                <label for="topic-title">Título</label>
                 <input type="text" id="topic-title" v-model="topicTitle" autocomplete="off" :class="{ 'error-input': titleError }" placeholder="Estudos, materiais...">
                 <p class="error-text" v-if="titleError">{{ titleError }}</p>
-            </div> 
+            </div>
 
             <button class="btn-primary" title="Adicionar tópico">Adicionar</button>
         </form>
@@ -201,51 +201,51 @@
                 <a class="btn-outline-primary btn-back" href="javascript:history.back()" title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
             </div>
 
-            <div class="input-group"> 
-                <label for="content-title">Título</label> 
+            <div class="input-group">
+                <label for="content-title">Título</label>
                 <input type="text" id="content-title" v-model="contentTitle" autocomplete="off" :class="{ 'error-input': contentTitleError }" placeholder="Título do site/material">
                 <p class="error-text" v-if="contentTitleError">{{ contentTitleError }}</p>
             </div>
 
-            <div class="input-group"> 
-                <label for="content-link">Link</label> 
+            <div class="input-group">
+                <label for="content-link">Link</label>
                 <input type="text" id="content-link" v-model="contentLink" autocomplete="off" :class="{ 'error-input': contentLinkError }" placeholder="https://www.site.com">
                 <p class="error-text" v-if="contentLinkError">{{ contentLinkError }}</p>
             </div>
 
-            <div class="input-group"> 
-                <label for="content-description">Descrição</label> 
+            <div class="input-group">
+                <label for="content-description">Descrição</label>
                 <input type="text" id="content-description" v-model="contentDescription" autocomplete="off" :class="{ 'error-input': contentDescriptionError }" placeholder="Descrição do site/material">
                 <p class="error-text" v-if="contentDescriptionError">{{ contentDescriptionError }}</p>
             </div>
 
             <button class="btn-primary" title="Editar conteúdo">Editar</button>
         </form>
-    </template> 
+    </template>
     <template id="s_add_content">
         <form @submit.prevent="addContent">
-            <p class="error-text" v-if="topicError">{{ topicError }}</p> 
+            <p class="error-text" v-if="topicError">{{ topicError }}</p>
 
             <div class="header-top">
                 <h2 class="title">Adicionar conteúdo</h2>
                 <a class="btn-outline-primary btn-back" href="javascript:history.back()" title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
             </div>
-            
+
             <div class="input-group">
                 <label for="content-title">Título</label>
-                <input type="text" id="content-title" v-model="contentTitle" autocomplete="off"  :class="{ 'error-input': contentTitleError }" placeholder="Título do site/material">
-                <p class="error-text" v-if="contentTitleError">{{ contentTitleError }}</p> 
+                <input type="text" id="content-title" v-model="contentTitle" autocomplete="off" :class="{ 'error-input': contentTitleError }" placeholder="Título do site/material">
+                <p class="error-text" v-if="contentTitleError">{{ contentTitleError }}</p>
             </div>
             <div class="input-group">
                 <label for="content-link">Link</label>
-                <input type="text" id="content-link" v-model="contentLink" autocomplete="off"  :class="{ 'error-input': contentLinkError }" placeholder="https://www.site.com">
-                <p class="error-text" v-if="contentLinkError">{{ contentLinkError }}</p> 
+                <input type="text" id="content-link" v-model="contentLink" autocomplete="off" :class="{ 'error-input': contentLinkError }" placeholder="https://www.site.com">
+                <p class="error-text" v-if="contentLinkError">{{ contentLinkError }}</p>
             </div>
             <div class="input-group">
                 <label for="content-description">Descrição</label>
-                <input type="text" id="content-description" v-model="contentDescription" autocomplete="off"  :class="{ 'error-input': contentDescriptionError }" placeholder="Descrição do site/material">
-                <p class="error-text" v-if="contentDescriptionError">{{ contentDescriptionError }}</p> 
-            </div> 
+                <input type="text" id="content-description" v-model="contentDescription" autocomplete="off" :class="{ 'error-input': contentDescriptionError }" placeholder="Descrição do site/material">
+                <p class="error-text" v-if="contentDescriptionError">{{ contentDescriptionError }}</p>
+            </div>
             <button class="btn-primary" title="Adicionar contéudo">Adicionar</button>
         </form>
     </template>
@@ -255,8 +255,8 @@
                 <h2 class="title">Editar Tópico</h2>
                 <a class="btn-outline-primary btn-back" href="javascript:history.back()" title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
             </div>
-            <div class="input-group"> 
-                <label for="topic-title">Título</label> 
+            <div class="input-group">
+                <label for="topic-title">Título</label>
                 <input type="text" id="topic-title" v-model="topicTitle" autocomplete="off" :class="{ 'error-input': titleError }" placeholder="Estudos, materiais...">
                 <p class="error-text" v-if="titleError">{{ titleError }}</p>
             </div>
