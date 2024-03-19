@@ -52,7 +52,7 @@
     <template id="s_inicio">
         <section>
             <figure class="home-image">
-                <img src="./assets/img/einstein.webp" alt="Albert Einstein utilizando um computador - IA" />
+                <img src="./assets/img/einstein.webp" alt="Albert Einstein utilizando um computador - IA" width="900" height="506"/>
                 <figcaption>Imagem gerada por inteligência artificial</figcaption>
             </figure>
             <div class="text-content">
@@ -66,7 +66,7 @@
 
                 <div class="articles">
                     <div v-for="(article, index) in article_tips" :key="article.id" class="article">
-                        <img :src="article.social_image" alt="Imagem do artigo" class="article_img">
+                        <img :src="article.social_image" alt="Imagem do artigo" class="article_img" width="350" height="197">
 
                         <div class="article_header">
                             <img class="article_header_img" :src="article.user.profile_image" alt="Imagem de perfil do autor do artigo" width="24" height="24">
@@ -87,7 +87,7 @@
 
                 <div class="articles">
                     <div v-for="(article, index) in article_tutorials" :key="article.id" class="article">
-                        <img :src="article.social_image" alt="Imagem do artigo" class="article_img">
+                        <img :src="article.social_image" alt="Imagem do artigo" class="article_img" width="350" height="197">
 
                         <div class="article_header">
                             <img class="article_header_img" :src="article.user.profile_image" alt="Imagem de perfil do autor do artigo" width="24" height="24">
@@ -95,7 +95,7 @@
                         </div>
 
                         <div class="article_content">
-                            <p class="article_content_title">{{ article.title }}</p>
+                            <H3 class="article_content_title">{{ article.title }}</H3>
                             <p class="article_content_text">{{ article.description }}</p>
                             <a class="article_content_link link" :href="article.url" title="Acessar artigo" target="_blank" rel="noopener noreferrer">Acessar artigo</a>
                         </div>

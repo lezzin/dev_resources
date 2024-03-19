@@ -432,12 +432,13 @@ main {
 
             .articles {
                 display: grid;
-                grid-template-columns: repeat(10, 20vw);
+                grid-template-columns: repeat(10, 25vw);
                 gap: 1rem;
                 overflow-x: auto;
+                scroll-snap-type: x mandatory;
                 max-width: 100%;
+                padding-bottom: 1rem;
                 height: auto;
-                padding-bottom: 2rem;
 
                 @media(max-width: 768px) {
                     grid-template-columns: repeat(10, 70vw);
@@ -449,6 +450,11 @@ main {
                     border: 1px solid $border-color;
                     border-radius: 3px;
                     overflow: hidden;
+                    scroll-snap-align: start;
+
+                    &:hover {
+                        border-color: $background-color;
+                    }
 
                     &_header {
                         display: flex;
@@ -459,10 +465,6 @@ main {
                         &_img {
                             border: 1px solid $border-color;
                             border-radius: 50%;
-                        }
-
-                        &_title {
-                            font-weight: 500;
                         }
                     }
 
@@ -476,6 +478,10 @@ main {
                         padding: 1rem;
                         gap: 1rem;
                         flex: 1;
+
+                        &_title {
+                            font-weight: 500;
+                        }
 
                         &_text {
                             color: $text-color;
@@ -536,7 +542,8 @@ main {
                         padding: 0.6rem;
 
                         &:hover {
-                            background-color: darken($body-color, 10%);
+                            border-radius: 3px;
+                            background-color: darken($body-color, 5%);
                         }
                     }
 
