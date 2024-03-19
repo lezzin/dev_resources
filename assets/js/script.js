@@ -553,6 +553,8 @@ const app = new Vue({
             mobileMenuOpen: false,
             isMobile: window.innerWidth <= 768,
             toast: null,
+
+            toastTimer: null,
         };
     },
     methods: {
@@ -572,8 +574,8 @@ const app = new Vue({
                 this.loading = true;
                 db.collection('topics').orderBy('title').onSnapshot((querySnapshot) => {
                     this.topics = querySnapshot.docs.map((doc) => ({ id: doc.id, title: doc.data().title }));
+                    this.loading = false;
                 });
-                this.loading = false;
             } catch (error) {
                 throw new Error(ERROR_MESSAGES.fetchTopicsError);
             }
@@ -592,7 +594,6 @@ const app = new Vue({
             }
         });
 
-
         try {
             await this.fetchTopicsMenu();
         } catch (error) {
@@ -608,11 +609,14 @@ const app = new Vue({
                 this.closeToast();
             }
         });
-        this.loading = false;
     },
     watch: {
         toast: function (_) {
-            setTimeout(() => {
+            if (this.toastTimer) {
+                clearTimeout(this.toastTimer);
+            }
+
+            this.toastTimer = setTimeout(() => {
                 this.toast = null;
             }, 5000);
         }
