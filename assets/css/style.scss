@@ -1,4 +1,5 @@
 $text-color: #555;
+$text-muted-color: #888;
 
 $success-color: #00A699;
 $success-color-light: lighten($success-color, 60%);
@@ -39,6 +40,7 @@ html {
 }
 
 img {
+    z-index: -1;
     max-width: 100%;
     height: auto;
     object-fit: cover;
@@ -108,6 +110,11 @@ button {
     &:hover {
         color: darken(#fff, 10%);
     }
+}
+
+.btn-mobile {
+    @extend .btn-sm;
+    @extend .btn-primary;
 }
 
 .toast {
@@ -261,9 +268,10 @@ form {
     font-weight: 600;
 }
 
-.text-content {
-    display: grid;
-    gap: 1.3rem;
+.text-display {
+    color: $text-color;
+    font-size: 3rem;
+    font-weight: 300;
 }
 
 .text {
@@ -311,9 +319,10 @@ aside {
         overflow-y: auto;
 
         @media (max-width: 768px) {
-            position: relative;
+            position: static;
             max-width: unset;
             border-right: unset;
+            overflow-y: unset;
             height: auto;
         }
 
@@ -343,7 +352,7 @@ aside {
             flex-direction: column;
 
             @media(max-width: 768px) {
-                margin: calc($padding / 2) 0;
+                padding: calc($padding / 2) 0;
             }
 
             .link,
@@ -419,12 +428,18 @@ main {
 
             figcaption {
                 font-size: 1.4rem;
-                color: $text-color;
+                color: $text-muted-color;
             }
         }
 
+        .home-content {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 7rem;
+        }
+
         .articles-container {
-            margin-top: 5rem;
+            margin-top: 3rem;
 
             .subtitle {
                 margin-bottom: 1rem;
@@ -496,12 +511,8 @@ main {
             }
         }
 
-        .tecnologies-subtitle {
-            margin-top: 3rem;
-            margin-bottom: .8rem;
-        }
-
         .tecnologies {
+            margin-top: 10rem;
             display: flex;
             gap: .5rem;
 

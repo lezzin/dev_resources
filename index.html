@@ -39,9 +39,9 @@
                             <router-link class="btn-primary" to="/login" v-if="!user" title="Entrar no modo administrador"><i class="fa-solid fa-sign-in"></i></router-link>
                         </div>
                     </div>
-                    <nav id="navigation" v-if="mobileMenuOpen || !isMobile"> 
-                        <router-link class="link" to="/" title="Ir para a página inicial">Início</router-link>
-                        <router-link class="link" v-for="topic in topics" :key="topic.id" :to="'/topic/' + topic.id" title="Ir para o tópico">{{ topic.title }}</router-link>
+                    <nav id="navigation" v-if="mobileMenuOpen || !isMobile">
+                        <router-link class="link" to="/" title="Ir para a página inicial"><i class="fa-solid fa-house"></i> Início</router-link>
+                        <router-link class="link" v-for="topic in topics" :key="topic.id" :to="'/topic/' + topic.id" title="Ir para o tópico"><i class="fa-solid fa-fire"></i> {{ topic.title }}</router-link>
                     </nav>
                 </div>
             </aside>
@@ -54,17 +54,19 @@
     <template id="s_inicio">
         <section>
             <figure class="home-image">
-                <img src="./assets/img/einstein.webp" alt="Albert Einstein utilizando um computador - IA" width="900" height="506"/>
+                <img src="./assets/img/einstein.webp" alt="Albert Einstein utilizando um computador - IA" width="900" height="454"/>
                 <figcaption>Imagem gerada por inteligência artificial</figcaption>
             </figure>
-            <div class="text-content">
-                <p class="text">Olá, usuário! Bem-vindo ao site de ferramentas para desenvolvedores.</p>
-                <p class="text">Aqui você encontra diversos materiais e links úteis para estudos e desenvolvimento de projetos.</p>
-                <p class="text">Navegue pelos tópicos através do menu. </p>
+
+            <div class="home-content">
+                <h2 class="text-display">
+                    Olá, usuário! Bem-vindo ao site de ferramentas para desenvolvedores.<br>
+                    Aqui você encontrará diversos materiais e links úteis para estudos e desenvolvimento de projetos. 
+                </h2>
             </div>
 
             <div class="articles-container">
-                <h3 class="subtitle">10 dicas relacionadas a tecnologia:</h3>
+                <h3 class="subtitle"><i class="fa-solid fa-link"></i> 10 dicas relacionadas a tecnologia:</h3>
 
                 <div class="articles">
                     <div v-for="(article, index) in article_tips" :key="article.id" class="article">
@@ -85,7 +87,7 @@
             </div>
 
             <div class="articles-container">
-                <h3 class="subtitle">10 tutoriais relacionados a tecnologia:</h3>
+                <h3 class="subtitle"><i class="fa-solid fa-link"></i> 10 tutoriais relacionados a tecnologia:</h3>
 
                 <div class="articles">
                     <div v-for="(article, index) in article_tutorials" :key="article.id" class="article">
@@ -105,7 +107,6 @@
                 </div>
             </div>
 
-            <h3 class="subtitle tecnologies-subtitle">Desenvolvido com:</h3>
             <div class="tecnologies">
                 <figure class="tecnology" title="Firebase">
                     <img src="./assets/img/firebase.svg" alt="Firebase" width="48" height="48">

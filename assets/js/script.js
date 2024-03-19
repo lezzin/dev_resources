@@ -26,7 +26,7 @@ const Profile = {
     template: "#s_profile",
     data() {
         return {
-            email: this.$root.user.email,
+            email: '',
             emailError: '',
             formMessage: '',
         };
@@ -49,8 +49,10 @@ const Profile = {
     created() {
         if (!this.$root.user) {
             this.$router.push('/');
+            return;
         }
 
+        this.email = this.$root.user.email;
         document.title = `${DEFAULT_TITLE} | Perfil`;
     },
 };
@@ -431,7 +433,7 @@ const Topic = {
             id: '',
             title: '',
             contents: [],
-            user: null,
+            user: this.$root.user,
         };
     },
     methods: {
@@ -521,8 +523,6 @@ const Topic = {
         }
     },
     created() {
-        this.user = this.$root.user;
-
         const topicId = this.$route.params.id;
         this.loadTopic(topicId);
 
@@ -537,6 +537,10 @@ const Topic = {
     watch: {
         '$route.params.id': function (newId) {
             this.loadTopic(newId);
+        },
+
+        '$root.user': function (user) {
+            this.user = user;
         }
     }
 };
@@ -577,9 +581,6 @@ const app = new Vue({
             try {
                 await auth.signOut();
                 this.user = null;
-                if (this.$router.history.current.fullPath != '/') {
-                    this.$router.push('/');
-                }
             } catch (error) {
                 this.toast = { type: 'error', text: ERROR_MESSAGES.logoutError };
             }

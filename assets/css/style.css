@@ -22,6 +22,7 @@ html {
 }
 
 img {
+  z-index: -1;
   max-width: 100%;
   height: auto;
   -o-object-fit: cover;
@@ -39,9 +40,9 @@ button {
   cursor: pointer;
 }
 
-.btn-sm, main section .topic .contents .content .content-actions button, .header-top .btn-primary,
+.btn-sm, main section .topic .contents .content .content-actions button, .header-top .btn-primary, .header-top .btn-mobile,
 .header-top .btn-outline-primary,
-.header-top .btn-danger {
+.header-top .btn-danger, .btn-mobile {
   text-decoration: none;
   display: grid;
   place-items: center;
@@ -50,11 +51,11 @@ button {
   border-radius: 0.3rem;
 }
 
-.btn-primary {
+.btn-primary, .btn-mobile {
   background-color: #646bd4;
   color: #fff;
 }
-.btn-primary:hover {
+.btn-primary:hover, .btn-mobile:hover {
   background-color: #3c45c9;
 }
 
@@ -217,9 +218,10 @@ form .error-input {
   font-weight: 600;
 }
 
-.text-content {
-  display: grid;
-  gap: 1.3rem;
+.text-display {
+  color: #555;
+  font-size: 3rem;
+  font-weight: 300;
 }
 
 .text {
@@ -267,9 +269,10 @@ aside .fixed {
 }
 @media (max-width: 768px) {
   aside .fixed {
-    position: relative;
+    position: static;
     max-width: unset;
     border-right: unset;
+    overflow-y: unset;
     height: auto;
   }
 }
@@ -298,7 +301,7 @@ aside .fixed nav {
 }
 @media (max-width: 768px) {
   aside .fixed nav {
-    margin: 1.5rem 0;
+    padding: 1.5rem 0;
   }
 }
 aside .fixed nav .link,
@@ -373,10 +376,15 @@ main section .home-image img {
 }
 main section .home-image figcaption {
   font-size: 1.4rem;
-  color: #555;
+  color: #888;
+}
+main section .home-content {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 7rem;
 }
 main section .articles-container {
-  margin-top: 5rem;
+  margin-top: 3rem;
 }
 main section .articles-container .subtitle {
   margin-bottom: 1rem;
@@ -437,11 +445,8 @@ main section .articles-container .articles .article_content_text {
 main section .articles-container .articles .article_content_link {
   margin-top: auto;
 }
-main section .tecnologies-subtitle {
-  margin-top: 3rem;
-  margin-bottom: 0.8rem;
-}
 main section .tecnologies {
+  margin-top: 10rem;
   display: flex;
   gap: 0.5rem;
 }
