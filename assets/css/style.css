@@ -376,7 +376,7 @@ main section .home-image img {
 }
 main section .home-image figcaption {
   font-size: 1.4rem;
-  color: #888;
+  color: #666;
 }
 main section .home-content {
   display: grid;
