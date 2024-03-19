@@ -60,7 +60,36 @@
                 <p class="text">Aqui você encontra diversos materiais e links úteis para estudos e desenvolvimento de projetos.</p>
                 <p class="text">Navegue pelos tópicos através do menu. </p>
             </div>
-            <h3 class="tecnologies-title">Desenvolvido com:</h3>
+
+            <div class="articles-container">
+                <h3 class="subtitle">10 dicas relacionadas a tecnologia:</h3>
+
+                <div class="articles">
+                    <div v-for="(article, index) in article_tips" :key="article.id" class="article">
+                        <img :src="article.social_image" alt="Imagem do artigo" class="article_img">
+                        <p class="article_title">{{ article.title }}</p>
+                        <p class="article_text">{{ article.description }}</p>
+                        
+                        <a :href="article.url" title="Acessar artigo" target="_blank" rel="noopener noreferrer" class="link">Acessar artigo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="articles-container">
+                <h3 class="subtitle">10 tutoriais relacionados a tecnologia:</h3>
+
+                <div class="articles">
+                    <div v-for="(article, index) in article_tutorials" :key="article.id" class="article">
+                        <img :src="article.social_image" alt="Imagem do artigo" class="article_img">
+                        <p class="article_title">{{ article.title }}</p>
+                        <p class="article_text">{{ article.description }}</p>
+                        
+                        <a :href="article.url" title="Acessar artigo" target="_blank" rel="noopener noreferrer" class="link">Acessar artigo</a>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="subtitle tecnologies-subtitle">Desenvolvido com:</h3>
             <div class="tecnologies">
                 <figure class="tecnology" title="Firebase">
                     <img src="./assets/img/firebase.svg" alt="Firebase" width="48" height="48">

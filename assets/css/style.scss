@@ -247,6 +247,11 @@ form {
     margin-bottom: 1.6rem;
 }
 
+.subtitle {
+    color: $title-color;
+    font-weight: 600;
+}
+
 .text-content {
     display: grid;
     gap: 1.3rem;
@@ -412,11 +417,53 @@ main {
             }
         }
 
-        .tecnologies-title {
+        .articles-container {
+            margin-top: 5rem;
+
+            .subtitle {
+                margin-bottom: 1rem;
+            }
+
+            .articles {
+                display: grid;
+                grid-template-columns: repeat(10, 20vw);
+                gap: 1rem;
+                overflow-x: auto;
+                max-width: 100%;
+                height: auto;
+                padding-bottom: 2rem;
+                
+                @media(max-width: 768px) {
+                    grid-template-columns: repeat(10, 70vw);
+                }
+
+                .article {
+                    display: grid;
+                    flex-direction: column;
+                    gap: 0.6rem;
+                    border: 1px solid $border-color;
+                    padding: 1rem;
+                    border-radius: 3px;
+
+                    &_img {
+                        max-width: 100%;
+                    }
+
+                    &_title {
+                        font-weight: 500;
+                    }
+
+                    &_text {
+                        color: $text-color;
+                        font-size: 1.5rem;
+                    }
+                }
+            }
+        }
+
+        .tecnologies-subtitle {
             margin-top: 3rem;
             margin-bottom: .8rem;
-            color: $title-color;
-            font-weight: 600;
         }
 
         .tecnologies {

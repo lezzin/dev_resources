@@ -204,6 +204,11 @@ form .error-input {
   margin-bottom: 1.6rem;
 }
 
+.subtitle {
+  color: #23287c;
+  font-weight: 600;
+}
+
 .text-content {
   display: grid;
   gap: 1.3rem;
@@ -366,11 +371,47 @@ main section .home-image figcaption {
   font-size: 1.4rem;
   color: #555;
 }
-main section .tecnologies-title {
+main section .articles-container {
+  margin-top: 5rem;
+}
+main section .articles-container .subtitle {
+  margin-bottom: 1rem;
+}
+main section .articles-container .articles {
+  display: grid;
+  grid-template-columns: repeat(10, 20vw);
+  gap: 1rem;
+  overflow-x: auto;
+  max-width: 100%;
+  height: auto;
+  padding-bottom: 2rem;
+}
+@media (max-width: 768px) {
+  main section .articles-container .articles {
+    grid-template-columns: repeat(10, 70vw);
+  }
+}
+main section .articles-container .articles .article {
+  display: grid;
+  flex-direction: column;
+  gap: 0.6rem;
+  border: 1px solid #dcddf5;
+  padding: 1rem;
+  border-radius: 3px;
+}
+main section .articles-container .articles .article_img {
+  max-width: 100%;
+}
+main section .articles-container .articles .article_title {
+  font-weight: 500;
+}
+main section .articles-container .articles .article_text {
+  color: #555;
+  font-size: 1.5rem;
+}
+main section .tecnologies-subtitle {
   margin-top: 3rem;
   margin-bottom: 0.8rem;
-  color: #23287c;
-  font-weight: 600;
 }
 main section .tecnologies {
   display: flex;
