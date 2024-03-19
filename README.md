@@ -1,3 +1,4 @@
+
 ![Foto do projeto](https://github.com/lezzin/ferramentas-dev/assets/103830032/9f9f5eca-b088-4e27-8475-59d8cbefc8ec)
 
 # Ferramentas para Dev
@@ -9,6 +10,7 @@ Um aplicativo com diversos materiais/ferramentas para devs.
 - Login administrador
 - Gerenciamento de tópicos
 - Gerenciamento de conteúdos
+- Artigos de dicas e tutoriais da plataforma dev.to
 
 ## Guia de instalação
 
