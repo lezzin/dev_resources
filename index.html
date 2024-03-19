@@ -16,7 +16,7 @@
 <body>
     <div id="app">
         <div class="container">
-            <div class="loader-container" v-if="loading">
+            <div class="loader-main-container" v-if="loading">
                 <div class="loader"></div>
             </div>
             <div :class="`toast ${toast.type}-toast`" v-if="toast">
@@ -37,7 +37,7 @@
                             <router-link class="btn-primary" to="/login" v-if="!user" title="Entrar no modo administrador"><i class="fa-solid fa-sign-in"></i></router-link>
                         </div>
                     </div>
-                    <nav id="navigation" v-if="mobileMenuOpen || !isMobile">        
+                    <nav id="navigation" v-if="mobileMenuOpen || !isMobile"> 
                         <router-link class="link" to="/" title="Ir para a página inicial">Início</router-link>
                         <router-link class="link" v-for="topic in topics" :key="topic.id" :to="'/topic/' + topic.id" title="Ir para o tópico">{{ topic.title }}</router-link>
                     </nav>
@@ -67,10 +67,17 @@
                 <div class="articles">
                     <div v-for="(article, index) in article_tips" :key="article.id" class="article">
                         <img :src="article.social_image" alt="Imagem do artigo" class="article_img">
-                        <p class="article_title">{{ article.title }}</p>
-                        <p class="article_text">{{ article.description }}</p>
-                        
-                        <a :href="article.url" title="Acessar artigo" target="_blank" rel="noopener noreferrer" class="link">Acessar artigo</a>
+
+                        <div class="article_header">
+                            <img class="article_header_img" :src="article.user.profile_image" alt="Imagem de perfil do autor do artigo" width="24" height="24">
+                            <p class="text">{{ article.user.username }}</p>
+                        </div>
+
+                        <div class="article_content">
+                            <h3 class="article_content_title">{{ article.title }}</h3>
+                            <p class="article_content_text">{{ article.description }}</p>
+                            <a class="article_content_link link" :href="article.url" title="Acessar artigo" target="_blank" rel="noopener noreferrer">Acessar artigo</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -81,10 +88,17 @@
                 <div class="articles">
                     <div v-for="(article, index) in article_tutorials" :key="article.id" class="article">
                         <img :src="article.social_image" alt="Imagem do artigo" class="article_img">
-                        <p class="article_title">{{ article.title }}</p>
-                        <p class="article_text">{{ article.description }}</p>
-                        
-                        <a :href="article.url" title="Acessar artigo" target="_blank" rel="noopener noreferrer" class="link">Acessar artigo</a>
+
+                        <div class="article_header">
+                            <img class="article_header_img" :src="article.user.profile_image" alt="Imagem de perfil do autor do artigo" width="24" height="24">
+                            <p class="text">{{ article.user.username }}</p>
+                        </div>
+
+                        <div class="article_content">
+                            <p class="article_content_title">{{ article.title }}</p>
+                            <p class="article_content_text">{{ article.description }}</p>
+                            <a class="article_content_link link" :href="article.url" title="Acessar artigo" target="_blank" rel="noopener noreferrer">Acessar artigo</a>
+                        </div>
                     </div>
                 </div>
             </div>

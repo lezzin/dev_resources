@@ -21,6 +21,13 @@ html {
   color: #fff;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
 button,
 input,
 form button {
@@ -112,7 +119,7 @@ button {
   background-color: #FF5A5F;
 }
 
-.loader-container {
+.loader-main-container {
   position: fixed;
   inset: 0;
   display: grid;
@@ -120,14 +127,16 @@ button {
   background-color: #fff;
   z-index: 1000;
 }
-.loader-container .loader {
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #646bd4;
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #646bd4;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 3.8rem;
+  height: 3.8rem;
   animation: spin 2s linear infinite;
 }
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -136,7 +145,6 @@ button {
     transform: rotate(360deg);
   }
 }
-
 .header-top {
   display: flex;
   justify-content: space-between;
@@ -359,10 +367,6 @@ main section .home-image {
   margin-bottom: 1.8rem;
 }
 main section .home-image img {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
   border-radius: 1rem;
   -o-object-position: center;
      object-position: center;
@@ -392,22 +396,41 @@ main section .articles-container .articles {
   }
 }
 main section .articles-container .articles .article {
-  display: grid;
+  display: flex;
   flex-direction: column;
-  gap: 0.6rem;
   border: 1px solid #dcddf5;
-  padding: 1rem;
   border-radius: 3px;
+  overflow: hidden;
 }
-main section .articles-container .articles .article_img {
-  max-width: 100%;
+main section .articles-container .articles .article_header {
+  display: flex;
+  align-items: flex-start;
+  padding: 1rem 1rem 0;
+  gap: 0.6rem;
 }
-main section .articles-container .articles .article_title {
+main section .articles-container .articles .article_header_img {
+  border: 1px solid #dcddf5;
+  border-radius: 50%;
+}
+main section .articles-container .articles .article_header_title {
   font-weight: 500;
 }
-main section .articles-container .articles .article_text {
+main section .articles-container .articles .article_img {
+  border-bottom: 1px solid #dcddf5;
+}
+main section .articles-container .articles .article_content {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+  flex: 1;
+}
+main section .articles-container .articles .article_content_text {
   color: #555;
   font-size: 1.5rem;
+}
+main section .articles-container .articles .article_content_link {
+  margin-top: auto;
 }
 main section .tecnologies-subtitle {
   margin-top: 3rem;
@@ -444,6 +467,9 @@ main section .topic .contents .content {
     border: 1px solid #dcddf5;
     border-radius: 3px;
   }
+}
+main section .topic .contents .content.content-hover {
+  padding: 0.6rem;
 }
 main section .topic .contents .content.content-hover:hover {
   background-color: #e6e6e6;

@@ -434,6 +434,20 @@ const Topic = {
                 this.$root.toast = { type: 'error', text: ERROR_MESSAGES.loadTopicError };
             }
         },
+        async deleteTopic(topicId) {
+            if (!confirm('Tem certeza que deseja deletar esse tópico? Todo o conteúdo será perdido.')) return;
+
+            try {
+                const topicRef = db.collection('topics').doc(topicId);
+                const doc = await topicRef.get();
+                if (!doc.exists) return false;
+                await topicRef.delete();
+                this.$root.toast = { type: 'success', text: "Tópico removido com sucesso" };
+                this.$router.push('/');
+            } catch (error) {
+                this.$root.toast = { type: 'error', text: ERROR_MESSAGES.deleteTopicError };
+            }
+        },
         async deleteContent(id) {
             if (!confirm('Tem certeza que deseja deletar esse conteúdo?')) return;
 
