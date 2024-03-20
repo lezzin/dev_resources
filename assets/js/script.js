@@ -32,6 +32,7 @@ const Profile = {
             email: '',
             emailError: '',
             formMessage: '',
+            uid: ''
         };
     },
     methods: {
@@ -51,13 +52,25 @@ const Profile = {
     },
     created() {
         if (!this.$root.user) {
-            this.$router.push('/');
+            this.$router.push("/");
             return;
         }
 
         this.email = this.$root.user.email;
+        this.uid = this.$root.user.uid;
+
         document.title = `${DEFAULT_TITLE} | Perfil`;
     },
+    watch: {
+        "$root.user": function (user) {
+            if (user) {
+                this.email = user.email;
+                this.uid = user.uid;
+            } else {
+                this.$router.push("/");
+            }
+        }
+    }
 };
 
 // Vue component for adding a topic
@@ -90,7 +103,8 @@ const FormTopic = {
                     title: this.topicTitle,
                     contents: [],
                     created_at: new Date(),
-                }).then(function(docRef) {
+                    created_by: this.$root.user.uid,
+                }).then(function (docRef) {
                     createdTopicId = docRef.id;
                 })
                 this.topicTitle = '';
@@ -230,6 +244,7 @@ const FormContent = {
                     description: this.contentDescription,
                     link: this.contentLink,
                     title: this.contentTitle,
+                    created_by: this.$root.user.uid,
                 });
                 await topicRef.update({
                     contents: topicData.contents
@@ -456,8 +471,10 @@ const Topic = {
         return {
             id: '',
             title: '',
+            created_by: '',
             contents: [],
             user: this.$root.user,
+            userIsCreator: false
         };
     },
     methods: {
@@ -469,6 +486,9 @@ const Topic = {
                     this.id = topicId;
                     this.title = topicData.title;
                     this.contents = topicData.contents;
+                    this.created_by = topicData.created_by;
+                    this.userIsCreator = this.user && this.user.uid == topicData.created_by;
+
                     document.title = `${DEFAULT_TITLE} | ${this.title}`;
                 }
             } catch (error) {
@@ -525,11 +545,11 @@ const Topic = {
                 };
             }
         },
-        shouldDisplayMoveUpButton(index) {
-            return this.user && index > 0;
+        shouldDisplayMoveUpButton(index, createdBy) {
+            return this.user && index > 0 && this.user.uid == createdBy;
         },
-        shouldDisplayMoveDownButton(index) {
-            return this.user && index < this.contents.length - 1;
+        shouldDisplayMoveDownButton(index, createdBy) {
+            return this.user && index < this.contents.length - 1 && this.user.uid == createdBy;
         },
         async moveContentUp(index) {
             if (index > 0) {
@@ -584,11 +604,11 @@ const Topic = {
         });
     },
     watch: {
-        '$route.params.id': function(newId) {
+        '$route.params.id': function (newId) {
             this.loadTopic(newId);
         },
 
-        '$root.user': function(user) {
+        '$root.user': function (user) {
             this.user = user;
         }
     }
@@ -596,37 +616,37 @@ const Topic = {
 
 // Vue Router routes
 const routes = [{
-        path: '/',
-        component: Home
-    },
-    {
-        path: '/login',
-        component: Login
-    },
-    {
-        path: '/profile',
-        component: Profile
-    },
-    {
-        path: '/topic-form',
-        component: FormTopic
-    },
-    {
-        path: '/topic/:id',
-        component: Topic
-    },
-    {
-        path: '/topic/:id/content-form',
-        component: FormContent
-    },
-    {
-        path: '/topic/:id/edit',
-        component: formEditTopic
-    },
-    {
-        path: '/topic/:id/content/:contentId/edit',
-        component: formEditContent
-    },
+    path: '/',
+    component: Home
+},
+{
+    path: '/login',
+    component: Login
+},
+{
+    path: '/profile',
+    component: Profile
+},
+{
+    path: '/topic-form',
+    component: FormTopic
+},
+{
+    path: '/topic/:id',
+    component: Topic
+},
+{
+    path: '/topic/:id/content-form',
+    component: FormContent
+},
+{
+    path: '/topic/:id/edit',
+    component: formEditTopic
+},
+{
+    path: '/topic/:id/content/:contentId/edit',
+    component: formEditContent
+},
 ];
 
 // Vue Router instance
@@ -709,7 +729,7 @@ const app = new Vue({
         });
     },
     watch: {
-        toast: function(_) {
+        toast: function (_) {
             if (this.toastTimer) {
                 clearTimeout(this.toastTimer);
             }
