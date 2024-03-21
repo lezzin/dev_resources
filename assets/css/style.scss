@@ -204,10 +204,31 @@ form .btn-primary {
     }
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
+.form {
+    width: 100%;
+
+    &_header {
+        border-bottom: 1px solid $border-color;
+        padding: calc($padding / 3.3) $padding;
+        margin-bottom: 0;
+        height: 10vh;
+
+        @media (max-width: 768px) {
+            padding: calc($padding / 3);
+            border-bottom: none;
+        }
+    }
+
+    &_body {
+        display: flex;
+        flex-direction: column;
+        padding: $padding;
+        gap: 1.2rem;
+
+        @media (max-width: 768px) {
+            padding: calc($padding / 3);
+        }
+    }
 
     .input-group {
         display: grid;
@@ -331,6 +352,7 @@ aside {
             padding: calc($padding / 2 - .6rem) $padding;
             border-bottom: 1px solid $border-color;
             align-items: center;
+            height: 10vh;
 
             @media (max-width: 768px) {
                 box-shadow: 0 .5rem 1rem rgb(0 0 0 /.15);
@@ -407,6 +429,8 @@ main {
     position: relative;
     margin-left: $sidebarWidth;
     min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
 
     @media (max-width: 768px) {
         border-top: 1px solid $border-color;
@@ -417,21 +441,25 @@ main {
 
     .padding-container {
         padding: $padding;
+        width: 100%;
 
         @media (max-width: 768px) {
             padding: calc($padding / 3);
         }
+    }
 
+    .centered-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        gap: 1rem;
     }
 
     section {
-        .not-found-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-        }
+        width: 100%;
+        height: inherit;
 
         .home-image {
             max-width: 100%;
@@ -552,6 +580,7 @@ main {
                 border-bottom: 1px solid $border-color;
                 padding: calc($padding / 3.3) $padding;
                 margin-bottom: 0;
+                height: 10vh;
 
                 @media (max-width: 768px) {
                     padding: calc($padding / 3);

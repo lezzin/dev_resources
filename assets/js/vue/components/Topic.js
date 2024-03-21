@@ -25,7 +25,6 @@ const Topic = {
                     document.title = `${this.$root.default_title} | ${this.title}`;
                 }
             } catch (error) {
-                console.log(error);
                 this.$root.toast = {
                     type: 'error',
                     text: this.this.$root.error_messages.loadTopicError
