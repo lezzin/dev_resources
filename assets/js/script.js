@@ -5,6 +5,13 @@ import {
 
 const DEFAULT_TITLE = "Ferramentas para Devs";
 
+const formatDate = timestamp => {
+    const date = new Date(timestamp);
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    const formatted = (new Intl.DateTimeFormat('pt-BR', options)).format(date);
+    return formatted;
+}
+
 // Common error messages
 const ERROR_MESSAGES = {
     "requiredEmail": "Preencha o campo de e-mail",
@@ -51,10 +58,7 @@ const Profile = {
         },
     },
     created() {
-        if (!this.$root.user) {
-            this.$router.push("/");
-            return;
-        }
+        if (!this.$root.user) this.$router.push("/");
 
         this.email = this.$root.user.email;
         this.uid = this.$root.user.uid;
@@ -122,11 +126,13 @@ const FormTopic = {
         },
     },
     created() {
-        if (!this.$root.user) {
-            this.$router.push('/');
-        }
-
         document.title = `${DEFAULT_TITLE} | Adicionar tópico`;
+        if (!this.$root.user) this.$router.push("/");
+    },
+    watch: {
+        "$root.user": function (user) {
+            if (!user) this.$router.push("/");
+        }
     }
 };
 
@@ -181,14 +187,15 @@ const formEditTopic = {
         },
     },
     created() {
-        if (!this.$root.user) {
-            this.$router.push('/');
-            return;
-        }
-
-        this.loadTopic();
         document.title = `${DEFAULT_TITLE} | Editar tópico`;
+        this.loadTopic();
+        if (!this.$root.user) this.$router.push("/");
     },
+    watch: {
+        "$root.user": function (user) {
+            if (!user) this.$router.push("/");
+        }
+    }
 };
 
 // Vue component for adding content to a topic
@@ -270,12 +277,8 @@ const FormContent = {
         },
     },
     created() {
-        if (!this.$root.user) {
-            this.$router.push('/');
-            return;
-        }
-
         document.title = `${DEFAULT_TITLE} | Adicionar conteúdo`;
+        if (!this.$root.user) this.$router.push("/");
     },
 };
 
@@ -371,14 +374,20 @@ const formEditContent = {
         },
     },
     created() {
+        document.title = `${DEFAULT_TITLE} | Editar conteúdo`;
+
         if (!this.$root.user) {
             this.$router.push('/');
             return;
         }
 
         this.loadContent();
-        document.title = `${DEFAULT_TITLE} | Editar conteúdo`;
     },
+    watch: {
+        "$root.user": function (user) {
+            if (!user) this.$router.push("/");
+        }
+    }
 };
 
 // Vue component for user login
@@ -427,6 +436,11 @@ const Login = {
     },
     created() {
         document.title = `${DEFAULT_TITLE} | Login`;
+    },
+    watch: {
+        "$root.user": function (user) {
+            if (user) this.$router.push("/");
+        }
     }
 };
 
@@ -459,8 +473,8 @@ const Home = {
         }
     },
     created() {
-        this.loadArticles();
         document.title = DEFAULT_TITLE;
+        this.loadArticles();
     }
 };
 
@@ -471,7 +485,7 @@ const Topic = {
         return {
             id: '',
             title: '',
-            created_by: '',
+            created_at: '',
             contents: [],
             user: this.$root.user,
             userIsCreator: false
@@ -486,8 +500,10 @@ const Topic = {
                     this.id = topicId;
                     this.title = topicData.title;
                     this.contents = topicData.contents;
-                    this.created_at = topicData.created_at;
+                    this.created_at = formatDate(topicData.created_at.seconds);
                     this.userIsCreator = this.user && this.user.uid == topicData.created_by;
+
+                    console.log(this.created_at)
 
                     document.title = `${DEFAULT_TITLE} | ${this.title}`;
                 }

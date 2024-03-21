@@ -14,8 +14,7 @@
 </head>
 
 <body>
-    <img src="./assets/img/einstein.webp" alt="Albert Einstein utilizando um computador - IA" width="0" height="0"
-        style="display: none;">
+    <img src="./assets/img/einstein.webp" alt="Albert Einstein utilizando um computador - IA" width="0" height="0" style="display: none;">
 
     <div id="app">
         <div class="container">
@@ -24,33 +23,25 @@
             </div>
             <div :class="`toast ${toast.type}-toast`" v-if="toast">
                 <p class="toast-text"><i class="fa-solid fa-info-circle"></i> {{ toast.text }}</p>
-                <button class="btn-close" @click="closeToast" title="Fechar mensagem"><i
-                        class="fa-solid fa-times"></i></button>
+                <button class="btn-close" @click="closeToast" title="Fechar mensagem"><i class="fa-solid fa-times"></i></button>
             </div>
             <aside>
                 <div class="fixed">
                     <div class="header-top">
-                        <router-link to="/" class="title" title="Ir para a página inicial"><i
-                                class="fa-solid fa-tools"></i></router-link>
+                        <router-link to="/" class="title" title="Ir para a página inicial"><i class="fa-solid fa-tools"></i></router-link>
                         <button class="btn-primary" @click="toggleMenu" title="Abrir/fechar menu" v-if="isMobile">
                             <i class="fa-solid fa-bars"></i>
                         </button>
                         <div class="header-top-buttons">
-                            <router-link class="btn-primary" to="/topic-form" v-if="user"
-                                title="Ir para o formulário de tópicos"><i class="fa-solid fa-plus"></i></router-link>
-                            <router-link class="btn-primary" to="/profile" v-if="user"
-                                title="Acessar perfil de administrador"><i class="fa-solid fa-user"></i></router-link>
-                            <button class="btn-danger" @click="logoutUser" v-if="user"
-                                title="Sair do modo administrador"><i class="fa-solid fa-sign-out"></i></button>
-                            <router-link class="btn-primary" to="/login" v-if="!user"
-                                title="Entrar no modo administrador"><i class="fa-solid fa-sign-in"></i></router-link>
+                            <router-link class="btn-primary" to="/topic-form" v-if="user" title="Ir para o formulário de tópicos"><i class="fa-solid fa-plus"></i></router-link>
+                            <router-link class="btn-success" to="/profile" v-if="user" title="Acessar perfil de administrador"><i class="fa-solid fa-user"></i></router-link>
+                            <button class="btn-danger" @click="logoutUser" v-if="user" title="Sair do modo administrador"><i class="fa-solid fa-sign-out"></i></button>
+                            <router-link class="btn-primary" to="/login" v-if="!user" title="Entrar no modo administrador"><i class="fa-solid fa-sign-in"></i></router-link>
                         </div>
                     </div>
                     <nav id="navigation" v-if="mobileMenuOpen || !isMobile">
-                        <router-link class="link" to="/" title="Ir para a página inicial"><i
-                                class="fa-solid fa-house"></i> Início</router-link>
-                        <router-link class="link" v-for="topic in topics" :key="topic.id" :to="'/topic/' + topic.id"
-                            title="Ir para o tópico"><i class="fa-solid fa-fire"></i> {{ topic.title }}</router-link>
+                        <router-link class="link" to="/" title="Ir para a página inicial"><i class="fa-solid fa-house"></i> Início</router-link>
+                        <router-link class="link" v-for="topic in topics" :key="topic.id" :to="'/topic/' + topic.id" title="Ir para o tópico"><i class="fa-solid fa-fire"></i> {{ topic.title }}</router-link>
                     </nav>
                 </div>
             </aside>
@@ -61,254 +52,211 @@
     </div>
 
     <template id="s_inicio">
-        <section>
-            <figure class="home-image">
-                <img src="./assets/img/einstein.webp" alt="Albert Einstein utilizando um computador - IA" width="900"
-                    height="454" />
-                <figcaption>Imagem gerada por inteligência artificial</figcaption>
-            </figure>
-
-            <div class="home-content">
-                <h2 class="text-display">
-                    Olá, usuário! Bem-vindo ao site de ferramentas para desenvolvedores.<br>
-                    Aqui você encontrará diversos materiais e links úteis para estudos e desenvolvimento de projetos.
-                </h2>
-            </div>
-
-            <div class="articles-container">
-                <h3 class="subtitle"><i class="fa-solid fa-link"></i> 10 dicas relacionadas a tecnologia:</h3>
-
-                <div class="articles">
-                    <div v-for="(article, index) in article_tips" :key="article.id" class="article">
-                        <img :src="article.social_image" alt="Imagem do artigo" class="article_img" width="350"
-                            height="197" loading="lazy">
-
-                        <div class="article_header">
-                            <img class="article_header_img" :src="article.user.profile_image"
-                                alt="Imagem de perfil do autor do artigo" width="24" height="24" loading="lazy">
-                            <p class="text">{{ article.user.username }}</p>
-                        </div>
-
-                        <div class="article_content">
-                            <h3 class="article_content_title">{{ article.title }}</h3>
-                            <p class="article_content_text">{{ article.description }}</p>
-                            <a class="article_content_link link" :href="article.url" title="Acessar artigo"
-                                target="_blank" rel="noopener noreferrer">Acessar artigo</a>
+        <div class="padding-container">
+            <section>
+                <figure class="home-image">
+                    <img src="./assets/img/einstein.webp" alt="Albert Einstein utilizando um computador - IA" width="900" height="454" />
+                    <figcaption>Imagem gerada por inteligência artificial</figcaption>
+                </figure>
+                <div class="home-content">
+                    <h2 class="text-display">
+                        Olá, usuário! Bem-vindo ao site de ferramentas para desenvolvedores.<br>
+                        Aqui você encontrará diversos materiais e links úteis para estudos e desenvolvimento de projetos.
+                    </h2>
+                </div>
+                <div class="articles-container">
+                    <h3 class="subtitle"><i class="fa-solid fa-link"></i> 10 dicas relacionadas a tecnologia:</h3>
+                    <div class="articles">
+                        <div v-for="(article, index) in article_tips" :key="article.id" class="article">
+                            <img :src="article.social_image" alt="Imagem do artigo" class="article_img" width="350" height="197" loading="lazy">
+                            <div class="article_header">
+                                <img class="article_header_img" :src="article.user.profile_image" alt="Imagem de perfil do autor do artigo" width="24" height="24" loading="lazy">
+                                <p class="text">{{ article.user.username }}</p>
+                            </div>
+                            <div class="article_content">
+                                <h3 class="article_content_title">{{ article.title }}</h3>
+                                <p class="article_content_text">{{ article.description }}</p>
+                                <a class="article_content_link link" :href="article.url" title="Acessar artigo" target="_blank" rel="noopener noreferrer">Acessar artigo</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="articles-container">
-                <h3 class="subtitle"><i class="fa-solid fa-link"></i> 10 tutoriais relacionados a tecnologia:</h3>
-
-                <div class="articles">
-                    <div v-for="(article, index) in article_tutorials" :key="article.id" class="article">
-                        <img :src="article.social_image" alt="Imagem do artigo" class="article_img" width="350"
-                            height="197" loading="lazy">
-
-                        <div class="article_header">
-                            <img class="article_header_img" :src="article.user.profile_image"
-                                alt="Imagem de perfil do autor do artigo" width="24" height="24" loading="lazy">
-                            <p class="text">{{ article.user.username }}</p>
-                        </div>
-
-                        <div class="article_content">
-                            <H3 class="article_content_title">{{ article.title }}</H3>
-                            <p class="article_content_text">{{ article.description }}</p>
-                            <a class="article_content_link link" :href="article.url" title="Acessar artigo"
-                                target="_blank" rel="noopener noreferrer">Acessar artigo</a>
+                <div class="articles-container">
+                    <h3 class="subtitle"><i class="fa-solid fa-link"></i> 10 tutoriais relacionados a tecnologia:</h3>
+                    <div class="articles">
+                        <div v-for="(article, index) in article_tutorials" :key="article.id" class="article">
+                            <img :src="article.social_image" alt="Imagem do artigo" class="article_img" width="350" height="197" loading="lazy">
+                            <div class="article_header">
+                                <img class="article_header_img" :src="article.user.profile_image" alt="Imagem de perfil do autor do artigo" width="24" height="24" loading="lazy">
+                                <p class="text">{{ article.user.username }}</p>
+                            </div>
+                            <div class="article_content">
+                                <H3 class="article_content_title">{{ article.title }}</H3>
+                                <p class="article_content_text">{{ article.description }}</p>
+                                <a class="article_content_link link" :href="article.url" title="Acessar artigo" target="_blank" rel="noopener noreferrer">Acessar artigo</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="tecnologies">
-                <figure class="tecnology" title="Firebase">
-                    <img src="./assets/img/firebase.svg" alt="Firebase" width="48" height="48">
-                    <figcaption><a rel="noopener noreferrer" target="_blank"
-                            href="https://icons8.com/icon/62452/firebase" class="link" title="Firebase">icons8</a>
-                    </figcaption>
-                </figure>
-                <figure class="tecnology" title="Vue.js">
-                    <img src="./assets/img/vue.svg" alt="Vue.js" width="48" height="48">
-                    <figcaption><a rel="noopener noreferrer" target="_blank"
-                            href="https://icons8.com/icon/rY6agKizO9eb/vue-js" class="link" title="Vue.js">icons8</a>
-                    </figcaption>
-                </figure>
-            </div>
-        </section>
+                <div class="tecnologies">
+                    <figure class="tecnology" title="Firebase">
+                        <img src="./assets/img/firebase.svg" alt="Firebase" width="48" height="48">
+                        <figcaption><a rel="noopener noreferrer" target="_blank" href="https://icons8.com/icon/62452/firebase" class="link" title="Firebase">icons8</a>
+                        </figcaption>
+                    </figure>
+                    <figure class="tecnology" title="Vue.js">
+                        <img src="./assets/img/vue.svg" alt="Vue.js" width="48" height="48">
+                        <figcaption><a rel="noopener noreferrer" target="_blank" href="https://icons8.com/icon/rY6agKizO9eb/vue-js" class="link" title="Vue.js">icons8</a>
+                        </figcaption>
+                    </figure>
+                </div>
+            </section>
+        </div>
     </template>
     <template id="s_login">
-        <form @submit.prevent="loginUser">
-            <h2 class="title">Entrar como administrador</h2>
-            <p class="box-text" :class="formMessage ? `${formMessage.type}-text` : ''" v-if="formMessage">{{
-                formMessage.text }}</p>
-            <div class="input-group">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" v-model="email" autocomplete="off" :class="{ 'error-input': emailError }"
-                    placeholder="seuemail@email.com">
-                <p class="error-text" v-if="emailError">{{ emailError }}</p>
-            </div>
-            <div class="input-group">
-                <label for="password">Senha</label>
-                <input type="password" id="password" v-model="password" autocomplete="off"
-                    :class="{ 'error-input': passwordError }" placeholder="******" minlength="6">
-                <p class="error-text" v-if="passwordError">{{ passwordError }}</p>
-            </div>
-            <button class="btn-primary" title="Entrar como administrador">Entrar</button>
-        </form>
+        <div class="padding-container">
+            <form @submit.prevent="loginUser">
+                <h2 class="title">Entrar como administrador</h2>
+                <p class="box-text" :class="formMessage ? `${formMessage.type}-text` : ''" v-if="formMessage">{{
+                    formMessage.text }}</p>
+                <div class="input-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" v-model="email" autocomplete="off" :class="{ 'error-input': emailError }" placeholder="seuemail@email.com">
+                    <p class="error-text" v-if="emailError">{{ emailError }}</p>
+                </div>
+                <div class="input-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" v-model="password" autocomplete="off" :class="{ 'error-input': passwordError }" placeholder="******" minlength="6">
+                    <p class="error-text" v-if="passwordError">{{ passwordError }}</p>
+                </div>
+                <button class="btn-primary" title="Entrar como administrador">Entrar</button>
+            </form>
+        </div>
     </template>
     <template id="s_profile">
-        <form onsubmit="return false">
-            <h2 class="title">Seu perfil de usuário ({{ uid }})</h2>
-
-            <p class="box-text success-text" v-if="formMessage">{{ formMessage }}</p>
-
-            <div class="input-group">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" v-model="email" autocomplete="off" :class="{ 'error-input': emailError }"
-                    placeholder="E-mail">
-                <p class="error-text" v-if="emailError">{{ emailError }}</p>
-            </div>
-
-            <button class="btn-primary" @click="updatePassword" title="Alterar senha">Alterar senha</button>
-        </form>
+        <div class="padding-container">
+            <form onsubmit="return false">
+                <h2 class="title">Seu perfil de usuário ({{ uid }})</h2>
+                <p class="box-text success-text" v-if="formMessage">{{ formMessage }}</p>
+                <div class="input-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" v-model="email" autocomplete="off" :class="{ 'error-input': emailError }" placeholder="E-mail">
+                    <p class="error-text" v-if="emailError">{{ emailError }}</p>
+                </div>
+                <button class="btn-primary" @click="updatePassword" title="Alterar senha">Alterar senha</button>
+            </form>
+        </div>
     </template>
     <template id="s_topic">
         <section>
-            <div class="topic">
-                <div class="header-top">
-                    <h2 class="title">{{ title }}</h2>
-                    <div class="header-top-buttons">
-                        <button class="btn-primary" @click="openEditTopic(id)" v-if="userIsCreator"
-                            title="Editar tópico"><i class="fa-solid fa-edit"></i></button>
-                        <button class="btn-danger" v-if="userIsCreator" @click="deleteTopic(id)"
-                            title="Remover tópico"><i class="fa-solid fa-trash"></i></button>
-                        <router-link class="btn-primary" v-if="userIsCreator" :to="`/topic/${id}/content-form`"><i
-                                class="fa-solid fa-plus"></i></router-link>
-                    </div>
+            <div class="topic_header header-top">
+                <h2 class="title">{{ title }}</h2>
+
+                <div class="header-top-buttons">
+                    <button class="btn-primary" @click="openEditTopic(id)" v-if="userIsCreator" title="Editar tópico"><i class="fa-solid fa-edit"></i></button>
+                    <button class="btn-danger" v-if="userIsCreator" @click="deleteTopic(id)" title="Remover tópico"><i class="fa-solid fa-trash"></i></button>
+                    <router-link class="btn-primary" v-if="userIsCreator" :to="`/topic/${id}/content-form`"><i class="fa-solid fa-plus"></i></router-link>
                 </div>
-                <div class="contents">
-                    <div :class="['content', userIsCreator ? 'content-hover' : '']" v-for="(content, index) in contents"
-                        :key="content.id">
-                        <p><a :href="content.link" target="_blank" rel="noopener noreferrer" class="link"
-                                title="Acessar site">{{ content.title }}</a>: {{ content.description }}</p>
+            </div>
+            <div class="topic padding-container">
+                <ul class="contents">
+                    <li :class="['content', userIsCreator ? 'content-hover' : '']" v-for="(content, index) in contents" :key="content.id">
+                        <p><a :href="content.link" target="_blank" rel="noopener noreferrer" class="link" title="Acessar site">{{ content.title }}</a>: {{ content.description }}</p>
                         <div class="content-actions">
-                            <button class="btn-primary" @click="moveContentUp(index)"
-                                v-if="shouldDisplayMoveUpButton(index, content.created_by)"
-                                title="Mover conteúdo para cima"><i class="fa-solid fa-arrow-up"></i></button>
-                            <button class="btn-primary" @click="moveContentDown(index)"
-                                v-if="shouldDisplayMoveDownButton(index, content.created_by)"
-                                title="Mover conteúdo para baixo"><i class="fa-solid fa-arrow-down"></i></button>
-                            <button class="btn-primary" @click="openEditContent(content.id)"
-                                v-if="user && user.uid == content.created_by" title="Editar conteúdo"><i
-                                    class="fa-solid fa-edit"></i></button>
-                            <button class="btn-danger" v-if="user && user.uid == content.created_by"
-                                @click="deleteContent(content.id)" title="Remover conteúdo"><i
-                                    class="fa-solid fa-trash"></i></button>
+                            <button class="btn-primary" @click="moveContentUp(index)" v-if="shouldDisplayMoveUpButton(index, content.created_by)" title="Mover conteúdo para cima"><i class="fa-solid fa-arrow-up"></i></button>
+                            <button class="btn-primary" @click="moveContentDown(index)" v-if="shouldDisplayMoveDownButton(index, content.created_by)" title="Mover conteúdo para baixo"><i class="fa-solid fa-arrow-down"></i></button>
+                            <button class="btn-primary" @click="openEditContent(content.id)" v-if="user && user.uid == content.created_by" title="Editar conteúdo"><i class="fa-solid fa-edit"></i></button>
+                            <button class="btn-danger" v-if="user && user.uid == content.created_by" @click="deleteContent(content.id)" title="Remover conteúdo"><i class="fa-solid fa-trash"></i></button>
                         </div>
-                    </div>
-                </div>
+                    </li>
+                </ul>
             </div>
         </section>
     </template>
     <template id="s_form_topic">
-        <form @submit.prevent="addTopic">
-            <div class="header-top">
-                <h2 class="title">Adicionar Tópico</h2>
-                <a class="btn-outline-primary btn-back" href="javascript:history.back()"
-                    title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
-            </div>
-
-            <div class="input-group">
-                <label for="topic-title">Título</label>
-                <input type="text" id="topic-title" v-model="topicTitle" autocomplete="off"
-                    :class="{ 'error-input': titleError }" placeholder="Estudos, materiais...">
-                <p class="error-text" v-if="titleError">{{ titleError }}</p>
-            </div>
-
-            <button class="btn-primary" title="Adicionar tópico">Adicionar</button>
-        </form>
+        <div class="padding-container">
+            <form @submit.prevent="addTopic">
+                <div class="header-top">
+                    <h2 class="title">Adicionar Tópico</h2>
+                    <a class="btn-outline-primary" href="javascript:history.back()" title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
+                </div>
+                <div class="input-group">
+                    <label for="topic-title">Título</label>
+                    <input type="text" id="topic-title" v-model="topicTitle" autocomplete="off" :class="{ 'error-input': titleError }" placeholder="Estudos, materiais...">
+                    <p class="error-text" v-if="titleError">{{ titleError }}</p>
+                </div>
+                <button class="btn-primary" title="Adicionar tópico">Adicionar</button>
+            </form>
+        </div>
     </template>
     <template id="s_edit_content">
-        <form @submit.prevent="editContent">
-            <div class="header-top">
-                <h2 class="title">Editar Conteúdo</h2>
-                <a class="btn-outline-primary btn-back" href="javascript:history.back()"
-                    title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
-            </div>
-
-            <div class="input-group">
-                <label for="content-title">Título</label>
-                <input type="text" id="content-title" v-model="contentTitle" autocomplete="off"
-                    :class="{ 'error-input': contentTitleError }" placeholder="Título do site/material">
-                <p class="error-text" v-if="contentTitleError">{{ contentTitleError }}</p>
-            </div>
-
-            <div class="input-group">
-                <label for="content-link">Link</label>
-                <input type="text" id="content-link" v-model="contentLink" autocomplete="off"
-                    :class="{ 'error-input': contentLinkError }" placeholder="https://www.site.com">
-                <p class="error-text" v-if="contentLinkError">{{ contentLinkError }}</p>
-            </div>
-
-            <div class="input-group">
-                <label for="content-description">Descrição</label>
-                <input type="text" id="content-description" v-model="contentDescription" autocomplete="off"
-                    :class="{ 'error-input': contentDescriptionError }" placeholder="Descrição do site/material">
-                <p class="error-text" v-if="contentDescriptionError">{{ contentDescriptionError }}</p>
-            </div>
-
-            <button class="btn-primary" title="Editar conteúdo">Editar</button>
-        </form>
+        <div class="padding-container">
+            <form @submit.prevent="editContent">
+                <div class="header-top">
+                    <h2 class="title">Editar Conteúdo</h2>
+                    <a class="btn-outline-primary" href="javascript:history.back()" title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
+                </div>
+                <div class="input-group">
+                    <label for="content-title">Título</label>
+                    <input type="text" id="content-title" v-model="contentTitle" autocomplete="off" :class="{ 'error-input': contentTitleError }" placeholder="Título do site/material">
+                    <p class="error-text" v-if="contentTitleError">{{ contentTitleError }}</p>
+                </div>
+                <div class="input-group">
+                    <label for="content-link">Link</label>
+                    <input type="text" id="content-link" v-model="contentLink" autocomplete="off" :class="{ 'error-input': contentLinkError }" placeholder="https://www.site.com">
+                    <p class="error-text" v-if="contentLinkError">{{ contentLinkError }}</p>
+                </div>
+                <div class="input-group">
+                    <label for="content-description">Descrição</label>
+                    <input type="text" id="content-description" v-model="contentDescription" autocomplete="off" :class="{ 'error-input': contentDescriptionError }" placeholder="Descrição do site/material">
+                    <p class="error-text" v-if="contentDescriptionError">{{ contentDescriptionError }}</p>
+                </div>
+                <button class="btn-primary" title="Editar conteúdo">Editar</button>
+            </form>
+        </div>
     </template>
     <template id="s_add_content">
-        <form @submit.prevent="addContent">
-            <p class="error-text" v-if="topicError">{{ topicError }}</p>
-
-            <div class="header-top">
-                <h2 class="title">Adicionar conteúdo</h2>
-                <a class="btn-outline-primary btn-back" href="javascript:history.back()"
-                    title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
-            </div>
-
-            <div class="input-group">
-                <label for="content-title">Título</label>
-                <input type="text" id="content-title" v-model="contentTitle" autocomplete="off"
-                    :class="{ 'error-input': contentTitleError }" placeholder="Título do site/material">
-                <p class="error-text" v-if="contentTitleError">{{ contentTitleError }}</p>
-            </div>
-            <div class="input-group">
-                <label for="content-link">Link</label>
-                <input type="text" id="content-link" v-model="contentLink" autocomplete="off"
-                    :class="{ 'error-input': contentLinkError }" placeholder="https://www.site.com">
-                <p class="error-text" v-if="contentLinkError">{{ contentLinkError }}</p>
-            </div>
-            <div class="input-group">
-                <label for="content-description">Descrição</label>
-                <input type="text" id="content-description" v-model="contentDescription" autocomplete="off"
-                    :class="{ 'error-input': contentDescriptionError }" placeholder="Descrição do site/material">
-                <p class="error-text" v-if="contentDescriptionError">{{ contentDescriptionError }}</p>
-            </div>
-            <button class="btn-primary" title="Adicionar contéudo">Adicionar</button>
-        </form>
+        <div class="padding-container">
+            <form @submit.prevent="addContent">
+                <p class="error-text" v-if="topicError">{{ topicError }}</p>
+                <div class="header-top">
+                    <h2 class="title">Adicionar conteúdo</h2>
+                    <a class="btn-outline-primary" href="javascript:history.back()" title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
+                </div>
+                <div class="input-group">
+                    <label for="content-title">Título</label>
+                    <input type="text" id="content-title" v-model="contentTitle" autocomplete="off" :class="{ 'error-input': contentTitleError }" placeholder="Título do site/material">
+                    <p class="error-text" v-if="contentTitleError">{{ contentTitleError }}</p>
+                </div>
+                <div class="input-group">
+                    <label for="content-link">Link</label>
+                    <input type="text" id="content-link" v-model="contentLink" autocomplete="off" :class="{ 'error-input': contentLinkError }" placeholder="https://www.site.com">
+                    <p class="error-text" v-if="contentLinkError">{{ contentLinkError }}</p>
+                </div>
+                <div class="input-group">
+                    <label for="content-description">Descrição</label>
+                    <input type="text" id="content-description" v-model="contentDescription" autocomplete="off" :class="{ 'error-input': contentDescriptionError }" placeholder="Descrição do site/material">
+                    <p class="error-text" v-if="contentDescriptionError">{{ contentDescriptionError }}</p>
+                </div>
+                <button class="btn-primary" title="Adicionar contéudo">Adicionar</button>
+            </form>
+        </div>
     </template>
     <template id="s_edit_topic">
-        <form @submit.prevent="editTopic">
-            <div class="header-top">
-                <h2 class="title">Editar Tópico</h2>
-                <a class="btn-outline-primary btn-back" href="javascript:history.back()"
-                    title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
-            </div>
-            <div class="input-group">
-                <label for="topic-title">Título</label>
-                <input type="text" id="topic-title" v-model="topicTitle" autocomplete="off"
-                    :class="{ 'error-input': titleError }" placeholder="Estudos, materiais...">
-                <p class="error-text" v-if="titleError">{{ titleError }}</p>
-            </div>
-            <button class="btn-primary" title="Editar tópico">Editar</button>
-        </form>
+        <div class="padding-container">
+            <form @submit.prevent="editTopic">
+                <div class="header-top">
+                    <h2 class="title">Editar Tópico</h2>
+                    <a class="btn-outline-primary" href="javascript:history.back()" title="Voltar para a página anterior"><i class="fa-solid fa-arrow-left"></i></a>
+                </div>
+                <div class="input-group">
+                    <label for="topic-title">Título</label>
+                    <input type="text" id="topic-title" v-model="topicTitle" autocomplete="off" :class="{ 'error-input': titleError }" placeholder="Estudos, materiais...">
+                    <p class="error-text" v-if="titleError">{{ titleError }}</p>
+                </div>
+                <button class="btn-primary" title="Editar tópico">Editar</button>
+            </form>
+        </div>
     </template>
 
     <script src="assets/js/font-awesome.js" crossorigin="anonymous"></script>
@@ -316,10 +264,8 @@
     <script src="https://cdn.jsdelivr.net/npm/vue-router@3"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js" type="text/javascript"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-auth-compat.js" type="text/javascript"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"
-        type="text/javascript"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-analytics-compat.js"
-        type="text/javascript"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js" type="text/javascript"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-analytics-compat.js" type="text/javascript"></script>
     <script src="assets/js/script.js" type="module"></script>
 </body>
 
