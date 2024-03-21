@@ -486,7 +486,7 @@ const Topic = {
                     this.id = topicId;
                     this.title = topicData.title;
                     this.contents = topicData.contents;
-                    this.created_by = topicData.created_by;
+                    this.created_at = topicData.created_at;
                     this.userIsCreator = this.user && this.user.uid == topicData.created_by;
 
                     document.title = `${DEFAULT_TITLE} | ${this.title}`;
@@ -609,6 +609,7 @@ const Topic = {
         },
 
         '$root.user': function (user) {
+            this.userIsCreator = false;
             this.user = user;
         }
     }
