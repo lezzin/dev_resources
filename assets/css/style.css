@@ -49,6 +49,11 @@ button {
   border-radius: 0.3rem;
 }
 
+form .btn-primary, form .btn-mobile {
+  height: auto;
+  aspect-ratio: unset;
+}
+
 .btn-primary, .btn-mobile {
   background-color: #646bd4;
   color: #fff;
@@ -105,6 +110,13 @@ button {
   justify-content: space-between;
   align-items: flex-start;
   gap: 2rem;
+}
+@media (max-width: 768px) {
+  .toast {
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+  }
 }
 .toast .toast-text {
   display: inline-flex;
@@ -369,6 +381,13 @@ main .padding-container {
   main .padding-container {
     padding: 1rem;
   }
+}
+main section .not-found-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 main section .home-image {
   max-width: 100%;

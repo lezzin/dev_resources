@@ -57,6 +57,11 @@ button {
     border-radius: .3rem;
 }
 
+form .btn-primary {
+    height: auto;
+    aspect-ratio: unset;
+}
+
 .btn-primary {
     background-color: $background-color;
     color: #fff;
@@ -127,6 +132,12 @@ button {
     justify-content: space-between;
     align-items: flex-start;
     gap: 2rem;
+
+    @media(max-width: 768px) {
+        bottom: 1rem;
+        right: 1rem;
+        left: 1rem;
+    }
 
     .toast-text {
         display: inline-flex;
@@ -410,9 +421,18 @@ main {
         @media (max-width: 768px) {
             padding: calc($padding / 3);
         }
+
     }
 
     section {
+        .not-found-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+
         .home-image {
             max-width: 100%;
             margin-bottom: 1.8rem;
