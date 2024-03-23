@@ -524,6 +524,7 @@ main section .topic_header {
   main section .topic_header {
     padding: 1rem;
     border-bottom: none;
+    height: auto;
   }
 }
 main section .topic .contents {
