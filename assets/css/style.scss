@@ -585,6 +585,7 @@ main {
                 @media (max-width: 768px) {
                     padding: calc($padding / 3);
                     border-bottom: none;
+                    height: auto;
                 }
             }
 
