@@ -1,35 +1,40 @@
-
 ![Foto do projeto](https://github.com/lezzin/ferramentas-dev/assets/103830032/9f9f5eca-b088-4e27-8475-59d8cbefc8ec)
 
-# Ferramentas para Dev
+# Ferramentas para Desenvolvedores
 
-Um aplicativo com diversos materiais/ferramentas para devs.
+Um aplicativo que oferece uma variedade de materiais e ferramentas para desenvolvedores.
 
 ## Recursos
 
-- Login administrador
+- Login de administrador
 - Gerenciamento de tópicos
 - Gerenciamento de conteúdos
-- Artigos de dicas e tutoriais da plataforma dev.to
+- Artigos com dicas e tutoriais da plataforma dev.to
 
-## Guia de instalação
+## Guia de Instalação
 
-Localmente:<br>
-Para usar o aplicativo, é necessário a utilização de algum servidor, como o XAMPP ou o Live Server (Extensão VSCODE). 
-* Caso utilize o XAMPP, adicione a pasta do projeto, inicie o servidor e acesse o arquivo `index.html` em um navegador da web. <br>
-* Caso utilize a extensão Live Server, abra o VSCode e clique em Go Live no canto inferior esquerdo da tela.
+### Acesso Local:
 
-Hospedagem:<br>
-Basta acessar o link: [clique aqui para acessar](https://ferramentas-dev.vercel.app/)
+Para usar o aplicativo localmente, é necessário configurar um servidor local:
 
-## Tecnologias utilizadas:
+1. Utilize um servidor local, como XAMPP ou Live Server (Extensão do VSCode).
+   - Se estiver usando XAMPP, adicione a pasta do projeto, inicie o servidor e acesse o arquivo `index.html` em um navegador da web.
+   - Se estiver usando a extensão Live Server, abra o VSCode e clique em "Go Live" no canto inferior esquerdo da tela.
+
+### Acesso Online:
+
+Você pode acessar o aplicativo hospedado no seguinte link: [Clique aqui para acessar](https://ferramentas-dev.vercel.app/)
+
+## Tecnologias Utilizadas:
 
 * HTML
 * SCSS
 * Vue.js
 * Firebase
 
-## Minhas redes sociais para contato
+## Contato
+
+Você pode me encontrar nas seguintes redes sociais:
 
 [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/leandroadrian_/)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/leandro-adrian)
