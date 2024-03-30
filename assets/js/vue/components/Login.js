@@ -32,7 +32,7 @@ const Login = {
                 this.$root.user = user;
                 this.$router.push('/');
             } catch (error) {
-                if (ERROR_MESSAGES[error.code]) {
+                if ( this.$root.error_messages[error.code]) {
                     this.formMessage = {
                         type: 'error',
                         text: this.$root.error_messages[error.code] ?? "Erro desconhecido. Tente novamente mais tarde."
