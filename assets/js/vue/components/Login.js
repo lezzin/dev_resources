@@ -35,7 +35,7 @@ const Login = {
                 if (ERROR_MESSAGES[error.code]) {
                     this.formMessage = {
                         type: 'error',
-                        text: ERROR_MESSAGES[error.code] ?? "Erro desconhecido. Tente novamente mais tarde."
+                        text: this.$root.error_messages[error.code] ?? "Erro desconhecido. Tente novamente mais tarde."
                     };
                 }
             }
