@@ -7,9 +7,11 @@ Um aplicativo que oferece uma variedade de materiais e ferramentas para desenvol
 ## Recursos
 
 - Login de administrador
-- Gerenciamento de tópicos
-- Gerenciamento de conteúdos
-- Artigos com dicas e tutoriais da plataforma dev.to
+- Persistência de dados através do Firebase Firestore
+- Atualização de dados em tempo real
+- Gerenciamento de tópicos (adicionar, editar, excluir)
+- Gerenciamento de conteúdos (adicionar, editar, excluir)
+- Seção na página inicial com artigos sobre dicas e tutoriais da plataforma [dev.to](https://dev.to/)
 
 ## Guia de Instalação
 
