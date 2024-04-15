@@ -591,9 +591,14 @@ main {
                 border-bottom: 1px solid $border-color;
                 padding: calc($padding / 3.3) $padding;
                 margin-bottom: 0;
+                position: fixed;
+                width: 100%;
+                top: 0;
                 height: 10vh;
+                background: $body-color;
 
                 @media (max-width: 768px) {
+                    position: static;
                     padding: calc($padding / 3);
                     height: auto;
                     border-bottom: none;
@@ -603,7 +608,12 @@ main {
             .contents {
                 display: grid;
                 gap: .6rem;
+                margin-top: 10vh;
                 padding-bottom: 5rem;
+
+                @media (max-width: 768px) {
+                    margin-top: 0;
+                }
 
                 .content {
                     display: flex;

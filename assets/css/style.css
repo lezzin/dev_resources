@@ -527,10 +527,15 @@ main section .topic_header {
   border-bottom: 1px solid #dcddf5;
   padding: 0.9090909091rem 3rem;
   margin-bottom: 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
   height: 10vh;
+  background: #fff;
 }
 @media (max-width: 768px) {
   main section .topic_header {
+    position: static;
     padding: 1rem;
     height: auto;
     border-bottom: none;
@@ -539,7 +544,13 @@ main section .topic_header {
 main section .topic .contents {
   display: grid;
   gap: 0.6rem;
+  margin-top: 10vh;
   padding-bottom: 5rem;
+}
+@media (max-width: 768px) {
+  main section .topic .contents {
+    margin-top: 0;
+  }
 }
 main section .topic .contents .content {
   display: flex;
