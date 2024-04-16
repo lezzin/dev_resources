@@ -5,7 +5,6 @@ const Profile = {
             email: '',
             emailError: '',
             formMessage: '',
-            uid: ''
         };
     },
     methods: {
@@ -27,7 +26,6 @@ const Profile = {
         if (!this.$root.user) this.$router.push("/");
 
         this.email = this.$root.user.email;
-        this.uid = this.$root.user.uid;
 
         document.title = `${this.$root.default_title} | Perfil`;
     },
@@ -35,7 +33,6 @@ const Profile = {
         "$root.user": function(user) {
             if (user) {
                 this.email = user.email;
-                this.uid = user.uid;
             } else {
                 this.$router.push("/");
             }

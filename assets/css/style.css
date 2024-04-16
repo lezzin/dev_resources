@@ -52,7 +52,7 @@ button {
   cursor: pointer;
 }
 
-.btn-sm, main section .topic .contents .content .content-actions button, .btn-mobile, .btn-danger, .btn-success, .btn-outline-primary, .btn-primary {
+.btn-sm, main section .topic-not-empty .table-responsive .contents .content .content-actions button, .btn-mobile, .btn-danger, .btn-success, .btn-outline-primary, .btn-primary {
   text-decoration: none;
   display: grid;
   place-items: center;
@@ -173,7 +173,6 @@ form .btn-primary, form .btn-mobile {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1.8rem;
 }
@@ -326,14 +325,14 @@ aside .fixed .header-top {
   align-items: center;
   height: 10vh;
 }
+aside .fixed .header-top .header-top-buttons {
+  margin-left: auto;
+}
 @media (max-width: 768px) {
   aside .fixed .header-top {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     margin-bottom: 0;
     padding: 1rem;
-  }
-  aside .fixed .header-top .header-top-buttons {
-    margin-left: auto;
   }
 }
 aside .fixed nav {
@@ -513,22 +512,20 @@ main section .tecnologies {
   display: flex;
   gap: 0.5rem;
 }
-main section .tecnologies .tecnology img {
+main section .tecnologies .tecnology {
   background-color: #f2f2f2;
   border: 1px solid #dcddf5;
   border-radius: 0.3rem;
 }
-main section .tecnologies .tecnology figcaption {
-  text-align: center;
-  font-size: 1.4rem;
-  color: #555;
+main section .topic-empty-image {
+  padding-top: 5rem;
 }
 main section .topic_header {
   border-bottom: 1px solid #dcddf5;
   padding: 0.9090909091rem 3rem;
   margin-bottom: 0;
   position: fixed;
-  width: 100%;
+  width: 75%;
   top: 0;
   height: 10vh;
   background: #fff;
@@ -539,44 +536,59 @@ main section .topic_header {
     padding: 1rem;
     height: auto;
     border-bottom: none;
+    width: 100%;
   }
 }
-main section .topic .contents {
-  display: grid;
-  gap: 0.6rem;
-  margin-top: 10vh;
-  padding-bottom: 5rem;
+main section .topic_header .title {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+main section .topic-not-empty {
+  margin: 10vh 0;
 }
 @media (max-width: 768px) {
-  main section .topic .contents {
+  main section .topic-not-empty {
     margin-top: 0;
   }
 }
-main section .topic .contents .content {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 2rem;
+main section .topic-not-empty .table-responsive {
+  overflow-y: auto;
 }
-@media (max-width: 768px) {
-  main section .topic .contents .content {
-    padding: 0.6rem;
-    border: 1px solid #dcddf5;
-    border-radius: 3px;
-  }
+main section .topic-not-empty .table-responsive .contents {
+  text-align: left;
+  border-collapse: collapse;
+  border: 1px solid #dcddf5;
+  width: 100%;
 }
-main section .topic .contents .content.content-hover {
+main section .topic-not-empty .table-responsive .contents thead {
+  background: #dcddf5;
+}
+main section .topic-not-empty .table-responsive .contents thead th {
+  font-weight: 600;
+}
+main section .topic-not-empty .table-responsive .contents td,
+main section .topic-not-empty .table-responsive .contents th {
+  border-bottom: 1px solid #dcddf5;
   padding: 0.6rem;
 }
-main section .topic .contents .content.content-hover:hover {
-  border-radius: 3px;
-  background-color: #f2f2f2;
+main section .topic-not-empty .table-responsive .contents .content {
+  padding: 0.6rem;
 }
-main section .topic .contents .content .content-actions {
+main section .topic-not-empty .table-responsive .contents .content:hover {
+  background-color: #f7f7f7;
+}
+main section .topic-not-empty .table-responsive .contents .content .content-link {
+  display: block;
+}
+main section .topic-not-empty .table-responsive .contents .content .content-actions {
   display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
   gap: 0.6rem;
 }
-main section .topic .contents .content .content-actions button {
+main section .topic-not-empty .table-responsive .contents .content .content-actions button {
   height: 2.5rem;
   font-size: 1rem;
 }

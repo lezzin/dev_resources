@@ -7,7 +7,8 @@ const Topic = {
             created_at: '',
             contents: [],
             user: this.$root.user,
-            userIsCreator: false
+            userIsCreator: false,
+            contentsEmpty: false
         };
     },
     methods: {
@@ -21,7 +22,7 @@ const Topic = {
                     this.contents = topicData.contents;
                     this.created_at = topicData.created_at;
                     this.userIsCreator = this.user && this.user.uid == topicData.created_by;
-
+                    this.contentsEmpty = this.contents.length === 0;
                     document.title = `${this.$root.default_title} | ${this.title}`;
                 }
             } catch (error) {
@@ -137,11 +138,11 @@ const Topic = {
         });
     },
     watch: {
-        '$route.params.id': function(newId) {
+        '$route.params.id': function (newId) {
             this.loadTopic(newId);
         },
 
-        '$root.user': function(user) {
+        '$root.user': function (user) {
             this.userIsCreator = false;
             this.user = user;
         }

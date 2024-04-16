@@ -204,7 +204,6 @@ form .btn-primary {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
     gap: 1rem;
     margin-bottom: 1.8rem;
 
@@ -369,14 +368,15 @@ aside {
             align-items: center;
             height: 10vh;
 
+            .header-top-buttons {
+                margin-left: auto;
+            }
+
             @media (max-width: 768px) {
                 box-shadow: 0 .5rem 1rem rgb(0 0 0 /.15);
                 margin-bottom: 0;
                 padding: calc($padding / 3);
 
-                .header-top-buttons {
-                    margin-left: auto;
-                }
             }
         }
 
@@ -572,27 +572,23 @@ main {
             gap: .5rem;
 
             .tecnology {
-                img {
-                    background-color: darken($body-color, 5%);
-                    border: 1px solid $border-color;
-                    border-radius: .3rem;
-                }
-
-                figcaption {
-                    text-align: center;
-                    font-size: 1.4rem;
-                    color: $text-color;
-                }
+                background-color: darken($body-color, 5%);
+                border: 1px solid $border-color;
+                border-radius: .3rem;
             }
         }
 
         .topic {
+            &-empty-image {
+                padding-top: 5rem;
+            }
+
             &_header {
                 border-bottom: 1px solid $border-color;
                 padding: calc($padding / 3.3) $padding;
                 margin-bottom: 0;
                 position: fixed;
-                width: 100%;
+                width: calc(100% - $sidebarWidth);
                 top: 0;
                 height: 10vh;
                 background: $body-color;
@@ -602,48 +598,70 @@ main {
                     padding: calc($padding / 3);
                     height: auto;
                     border-bottom: none;
+                    width: 100%;
+                }
+
+                .title {
+                    width: 100%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
             }
 
-            .contents {
-                display: grid;
-                gap: .6rem;
-                margin-top: 10vh;
-                padding-bottom: 5rem;
+            &-not-empty {
+                margin: 10vh 0;
 
                 @media (max-width: 768px) {
                     margin-top: 0;
                 }
 
-                .content {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: flex-start;
-                    gap: 2rem;
+                .table-responsive {
+                    overflow-y: auto;
 
-                    @media (max-width: 768px) {
-                        padding: 0.6rem;
+                    .contents {
+                        text-align: left;
+                        border-collapse: collapse;
                         border: 1px solid $border-color;
-                        border-radius: 3px;
-                    }
+                        width: 100%;
 
-                    &.content-hover {
-                        padding: 0.6rem;
+                        thead {
+                            background: $border-color;
 
-                        &:hover {
-                            border-radius: 3px;
-                            background-color: darken($body-color, 5%);
+                            th {
+                                font-weight: 600;
+                            }
                         }
-                    }
 
-                    .content-actions {
-                        display: flex;
-                        gap: 0.6rem;
+                        td,
+                        th {
+                            border-bottom: 1px solid $border-color;
+                            padding: 0.6rem;
+                        }
 
-                        button {
-                            @extend .btn-sm;
-                            height: 2.5rem;
-                            font-size: 1rem;
+                        .content {
+                            padding: 0.6rem;
+
+                            &:hover {
+                                background-color: darken($body-color, 3%);
+                            }
+
+                            .content-link {
+                                display: block;
+                            }
+
+                            .content-actions {
+                                display: flex;
+                                justify-content: flex-end;
+                                flex-wrap: wrap;
+                                gap: 0.6rem;
+
+                                button {
+                                    @extend .btn-sm;
+                                    height: 2.5rem;
+                                    font-size: 1rem;
+                                }
+                            }
                         }
                     }
                 }

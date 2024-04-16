@@ -45,7 +45,7 @@
                             <router-link class="btn-primary" to="/login" v-if="!user" title="Entrar no modo administrador"><i class="fa-solid fa-sign-in"></i></router-link>
                         </div>
                     </div>
-                    <nav id="navigation" v-if="mobileMenuOpen || !isMobile">
+                    <nav id="navigation" v-if="mobileMenuOpen || !isMobile" >
                         <router-link class="link" to="/" title="Ir para a página inicial"><i class="fa-solid fa-house"></i> Início</router-link>
                         <router-link class="link" v-for="topic in topics" :key="topic.id" :to="'/topic/' + topic.id" title="Ir para o tópico"><i class="fa-solid fa-fire"></i> {{ topic.title }}</router-link>
                     </nav>
@@ -106,16 +106,8 @@
                     </div>
                 </div>
                 <div class="tecnologies">
-                    <figure class="tecnology" title="Firebase">
-                        <img src="./assets/img/firebase.svg" alt="Firebase" width="48" height="48">
-                        <figcaption><a rel="noopener noreferrer" target="_blank" href="https://icons8.com/icon/62452/firebase" class="link" title="Firebase">icons8</a>
-                        </figcaption>
-                    </figure>
-                    <figure class="tecnology" title="Vue.js">
-                        <img src="./assets/img/vue.svg" alt="Vue.js" width="48" height="48">
-                        <figcaption><a rel="noopener noreferrer" target="_blank" href="https://icons8.com/icon/rY6agKizO9eb/vue-js" class="link" title="Vue.js">icons8</a>
-                        </figcaption>
-                    </figure>
+                    <img class="tecnology" src="./assets/img/firebase.svg" alt="Logo do Firebase" width="48" height="48">
+                    <img class="tecnology" src="./assets/img/vue.svg" alt="Logo do Vue.js" width="48" height="48">
                 </div>
             </section>
         </div>
@@ -146,7 +138,7 @@
     <template id="s_profile">
         <form onsubmit="return false" class="form">
             <div class="header-top form_header">
-                <h2 class="title">Seu perfil de usuário ({{ uid }})</h2>
+                <h2 class="title">Seu perfil de usuário</h2>
             </div>
             <div class="form_body">
                 <p class="box-text success-text" v-if="formMessage">{{ formMessage }}</p>
@@ -171,21 +163,37 @@
                 </div>
             </div>
             <div class="topic padding-container">
-                <div v-if="contents.length <= 0">
+                <div v-if="contentsEmpty" class="topic-empty-image">
                     <img src="./assets/img/content_empty_lg.webp" alt="ícone de caixa vazia" width="900" height="454" class="lg">
                     <img src="./assets/img/content_empty_sm.webp" alt="ícone de caixa vazia" width="568" height="454" class="sm">
                 </div>
-                <ul class="contents" v-else>
-                    <li :class="['content', userIsCreator ? 'content-hover' : '']" v-for="(content, index) in contents" :key="content.id">
-                        <p><a :href="content.link" target="_blank" rel="noopener noreferrer" class="link" title="Acessar site">{{ content.title }}</a>: {{ content.description }}</p>
-                        <div class="content-actions">
-                            <button class="btn-primary" @click="moveContentUp(index)" v-if="shouldDisplayMoveUpButton(index, content.created_by)" title="Mover conteúdo para cima"><i class="fa-solid fa-arrow-up"></i></button>
-                            <button class="btn-primary" @click="moveContentDown(index)" v-if="shouldDisplayMoveDownButton(index, content.created_by)" title="Mover conteúdo para baixo"><i class="fa-solid fa-arrow-down"></i></button>
-                            <button class="btn-primary" @click="openEditContent(content.id)" v-if="user && user.uid == content.created_by" title="Editar conteúdo"><i class="fa-solid fa-edit"></i></button>
-                            <button class="btn-danger" v-if="user && user.uid == content.created_by" @click="deleteContent(content.id)" title="Remover conteúdo"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </li>
-                </ul>
+                <div v-else class="topic-not-empty">
+                    <div class="table-responsive">
+                        <table class="contents">
+                            <thead>
+                                <tr>
+                                    <th>Website</th>
+                                    <th>Descrição</th>
+                                    <th v-if="user">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="content" v-for="(content, index) in contents" :key="content.id">
+                                    <td><a :href="content.link" target="_blank" rel="noopener noreferrer" class="content-link link" title="Acessar site">{{ content.title }}</a></td>
+                                    <td><p class="content-description">{{ content.description }}</p></td>
+                                    <td v-if="user">
+                                        <div class="content-actions">
+                                            <button class="btn-primary" @click="moveContentUp(index)" v-if="shouldDisplayMoveUpButton(index, content.created_by)" title="Mover conteúdo para cima"><i class="fa-solid fa-arrow-up"></i></button>
+                                            <button class="btn-primary" @click="moveContentDown(index)" v-if="shouldDisplayMoveDownButton(index, content.created_by)" title="Mover conteúdo para baixo"><i class="fa-solid fa-arrow-down"></i></button>
+                                            <button class="btn-primary" @click="openEditContent(content.id)" v-if="user && user.uid == content.created_by" title="Editar conteúdo"><i class="fa-solid fa-edit"></i></button>
+                                            <button class="btn-danger" v-if="user && user.uid == content.created_by" @click="deleteContent(content.id)" title="Remover conteúdo"><i class="fa-solid fa-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </section>
     </template>
