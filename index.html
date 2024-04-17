@@ -10,6 +10,10 @@
     <meta name="theme-color" content="#777BB3">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
     <title>Ferramentas para Devs</title>
 </head>
 
@@ -22,7 +26,7 @@
 
     <div id="app">
         <div class="container">
-            <div class="loader-main-container" v-if="loading">
+            <div class="loader-container" v-if="loading">
                 <div class="loader"></div>
             </div>
             <div :class="`toast ${toast.type}-toast`" v-if="toast">
@@ -45,7 +49,7 @@
                             <router-link class="btn-primary" to="/login" v-if="!user" title="Entrar no modo administrador"><i class="fa-solid fa-sign-in"></i></router-link>
                         </div>
                     </div>
-                    <nav id="navigation" v-if="mobileMenuOpen || !isMobile" >
+                    <nav id="navigation" v-if="mobileMenuOpen || !isMobile">
                         <router-link class="link" to="/" title="Ir para a página inicial"><i class="fa-solid fa-house"></i> Início</router-link>
                         <router-link class="link" v-for="topic in topics" :key="topic.id" :to="'/topic/' + topic.id" title="Ir para o tópico"><i class="fa-solid fa-fire"></i> {{ topic.title }}</router-link>
                     </nav>
@@ -72,37 +76,24 @@
                     </h2>
                 </div>
                 <div class="articles-container">
-                    <h3 class="subtitle"><i class="fa-solid fa-link"></i> 10 dicas relacionadas a tecnologia:</h3>
-                    <div class="articles">
-                        <div v-for="(article, index) in article_tips" :key="article.id" class="article">
-                            <img :src="article.social_image" alt="Imagem do artigo" class="article_img" width="350" height="197" loading="lazy">
-                            <div class="article_header">
-                                <img class="article_header_img" :src="article.user.profile_image" alt="Imagem de perfil do autor do artigo" width="24" height="24" loading="lazy">
-                                <p class="text">{{ article.user.username }}</p>
-                            </div>
-                            <div class="article_content">
-                                <h3 class="article_content_title">{{ article.title }}</h3>
-                                <p class="article_content_text">{{ article.description }}</p>
-                                <a class="article_content_link link" :href="article.url" title="Acessar artigo" target="_blank" rel="noopener noreferrer">Acessar artigo</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articles-container">
                     <h3 class="subtitle"><i class="fa-solid fa-link"></i> 10 tutoriais relacionados a tecnologia:</h3>
-                    <div class="articles">
-                        <div v-for="(article, index) in article_tutorials" :key="article.id" class="article">
-                            <img :src="article.social_image" alt="Imagem do artigo" class="article_img" width="350" height="197" loading="lazy">
-                            <div class="article_header">
-                                <img class="article_header_img" :src="article.user.profile_image" alt="Imagem de perfil do autor do artigo" width="24" height="24" loading="lazy">
-                                <p class="text">{{ article.user.username }}</p>
-                            </div>
-                            <div class="article_content">
-                                <H3 class="article_content_title">{{ article.title }}</H3>
-                                <p class="article_content_text">{{ article.description }}</p>
-                                <a class="article_content_link link" :href="article.url" title="Acessar artigo" target="_blank" rel="noopener noreferrer">Acessar artigo</a>
+                    <div class="articles swiper-slide-tutorials">
+                        <div class="swiper-wrapper">
+                            <div v-for="(article, index) in article_tutorials" :key="article.id" class="article swiper-slide">
+                                <img :src="article.social_image" alt="Imagem do artigo" class="article_img" width="350" height="197" loading="lazy">
+                                <div class="article_header">
+                                    <img class="article_header_img" :src="article.user.profile_image" alt="Imagem de perfil do autor do artigo" width="24" height="24" loading="lazy">
+                                    <p class="text">{{ article.user.username }}</p>
+                                </div>
+                                <div class="article_content">
+                                    <H3 class="article_content_title">{{ article.title }}</H3>
+                                    <p class="article_content_text">{{ article.description }}</p>
+                                    <a class="article_content_link link" :href="article.url" title="Acessar artigo" target="_blank" rel="noopener noreferrer">Acessar artigo</a>
+                                </div>
                             </div>
                         </div>
+
+                        <span class="swiper-pagination"></span>
                     </div>
                 </div>
                 <div class="tecnologies">
@@ -180,7 +171,9 @@
                             <tbody>
                                 <tr class="content" v-for="(content, index) in contents" :key="content.id">
                                     <td><a :href="content.link" target="_blank" rel="noopener noreferrer" class="content-link link" title="Acessar site">{{ content.title }}</a></td>
-                                    <td><p class="content-description">{{ content.description }}</p></td>
+                                    <td>
+                                        <p class="content-description">{{ content.description }}</p>
+                                    </td>
                                     <td v-if="user">
                                         <div class="content-actions">
                                             <button class="btn-primary" @click="moveContentUp(index)" v-if="shouldDisplayMoveUpButton(index, content.created_by)" title="Mover conteúdo para cima"><i class="fa-solid fa-arrow-up"></i></button>
@@ -305,7 +298,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-auth-compat.js" type="text/javascript"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js" type="text/javascript"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-analytics-compat.js" type="text/javascript"></script>
-    <script src="assets/js/vue/script.js" type="module"></script>
+    <script src="assets/js/script.js" type="module"></script>
 </body>
 
 </html>

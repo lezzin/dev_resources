@@ -8,11 +8,12 @@ const Topic = {
             contents: [],
             user: this.$root.user,
             userIsCreator: false,
-            contentsEmpty: false
+            contentsEmpty: false,
         };
     },
     methods: {
         async loadTopic(topicId) {
+
             try {
                 const doc = await this.$root.db.collection('topics').doc(topicId).get();
                 if (doc.exists) {
