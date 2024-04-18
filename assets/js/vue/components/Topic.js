@@ -13,7 +13,6 @@ const Topic = {
     },
     methods: {
         async loadTopic(topicId) {
-
             try {
                 const doc = await this.$root.db.collection('topics').doc(topicId).get();
                 if (doc.exists) {

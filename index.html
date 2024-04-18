@@ -80,12 +80,15 @@
                     <div class="articles swiper-slide-tutorials">
                         <div class="swiper-wrapper">
                             <div v-for="(article, index) in article_tutorials" :key="article.id" class="article swiper-slide">
-                                <img :src="article.social_image" alt="Imagem do artigo" class="article_img" width="350" height="197" loading="lazy">
-                                <div class="article_header">
-                                    <img class="article_header_img" :src="article.user.profile_image" alt="Imagem de perfil do autor do artigo" width="24" height="24" loading="lazy">
-                                    <p class="text">{{ article.user.username }}</p>
+                                <div class="article__header">
+                                    <img :src="article.social_image" alt="Imagem do artigo" class="article_header_img" width="350" height="197" loading="lazy">
                                 </div>
                                 <div class="article_content">
+                                    <div class="article_content_user">
+                                        <img class="article_content_user_img" :src="article.user.profile_image" alt="Imagem de perfil do autor do artigo" width="24" height="24" loading="lazy">
+                                        <p class="text">{{ article.user.username }}</p>
+                                    </div>
+
                                     <H3 class="article_content_title">{{ article.title }}</H3>
                                     <p class="article_content_text">{{ article.description }}</p>
                                     <a class="article_content_link link" :href="article.url" title="Acessar artigo" target="_blank" rel="noopener noreferrer">Acessar artigo</a>
