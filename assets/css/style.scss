@@ -136,37 +136,74 @@ form .btn-primary {
 
 .toast {
     position: fixed;
-    bottom: 1.6rem;
-    right: 1.6rem;
-    background-color: $background-color;
-    padding: .8rem 1.6rem;
-    border-radius: .3rem;
-    box-shadow: 0 .5rem 1rem rgb(0 0 0 / .15);
-    z-index: 1000;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 2rem;
+    bottom: calc($padding / 2);
+    right: calc($padding / 2);
+    display: grid;
+    grid-template-columns: 1.5rem 1fr;
+    box-shadow: 0 0 1rem rgb(0 0 0 / .15);
+    background-color: $body-color;
+    border-radius: 3px;
+    overflow: hidden;
+    z-index: 999;
+    opacity: 0;
+    transform: translateX(100%);
+    pointer-events: none;
+    transition: all .3s ease;
 
-    @media(max-width: 768px) {
-        bottom: 1rem;
-        right: 1rem;
-        left: 1rem;
-    }
-
-    .toast-text {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        color: #fff;
+    &.active {
+        transform: translateX(0);
+        opacity: 1;
+        pointer-events: all;
     }
 
     &.success-toast {
-        background-color: $success-color;
+        .toast-banner,
+        .toast-icon {
+            background-color: $success-color;
+        }
     }
 
     &.error-toast {
-        background-color: $danger-color;
+        .toast-banner,
+        .toast-icon {
+            background-color: $danger-color;
+        }
+    }
+
+    .toast-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+        padding: 1rem 1.5rem;
+
+        .toast-icon {
+            display: grid;
+            place-items: center;
+            width: 2.4rem;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            color: $body-color;
+        }
+
+        .toast-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        .toast-text {
+            font-size: 1.4rem;
+        }
+
+        .btn-close {
+            align-self: flex-start;
+            margin-left: 1rem;
+            color: $text-color;
+
+            i {
+                font-size: 1.4rem;
+            }
+        }
     }
 }
 

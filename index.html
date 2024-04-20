@@ -29,10 +29,19 @@
             <div class="loader-container" v-if="loading">
                 <div class="loader"></div>
             </div>
-            <div :class="`toast ${toast.type}-toast`" v-if="toast">
-                <p class="toast-text"><i class="fa-solid fa-info-circle"></i> {{ toast.text }}</p>
-                <button class="btn-close" @click="closeToast" title="Fechar mensagem"><i class="fa-solid fa-times"></i></button>
-            </div>
+
+            <div :class="['toast', toast ? `${toast.type}-toast active` : '']">
+                <div class="toast-banner"></div>
+                <div class="toast-content text">
+                    <div class="toast-icon"><i :class="['fa-solid', toast && toast.type == 'error' ? 'fa-xmark' : 'fa-check']"></i></div>
+                    <div>
+                        <p class="toast-title">{{ toast && toast.type == 'error' ? 'Erro' : 'Sucesso' }}</p>
+                        <p class="toast-text"> {{ toast && toast.text }}</p>
+                    </div>
+                    <button class="btn-close" @click="closeToast" title="Fechar mensagem"><i class="fa-solid fa-times"></i></button>
+                </div>
+            </div>     
+
             <aside>
                 <div class="fixed">
                     <div class="header-top">
@@ -89,7 +98,7 @@
                                         <p class="text">{{ article.user.username }}</p>
                                     </div>
 
-                                    <H3 class="article_content_title">{{ article.title }}</H3>
+                                    <h3 class="article_content_title">{{ article.title }}</h3>
                                     <p class="article_content_text">{{ article.description }}</p>
                                     <a class="article_content_link link" :href="article.url" title="Acessar artigo" target="_blank" rel="noopener noreferrer">Acessar artigo</a>
                                 </div>
@@ -179,8 +188,6 @@
                                     </td>
                                     <td v-if="user">
                                         <div class="content-actions">
-                                            <button class="btn-primary" @click="moveContentUp(index)" v-if="shouldDisplayMoveUpButton(index, content.created_by)" title="Mover conteúdo para cima"><i class="fa-solid fa-arrow-up"></i></button>
-                                            <button class="btn-primary" @click="moveContentDown(index)" v-if="shouldDisplayMoveDownButton(index, content.created_by)" title="Mover conteúdo para baixo"><i class="fa-solid fa-arrow-down"></i></button>
                                             <button class="btn-primary" @click="openEditContent(content.id)" v-if="user && user.uid == content.created_by" title="Editar conteúdo"><i class="fa-solid fa-edit"></i></button>
                                             <button class="btn-danger" v-if="user && user.uid == content.created_by" @click="deleteContent(content.id)" title="Remover conteúdo"><i class="fa-solid fa-trash"></i></button>
                                         </div>
