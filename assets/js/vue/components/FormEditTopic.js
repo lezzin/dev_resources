@@ -18,16 +18,19 @@ const formEditTopic = {
                     return false;
                 }
             } catch (error) {
-                this.titleError = error.message;
+                this.handleError(error);
             }
         },
         async editTopic() {
             try {
+                this.titleError = '';
                 if (!this.topicTitle) {
                     this.titleError = this.$root.error_messages.requiredTitle;
                     return;
                 }
-                const querySnapshot = await this.$root.db.collection('topics').where('title', '==', this.topicTitle).get();
+                const querySnapshot = await this.$root.db.collection('topics')
+                    .where('title', '==', this.topicTitle)
+                    .get();
                 if (querySnapshot.size > 0) {
                     this.titleError = this.$root.error_messages.topicExists;
                     return;
@@ -35,22 +38,23 @@ const formEditTopic = {
                 await this.$root.db.collection('topics').doc(this.$route.params.id).update({
                     title: this.topicTitle
                 });
-                this.topicTitle = '';
-                this.titleError = '';
                 this.$router.push(`/topic/${this.$route.params.id}`);
                 this.$root.toast = {
                     type: 'success',
                     text: 'Tópico editado com sucesso'
                 };
             } catch (error) {
-                this.titleError = error.message;
+                this.handleError(error);
             }
         },
+        handleError(error) {
+            this.titleError = error.message || this.$root.error_messages.generalError;
+        }
     },
     created() {
         document.title = `${this.$root.default_title} | Editar tópico`;
-        this.loadTopic();
         if (!this.$root.user) this.$router.push("/");
+        this.loadTopic();
     },
     watch: {
         "$root.user": function(user) {

@@ -28,7 +28,7 @@ const FormContent = {
                 this.contentDescriptionError = this.$root.error_messages.requiredDescription;
             }
 
-            if (!this.contentTitle | !this.contentLink | !this.contentDescription) return;
+            if (!this.contentTitle || !this.contentLink || !this.contentDescription) return;
 
             const urlRegex = /^(http|https):\/\//i;
             if (!urlRegex.test(this.contentLink)) {
@@ -62,7 +62,7 @@ const FormContent = {
                     text: "Conteúdo adicionado com sucesso"
                 };
             } catch (error) {
-                this.topicError = error.message;
+                this.handleError(error);
             }
         },
         clearFields() {
@@ -74,6 +74,9 @@ const FormContent = {
             this.contentLink = '';
             this.contentLinkError = '';
         },
+        handleError(error) {
+            this.topicError = error.message || this.$root.error_messages.generalError;
+        }
     },
     created() {
         document.title = `${this.$root.default_title} | Adicionar conteúdo`;

@@ -8,6 +8,8 @@ const FormTopic = {
     },
     methods: {
         async addTopic() {
+            this.titleError = '';
+
             if (!this.topicTitle) {
                 this.titleError = this.$root.error_messages.requiredTitle;
                 return;
@@ -15,35 +17,34 @@ const FormTopic = {
 
             try {
                 const querySnapshot = await this.$root.db.collection('topics').where('title', '==', this.topicTitle).get();
-                let createdTopicId = null;
 
                 if (querySnapshot.size > 0) {
                     this.titleError = this.$root.error_messages.topicExists;
                     return;
                 }
 
-                await this.$root.db.collection('topics').add({
-                    id: this.topicTitle.toLowerCase().replace(/ /g, '-'),
+                const docRef = await this.$root.db.collection('topics').add({
                     title: this.topicTitle,
                     contents: [],
                     created_at: new Date(),
                     created_by: this.$root.user.uid,
-                }).then(function(docRef) {
-                    createdTopicId = docRef.id;
-                })
+                });
+
+                const createdTopicId = docRef.id;
                 this.topicTitle = '';
                 this.titleError = '';
                 this.$root.toast = {
                     type: 'success',
                     text: 'Tópico adicionado com sucesso'
                 };
-                if (createdTopicId) {
-                    this.$router.push(`/topic/${createdTopicId}`);
-                }
+                this.$router.push(`/topic/${createdTopicId}`);
             } catch (error) {
-                this.titleError = error.message;
+                this.handleError(error);
             }
         },
+        handleError(error) {
+            this.titleError = error.message || this.$root.error_messages.generalError;
+        }
     },
     created() {
         document.title = `${this.$root.default_title} | Adicionar tópico`;

@@ -22,7 +22,7 @@ const Login = {
                 this.passwordError = this.$root.error_messages.requiredPassword;
             }
 
-            if (!this.email | !this.password) {
+            if (!this.email || !this.password) {
                 return;
             }
 
@@ -32,13 +32,15 @@ const Login = {
                 this.$root.user = user;
                 this.$router.push('/');
             } catch (error) {
-                if ( this.$root.error_messages[error.code]) {
-                    this.formMessage = {
-                        type: 'error',
-                        text: this.$root.error_messages[error.code] ?? "Erro desconhecido. Tente novamente mais tarde."
-                    };
-                }
+                this.handleError(error);
             }
+        },
+        handleError(error) {
+            const errorMessage = this.$root.error_messages[error.code] || "Erro desconhecido. Tente novamente mais tarde.";
+            this.formMessage = {
+                type: 'error',
+                text: errorMessage
+            };
         },
     },
     created() {
@@ -46,7 +48,6 @@ const Login = {
 
         if (this.$root.user) {
             this.$router.push("/");
-            return;
         }
     },
 };

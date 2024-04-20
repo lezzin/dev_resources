@@ -12,16 +12,17 @@ const Home = {
                 const data = await response.json();
                 return data;
             } catch (error) {
-                this.$root.toast = {
-                    type: "error",
-                    text: "Erro na solicitação de artigos: " + error
-                };
+                this.handleError(error);
                 return null;
             }
         },
         async loadArticles() {
             this.article_tutorials = await this.fetchArticles("tutorial");
-
+            if (this.article_tutorials) {
+                this.initializeSwiper('.swiper-slide-tutorials');
+            }
+        },
+        initializeSwiper(selector) {
             const SWIPER_OPTIONS = {
                 slidesPerView: 3,
                 spaceBetween: 10,
@@ -35,9 +36,14 @@ const Home = {
                     el: ".swiper-pagination",
                     clickable: true
                 }
-            }
-
-            new Swiper('.swiper-slide-tutorials', SWIPER_OPTIONS);
+            };
+            new Swiper(selector, SWIPER_OPTIONS);
+        },
+        handleError(error) {
+            this.$root.toast = {
+                type: "error",
+                text: "Erro na solicitação de artigos: " + error
+            };
         }
     },
     created() {

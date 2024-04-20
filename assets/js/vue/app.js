@@ -33,6 +33,7 @@ export const app = new Vue({
                 "deleteTopicError": "Erro ao deletar tópico. Recarregue a página",
                 "logoutError": "Erro ao deslogar, se o erro persistir, recarregue a página",
                 "fetchTopicsError": "Erro ao carregar tópicos",
+                "generalError": "Erro desconhecido"
             },
 
             topics: [],

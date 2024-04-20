@@ -8,25 +8,30 @@ const Profile = {
         };
     },
     methods: {
-        updatePassword() {
+        async updatePassword() {
+            this.formMessage = '';
+            this.emailError = '';
+
             if (!this.email) {
                 this.emailError = this.$root.error_messages.requiredEmail;
                 return;
             }
-            this.$root.auth.sendPasswordResetEmail(this.email)
-                .then(() => {
-                    this.formMessage = 'E-mail enviado com sucesso';
-                })
-                .catch((error) => {
-                    this.emailError = error.message;
-                });
+
+            try {
+                await this.$root.auth.sendPasswordResetEmail(this.email);
+                this.formMessage = 'E-mail enviado com sucesso';
+            } catch (error) {
+                this.emailError = error.message;
+            }
         },
     },
     created() {
-        if (!this.$root.user) this.$router.push("/");
+        if (!this.$root.user) {
+            this.$router.push("/");
+            return;
+        }
 
         this.email = this.$root.user.email;
-
         document.title = `${this.$root.default_title} | Perfil`;
     },
     watch: {

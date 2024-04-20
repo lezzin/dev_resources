@@ -6,12 +6,19 @@ const Topic = {
             title: '',
             created_at: '',
             contents: [],
-            user: this.$root.user,
+            user: null,
             userIsCreator: false,
             contentsEmpty: false,
         };
     },
     methods: {
+        sortContents() {
+            this.contents.sort((a, b) => {
+                const descriptionA = a.description.toLowerCase();
+                const descriptionB = b.description.toLowerCase();
+                return descriptionA.localeCompare(descriptionB);
+            });
+        },
         async loadTopic(topicId) {
             try {
                 const doc = await this.$root.db.collection('topics').doc(topicId).get();
@@ -24,32 +31,25 @@ const Topic = {
                     this.userIsCreator = this.user && this.user.uid == topicData.created_by;
                     this.contentsEmpty = this.contents.length === 0;
                     document.title = `${this.$root.default_title} | ${this.title}`;
+
+                    this.sortContents();
                 }
             } catch (error) {
-                this.$root.toast = {
-                    type: 'error',
-                    text: this.this.$root.error_messages.loadTopicError
-                };
+                this.handleError('loadTopicError');
             }
         },
         async deleteTopic(topicId) {
             if (!confirm('Tem certeza que deseja deletar esse tópico? Todo o conteúdo será perdido.')) return;
 
             try {
-                const topicRef = this.$root.db.collection('topics').doc(topicId);
-                const doc = await topicRef.get();
-                if (!doc.exists) return false;
-                await topicRef.delete();
+                await this.$root.db.collection('topics').doc(topicId).delete();
                 this.$root.toast = {
                     type: 'success',
                     text: "Tópico removido com sucesso"
                 };
                 this.$router.push('/');
             } catch (error) {
-                this.$root.toast = {
-                    type: 'error',
-                    text: this.this.$root.error_messages.deleteTopicError
-                };
+                this.handleError('deleteTopicError');
             }
         },
         async deleteContent(id) {
@@ -73,49 +73,7 @@ const Topic = {
                     text: "Conteúdo removido com sucesso"
                 };
             } catch (error) {
-                this.$root.toast = {
-                    type: 'error',
-                    text: this.this.$root.error_messages.deleteContentError
-                };
-            }
-        },
-        shouldDisplayMoveUpButton(index, createdBy) {
-            return this.user && index > 0 && this.user.uid == createdBy;
-        },
-        shouldDisplayMoveDownButton(index, createdBy) {
-            return this.user && index < this.contents.length - 1 && this.user.uid == createdBy;
-        },
-        async moveContentUp(index) {
-            if (index > 0) {
-                const temp = this.contents[index];
-                this.$set(this.contents, index, this.contents[index - 1]);
-                this.$set(this.contents, index - 1, temp);
-                await this.updateContentOrder();
-            }
-        },
-        async moveContentDown(index) {
-            if (index < this.contents.length - 1) {
-                const temp = this.contents[index];
-                this.$set(this.contents, index, this.contents[index + 1]);
-                this.$set(this.contents, index + 1, temp);
-                await this.updateContentOrder();
-            }
-        },
-        async updateContentOrder() {
-            try {
-                const topicId = this.id;
-                await this.$root.db.collection('topics').doc(topicId).update({
-                    contents: this.contents
-                });
-                this.$root.toast = {
-                    type: 'success',
-                    text: 'Ordem dos conteúdos atualizada com sucesso'
-                };
-            } catch (error) {
-                this.$root.toast = {
-                    type: 'error',
-                    text: 'Erro ao atualizar a ordem dos conteúdos'
-                };
+                this.handleError('deleteContentError');
             }
         },
         openEditTopic(id) {
@@ -123,9 +81,16 @@ const Topic = {
         },
         openEditContent(id) {
             this.$router.push(`/topic/${this.$route.params.id}/content/${id}/edit`);
+        },
+        handleError(errorMessage) {
+            this.$root.toast = {
+                type: 'error',
+                text: this.$root.error_messages[errorMessage]
+            };
         }
     },
     created() {
+        this.user = this.$root.user;
         const topicId = this.$route.params.id;
         this.loadTopic(topicId);
 
@@ -134,6 +99,8 @@ const Topic = {
                 const topicData = doc.data();
                 this.title = topicData.title;
                 this.contents = topicData.contents;
+
+                this.sortContents();
             }
         });
     },
