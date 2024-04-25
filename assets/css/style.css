@@ -52,7 +52,7 @@ button {
   cursor: pointer;
 }
 
-.btn-sm, main section .topic-not-empty .table-responsive .contents .content .content-actions button, .btn-mobile, .btn-danger, .btn-success, .btn-outline-primary, .btn-primary {
+.btn-sm, main section .topic-not-empty .table-responsive .contents .content .content-actions button, .btn-danger, .btn-success, .btn-outline-primary, .btn-primary {
   text-decoration: none;
   display: grid;
   place-items: center;
@@ -61,16 +61,16 @@ button {
   border-radius: 0.3rem;
 }
 
-form .btn-primary, form .btn-mobile {
+form .btn-primary {
   height: auto;
   aspect-ratio: unset;
 }
 
-.btn-primary, .btn-mobile {
+.btn-primary {
   background-color: #646bd4;
   color: #fff;
 }
-.btn-primary:hover, .btn-mobile:hover {
+.btn-primary:hover {
   background-color: #3c45c9;
 }
 
@@ -220,7 +220,7 @@ form .btn-primary, form .btn-mobile {
   margin-bottom: 0;
   height: 10vh;
 }
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .form_header {
     padding: 1rem;
     border-bottom: none;
@@ -232,7 +232,7 @@ form .btn-primary, form .btn-mobile {
   padding: 3rem;
   gap: 1.2rem;
 }
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .form_body {
     padding: 1rem;
   }
@@ -336,7 +336,7 @@ aside .fixed {
   height: 100vh;
   overflow-y: auto;
 }
-@media (max-width: 768px) {
+@media (width <= 768px) {
   aside .fixed {
     position: static;
     max-width: unset;
@@ -354,7 +354,7 @@ aside .fixed .header-top {
 aside .fixed .header-top .header-top-buttons {
   margin-left: auto;
 }
-@media (max-width: 768px) {
+@media (width <= 768px) {
   aside .fixed .header-top {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     margin-bottom: 0;
@@ -378,7 +378,7 @@ aside .fixed nav .router-link-active {
   position: relative;
   font-weight: 400;
 }
-@media (max-width: 768px) {
+@media (width <= 768px) {
   aside .fixed nav .link,
   aside .fixed nav .router-link-active {
     padding-left: 1.5rem;
@@ -388,8 +388,8 @@ aside .fixed nav .link:hover:not(.router-link-exact-active),
 aside .fixed nav .router-link-active:hover:not(.router-link-exact-active) {
   text-decoration: none;
 }
-aside .fixed nav .link:hover:not(.router-link-exact-active):before,
-aside .fixed nav .router-link-active:hover:not(.router-link-exact-active):before {
+aside .fixed nav .link:hover:not(.router-link-exact-active)::before,
+aside .fixed nav .router-link-active:hover:not(.router-link-exact-active)::before {
   opacity: 0.3;
 }
 aside .fixed nav .link::before,
@@ -436,7 +436,7 @@ main .padding-container {
   padding: 3rem;
   width: 100%;
 }
-@media (max-width: 768px) {
+@media (width <= 768px) {
   main .padding-container {
     padding: 1rem;
   }
@@ -556,7 +556,7 @@ main section .topic_header {
   height: 10vh;
   background: #fff;
 }
-@media (max-width: 768px) {
+@media (width <= 768px) {
   main section .topic_header {
     position: static;
     padding: 1rem;
@@ -574,7 +574,7 @@ main section .topic_header .title {
 main section .topic-not-empty {
   margin: 10vh 0;
 }
-@media (max-width: 768px) {
+@media (width <= 768px) {
   main section .topic-not-empty {
     margin-top: 0;
   }

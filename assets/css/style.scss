@@ -78,9 +78,10 @@ form .btn-primary {
 }
 
 .btn-primary {
+    @extend .btn-sm;
+
     background-color: $background-color;
     color: #fff;
-    @extend .btn-sm;
 
     &:hover {
         background-color: darken($background-color, 10%);
@@ -88,10 +89,11 @@ form .btn-primary {
 }
 
 .btn-outline-primary {
+    @extend .btn-sm;
+
     background-color: transparent;
     color: $background-color;
     border: 1px solid $background-color;
-    @extend .btn-sm;
 
     &:hover {
         background-color: $background-color;
@@ -100,9 +102,10 @@ form .btn-primary {
 }
 
 .btn-success {
+    @extend .btn-sm;
+
     background-color: $success-color;
     color: #fff;
-    @extend .btn-sm;
 
     &:hover {
         background-color: darken($success-color, 10%);
@@ -110,9 +113,10 @@ form .btn-primary {
 }
 
 .btn-danger {
+    @extend .btn-sm;
+
     background-color: $danger-color;
     color: #fff;
-    @extend .btn-sm;
 
     &:hover {
         background-color: darken($danger-color, 10%);
@@ -129,18 +133,13 @@ form .btn-primary {
     }
 }
 
-.btn-mobile {
-    @extend .btn-sm;
-    @extend .btn-primary;
-}
-
 .toast {
     position: fixed;
     bottom: calc($padding / 2);
     right: calc($padding / 2);
     display: grid;
     grid-template-columns: 1.5rem 1fr;
-    box-shadow: 0 0 1rem rgb(0 0 0 / .15);
+    box-shadow: 0 0 1rem rgb(0 0 0 / 15%);
     background-color: $body-color;
     border-radius: 3px;
     overflow: hidden;
@@ -157,6 +156,7 @@ form .btn-primary {
     }
 
     &.success-toast {
+
         .toast-banner,
         .toast-icon {
             background-color: $success-color;
@@ -164,6 +164,7 @@ form .btn-primary {
     }
 
     &.error-toast {
+
         .toast-banner,
         .toast-icon {
             background-color: $danger-color;
@@ -219,6 +220,7 @@ form .btn-primary {
 .loader {
     $loader-size: 3.8rem;
     $border-size: 4px;
+
     border: $border-size solid #f3f3f3;
     border-top: $border-size solid $background-color;
     border-radius: 50%;
@@ -264,7 +266,7 @@ form .btn-primary {
         margin-bottom: 0;
         height: 10vh;
 
-        @media (max-width: 768px) {
+        @media (width <=768px) {
             padding: calc($padding / 3);
             border-bottom: none;
         }
@@ -276,7 +278,7 @@ form .btn-primary {
         padding: $padding;
         gap: 1.2rem;
 
-        @media (max-width: 768px) {
+        @media (width <=768px) {
             padding: calc($padding / 3);
         }
     }
@@ -296,6 +298,7 @@ form .btn-primary {
 
     button {
         @extend input;
+
         margin-top: .6rem;
     }
 
@@ -391,7 +394,7 @@ aside {
         height: 100vh;
         overflow-y: auto;
 
-        @media (max-width: 768px) {
+        @media (width <=768px) {
             position: static;
             max-width: unset;
             border-right: unset;
@@ -409,8 +412,8 @@ aside {
                 margin-left: auto;
             }
 
-            @media (max-width: 768px) {
-                box-shadow: 0 .5rem 1rem rgb(0 0 0 /.15);
+            @media (width <=768px) {
+                box-shadow: 0 .5rem 1rem rgb(0 0 0 /15%);
                 margin-bottom: 0;
                 padding: calc($padding / 3);
 
@@ -433,14 +436,14 @@ aside {
                 position: relative;
                 font-weight: 400;
 
-                @media (max-width: 768px) {
+                @media (width <=768px) {
                     padding-left: calc($padding / 2);
                 }
 
                 &:hover:not(.router-link-exact-active) {
                     text-decoration: none;
 
-                    &:before {
+                    &::before {
                         opacity: .3;
                     }
                 }
@@ -491,7 +494,7 @@ main {
         padding: $padding;
         width: 100%;
 
-        @media (max-width: 768px) {
+        @media (width <=768px) {
             padding: calc($padding / 3);
         }
     }
@@ -634,7 +637,7 @@ main {
                 height: 10vh;
                 background: $body-color;
 
-                @media (max-width: 768px) {
+                @media (width <=768px) {
                     position: static;
                     padding: calc($padding / 3);
                     height: auto;
@@ -653,7 +656,7 @@ main {
             &-not-empty {
                 margin: 10vh 0;
 
-                @media (max-width: 768px) {
+                @media (width <=768px) {
                     margin-top: 0;
                 }
 
@@ -699,6 +702,7 @@ main {
 
                                 button {
                                     @extend .btn-sm;
+
                                     height: 2.5rem;
                                     font-size: 1rem;
                                 }

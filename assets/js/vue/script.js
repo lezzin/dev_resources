@@ -105,7 +105,7 @@ const app = new Vue({
         });
     },
     watch: {
-        toast: function(_) {
+        toast: function(_toast) {
             if (this.toastTimer) {
                 clearTimeout(this.toastTimer);
             }
