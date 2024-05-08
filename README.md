@@ -1,3 +1,5 @@
+![Ferramentas para Desenvolvedores](https://github.com/lezzin/dev_resources/assets/103830032/99fc92d3-f8ac-4e87-aecd-fcfa99efb4ad)
+
 # Ferramentas para Desenvolvedores
 
 Um website que oferece links de uma variedade de recursos gratuitos para desenvolvedores, desde livros a ferramentas.
