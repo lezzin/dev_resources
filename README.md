@@ -1,14 +1,11 @@
-![Foto do projeto](https://github.com/lezzin/ferramentas-dev/assets/103830032/9f9f5eca-b088-4e27-8475-59d8cbefc8ec)
-
 # Ferramentas para Desenvolvedores
 
-Um aplicativo que oferece uma variedade de materiais e ferramentas para desenvolvedores.
+Um website que oferece links de uma variedade de recursos gratuitos para desenvolvedores, desde livros a ferramentas.
 
 ## Recursos
 
 - Login de administrador
 - Persistência de dados através do Firebase Firestore
-- Atualização de dados em tempo real
 - Gerenciamento de tópicos (adicionar, editar, excluir)
 - Gerenciamento de conteúdos (adicionar, editar, excluir)
 - Seção na página inicial com artigos sobre dicas e tutoriais da plataforma [dev.to](https://dev.to/)
