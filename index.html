@@ -28,6 +28,7 @@
         <div class="container">
             <div class="loader-container" v-if="loading">
                 <div class="loader"></div>
+                <span>Carregando artigos...</span>
             </div>
 
             <div :class="['toast', toast ? `${toast.type}-toast active` : '']">

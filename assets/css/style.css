@@ -172,8 +172,11 @@ form .btn-primary {
 .loader-container {
   position: fixed;
   inset: 0;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
   background-color: #fff;
   z-index: 1000;
 }
@@ -523,10 +526,17 @@ main section .articles-container .articles .article_content_user_img {
   border: 1px solid #dcddf5;
   border-radius: 50%;
 }
+main section .articles-container .articles .article_content_title, main section .articles-container .articles .article_content_text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 main section .articles-container .articles .article_content_title {
+  -webkit-line-clamp: 1;
   font-weight: 500;
 }
 main section .articles-container .articles .article_content_text {
+  -webkit-line-clamp: 3;
   color: #555;
   font-size: 1.5rem;
 }

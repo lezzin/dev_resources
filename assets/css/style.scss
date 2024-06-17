@@ -211,8 +211,11 @@ form .btn-primary {
 .loader-container {
     position: fixed;
     inset: 0;
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
     background-color: $body-color;
     z-index: 1000;
 }
@@ -593,11 +596,20 @@ main {
                             }
                         }
 
+                        &_title,
+                        &_text {
+                            display: -webkit-box;
+                            -webkit-box-orient: vertical;
+                            overflow: hidden;
+                        }
+
                         &_title {
+                            -webkit-line-clamp: 1;
                             font-weight: 500;
                         }
 
                         &_text {
+                            -webkit-line-clamp: 3;
                             color: $text-color;
                             font-size: 1.5rem;
                         }
