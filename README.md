@@ -1,4 +1,4 @@
-<h1 align="center"> 🚀 <br> Ferramentas para Desenvolvedores</h1>
+<h1 align="center"> 🔗 <br> Ferramentas para Desenvolvedores</h1>
 
 ![Ferramentas para Desenvolvedores](https://github.com/lezzin/dev_resources/assets/103830032/99fc92d3-f8ac-4e87-aecd-fcfa99efb4ad)
 
