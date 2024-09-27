@@ -133,6 +133,14 @@ form .btn-primary {
     }
 }
 
+.author-link {
+    display: grid;
+    width: 100%;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 3rem;
+}
+
 .toast {
     position: fixed;
     bottom: calc($padding / 2);
@@ -604,12 +612,12 @@ main {
                         }
 
                         &_title {
-                            -webkit-line-clamp: 1;
+                            line-clamp: 1;
                             font-weight: 500;
                         }
 
                         &_text {
-                            -webkit-line-clamp: 3;
+                            line-clamp: 3;
                             color: $text-color;
                             font-size: 1.5rem;
                         }
@@ -619,18 +627,6 @@ main {
                         }
                     }
                 }
-            }
-        }
-
-        .tecnologies {
-            margin-top: 10rem;
-            display: flex;
-            gap: .5rem;
-
-            .tecnology {
-                background-color: darken($body-color, 5%);
-                border: 1px solid $border-color;
-                border-radius: .3rem;
             }
         }
 
@@ -674,6 +670,7 @@ main {
 
                 .table-responsive {
                     overflow-y: auto;
+                    min-height: 76vh;
 
                     .contents {
                         text-align: left;
