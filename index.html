@@ -5,15 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Site com ferramentas para desenvolvedores">
-    <meta name="keywords" content="ferramentas, desenvolvedores, programação, estudos, materiais">
     <meta name="author" content="Leandro Adrian da Silva">
     <meta name="theme-color" content="#777BB3">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
     <title>Ferramentas para Devs</title>
 </head>
 
@@ -98,35 +93,6 @@
                         Aqui você encontrará diversos materiais e links úteis para estudos e desenvolvimento de
                         projetos.
                     </h2>
-                </div>
-                <div class="articles-container">
-                    <h3 class="subtitle"><i class="fa-solid fa-link"></i> 10 tutoriais relacionados a tecnologia:</h3>
-                    <div class="articles swiper-slide-tutorials">
-                        <div class="swiper-wrapper">
-                            <div v-for="(article, index) in article_tutorials" :key="article.id"
-                                class="article swiper-slide">
-                                <div class="article__header">
-                                    <img :src="article.social_image" alt="Imagem do artigo" class="article_header_img"
-                                        width="350" height="197" loading="lazy">
-                                </div>
-                                <div class="article_content">
-                                    <div class="article_content_user">
-                                        <img class="article_content_user_img" :src="article.user.profile_image"
-                                            alt="Imagem de perfil do autor do artigo" width="24" height="24"
-                                            loading="lazy">
-                                        <p class="text">{{ article.user.username }}</p>
-                                    </div>
-
-                                    <h3 class="article_content_title">{{ article.title }}</h3>
-                                    <p class="article_content_text">{{ article.description }}</p>
-                                    <a class="article_content_link link" :href="article.url" title="Acessar artigo"
-                                        target="_blank" rel="noopener noreferrer">Acessar artigo</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <span class="swiper-pagination"></span>
-                    </div>
                 </div>
 
                 <a href="https://lezzin.github.io" target="_blank" class="author-link">
