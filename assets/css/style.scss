@@ -37,6 +37,7 @@ img {
     height: auto;
     object-fit: cover;
     display: flex;
+    -webkit-user-drag: none;
 
     &.sm {
         display: none;
@@ -134,10 +135,11 @@ form .btn-primary {
 }
 
 .author-link {
-    display: grid;
+    display: block;
+    text-align: center;
+    gap: 0.3rem;
     width: 100%;
     font-size: 1.2rem;
-    text-align: center;
     margin-top: 3rem;
 }
 
@@ -576,7 +578,7 @@ main {
             }
 
             &-not-empty {
-                margin: 10vh 0;
+                margin-top: 10vh;
 
                 @media (width <=768px) {
                     margin-top: 0;
@@ -584,7 +586,7 @@ main {
 
                 .table-responsive {
                     overflow-y: auto;
-                    min-height: 76vh;
+                    min-height: 73.4vh;
 
                     .contents {
                         text-align: left;

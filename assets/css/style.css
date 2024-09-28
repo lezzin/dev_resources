@@ -28,6 +28,7 @@ img {
   -o-object-fit: cover;
      object-fit: cover;
   display: flex;
+  -webkit-user-drag: none;
 }
 img.sm {
   display: none;
@@ -110,10 +111,11 @@ form .btn-primary {
 }
 
 .author-link {
-  display: grid;
+  display: block;
+  text-align: center;
+  gap: 0.3rem;
   width: 100%;
   font-size: 1.2rem;
-  text-align: center;
   margin-top: 3rem;
 }
 
@@ -511,7 +513,7 @@ main section .topic_header .title {
   text-overflow: ellipsis;
 }
 main section .topic-not-empty {
-  margin: 10vh 0;
+  margin-top: 10vh;
 }
 @media (width <= 768px) {
   main section .topic-not-empty {
@@ -520,7 +522,7 @@ main section .topic-not-empty {
 }
 main section .topic-not-empty .table-responsive {
   overflow-y: auto;
-  min-height: 76vh;
+  min-height: 73.4vh;
 }
 main section .topic-not-empty .table-responsive .contents {
   text-align: left;
