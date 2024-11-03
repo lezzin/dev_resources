@@ -117,8 +117,6 @@ export default {
                 router.push(`/topic/${topicId}`);
                 clearFields();
             } catch (error) {
-                console.log(error);
-
                 handleError(error);
             }
         };
