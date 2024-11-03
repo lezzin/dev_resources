@@ -84,7 +84,6 @@ export default {
     </aside>
 </template>
 
-
 <style scoped>
 aside {
     position: relative;

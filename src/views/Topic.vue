@@ -288,7 +288,7 @@ export default {
     font-size: 1rem;
 }
 
-@media (max-width: 768pxpx) {
+@media (max-width: 768px) {
     .topic_header {
         position: static;
         padding: 1rem;

@@ -35,7 +35,7 @@ img.sm {
     display: none;
 }
 
-@media (max-width: 768pxpx) {
+@media (max-width: 768px) {
     img.lg {
         display: none;
     }
@@ -228,7 +228,7 @@ form .btn-primary {
     color: #00A699;
 }
 
-@media (max-width: 768pxpx) {
+@media (max-width: 768px) {
     .form_header {
         padding: 1rem;
         border-bottom: none;
@@ -262,7 +262,7 @@ main {
     display: flex;
 }
 
-main .padding-container {
+.padding-container {
     padding: 3rem;
     width: 100%;
 }

@@ -22,13 +22,6 @@
 </template>
 
 <style scoped>
-.padding-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 2rem;
-}
-
 .text-display {
     color: #23287c;
     font-size: 3.4rem;
