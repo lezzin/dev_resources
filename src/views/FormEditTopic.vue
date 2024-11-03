@@ -4,11 +4,10 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import errorMessages from "../utils/errorMessages";
 import { useRoute, useRouter } from 'vue-router';
 import { db } from "../firebase";
-import InputField from '../components/InputField.vue';
 
 export default {
     components: {
-        InputField
+        InputField: () => import("../components/inputField.vue")
     },
     setup() {
         const user = inject('user');

@@ -1,14 +1,4 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-
-import Login from '../views/Login.vue';
-import Topic from '../views/Topic.vue';
-import Home from '../views/Home.vue'
-import NotFound from '../views/NotFound.vue';
-import Profile from '../views/Profile.vue';
-import FormEditTopic from '../views/FormEditTopic.vue';
-import FormEditContent from '../views/FormEditContent.vue';
-import FormTopic from "../views/FormTopic.vue";
-import FormContent from "../views/FormContent.vue";
 import { onAuthStateChanged } from "firebase/auth";
 
 import { auth } from "../firebase";
@@ -31,63 +21,63 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            component: Home,
+            component: () => import('../views/Home.vue'),
             meta: {
                 requiresAuth: false
             }
         },
         {
             path: '/login',
-            component: Login,
+            component: () => import('../views/Login.vue'),
             meta: {
                 requiresAuth: false
             }
         },
         {
             path: '/profile',
-            component: Profile,
+            component: () => import('../views/Profile.vue'),
             meta: {
                 requiresAuth: true
             }
         },
         {
             path: '/topic-form',
-            component: FormTopic,
+            component: () => import('../views/FormTopic.vue'),
             meta: {
                 requiresAuth: true
             }
         },
         {
             path: '/topic/:id',
-            component: Topic,
+            component: () => import('../views/Topic.vue'),
             meta: {
                 requiresAuth: false
             }
         },
         {
             path: '/topic/:id/content-form',
-            component: FormContent,
+            component: () => import('../views/FormContent.vue'),
             meta: {
                 requiresAuth: true
             }
         },
         {
             path: '/topic/:id/edit',
-            component: FormEditTopic,
+            component: () => import('../views/FormEditTopic.vue'),
             meta: {
                 requiresAuth: true
             }
         },
         {
             path: '/topic/:id/content/:contentId/edit',
-            component: FormEditContent,
+            component: () => import('../views/FormEditContent.vue'),
             meta: {
                 requiresAuth: true
             }
         },
         {
             path: '/:catchAll(.*)',
-            component: NotFound,
+            component: () => import('../views/NotFound.vue'),
             meta: {
                 requiresAuth: false
             }

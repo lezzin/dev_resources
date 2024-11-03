@@ -1,44 +1,3 @@
-<template>
-    <form @submit.prevent="addContent" class="form">
-        <div class="header-top form_header">
-            <h2 class="title">Adicionar conteúdo</h2>
-            <a class="btn-outline-primary" href="javascript:history.back()" title="Voltar para a página anterior">
-                <i class="fa-solid fa-arrow-left"></i>
-            </a>
-        </div>
-
-        <div class="form_body">
-            <p class="error-text" v-if="topicError">{{ topicError }}</p>
-
-            <InputField
-                label="Título"
-                id="content-title"
-                v-model="contentTitle" 
-                :error="contentTitleError"
-                placeholder="Título do site/material" 
-            />
-
-            <InputField
-                label="Link"
-                id="content-link"
-                v-model="contentLink" 
-                :error="contentLinkError"
-                placeholder="https://www.site.com..." 
-            />
-
-            <InputField
-                label="Descrição"
-                id="content-description"
-                v-model="contentDescription"
-                :error="contentDescriptionError"
-                placeholder="Descrição do site/material" 
-            />
-
-            <button class="btn-primary" title="Adicionar conteúdo">Adicionar</button>
-        </div>
-    </form>
-</template>
-
 <script>
 import { inject, onMounted, ref, watch } from 'vue';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -156,3 +115,29 @@ export default {
     },
 };
 </script>
+
+<template>
+    <form @submit.prevent="addContent" class="form">
+        <div class="header-top form_header">
+            <h2 class="title">Adicionar conteúdo</h2>
+            <a class="btn-outline-primary" href="javascript:history.back()" title="Voltar para a página anterior">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+        </div>
+
+        <div class="form_body">
+            <p class="error-text" v-if="topicError">{{ topicError }}</p>
+
+            <InputField label="Título" id="content-title" v-model="contentTitle" :error="contentTitleError"
+                placeholder="Título do site/material" />
+
+            <InputField label="Link" id="content-link" v-model="contentLink" :error="contentLinkError"
+                placeholder="https://www.site.com..." />
+
+            <InputField label="Descrição" id="content-description" v-model="contentDescription"
+                :error="contentDescriptionError" placeholder="Descrição do site/material" />
+
+            <button class="btn-primary" title="Adicionar conteúdo">Adicionar</button>
+        </div>
+    </form>
+</template>

@@ -2,7 +2,7 @@
 import { ref, watch, onMounted, inject } from 'vue';
 import { db } from '../firebase';
 import { doc, getDoc, deleteDoc, updateDoc, onSnapshot } from 'firebase/firestore';
-import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import errorMessages from '../utils/errorMessages';
 
 export default {
