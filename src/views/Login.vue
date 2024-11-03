@@ -4,10 +4,11 @@ import errorMessages from "../utils/errorMessages";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 import { auth } from '../firebase';
+import InputField from '../components/InputField.vue';
 
 export default {
     components: {
-        InputField: () => import("../components/inputField.vue")
+        InputField
     },
     setup() {
         const email = ref('');

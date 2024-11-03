@@ -57,7 +57,7 @@ export default {
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <RouterLink to="/" title="Ir para a página inicial">
-                    <img src="../assets/img/logo.svg" alt="Laptop com três engrenagens na tela" width="32" height="32">
+                    <img src="../assets/logo.svg" alt="Laptop com três engrenagens na tela" width="32" height="32">
                 </RouterLink>
                 <div class="header-top-buttons">
                     <RouterLink class="btn-primary" to="/topic-form" v-if="user"

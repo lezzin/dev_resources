@@ -4,10 +4,11 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { useRouter } from 'vue-router';
 import { db } from '../firebase';
+import InputField from '../components/InputField.vue';
 
 export default {
     components: {
-        InputField: () => import("../components/inputField.vue")
+        InputField
     },
     setup() {
         const title = ref('');
