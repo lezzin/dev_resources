@@ -1,0 +1,286 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+    line-height: 1.5;
+}
+
+::-moz-selection {
+    background-color: #646bd4;
+    color: #fff;
+}
+
+::selection {
+    background-color: #646bd4;
+    color: #fff;
+}
+
+img {
+    z-index: -1;
+    max-width: 100%;
+    height: auto;
+    -o-object-fit: cover;
+    object-fit: cover;
+    display: flex;
+    -webkit-user-drag: none;
+}
+
+img.sm {
+    display: none;
+}
+
+@media (max-width: 768pxpx) {
+    img.lg {
+        display: none;
+    }
+
+    img.sm {
+        display: flex;
+    }
+}
+
+button,
+input,
+.form button {
+    font: inherit;
+    border: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+.btn-sm,
+.content-actions button,
+.btn-danger,
+.btn-success,
+.btn-outline-primary,
+.btn-primary {
+    text-decoration: none;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    height: 3rem;
+    border-radius: 0.3rem;
+}
+
+form .btn-primary {
+    height: auto;
+    aspect-ratio: unset;
+}
+
+.btn-primary {
+    background-color: #646bd4;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #3c45c9;
+}
+
+.btn-outline-primary {
+    background-color: transparent;
+    color: #646bd4;
+    border: 1px solid #646bd4;
+}
+
+.btn-outline-primary:hover {
+    background-color: #646bd4;
+    color: #fff;
+}
+
+.btn-success {
+    background-color: #00A699;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background-color: #00736a;
+}
+
+.btn-danger {
+    background-color: #FF5A5F;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #ff272e;
+}
+
+.btn-close {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+}
+
+.btn-close:hover {
+    color: #e6e6e6;
+}
+
+
+.title {
+    color: #23287c;
+    font-size: 2.4rem;
+    font-weight: 600;
+    margin-bottom: 1.6rem;
+}
+
+.subtitle {
+    color: #23287c;
+    font-weight: 500;
+}
+
+.text {
+    color: #555;
+}
+
+.text-emphasis {
+    color: #646bd4;
+}
+
+.link {
+    color: #646bd4;
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+    color: #23287c;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.8rem;
+}
+
+.header-top .title {
+    margin-bottom: 0;
+    padding-left: 0;
+}
+
+.header-top-buttons {
+    display: flex;
+    gap: 0.3rem;
+}
+
+.form {
+    width: 100%;
+}
+
+.form_header {
+    border-bottom: 1px solid #dcddf5;
+    padding: 0.9090909091rem 3rem;
+    margin-bottom: 0;
+    height: 10vh;
+}
+
+.form_body {
+    display: flex;
+    flex-direction: column;
+    padding: 3rem;
+    gap: 1.2rem;
+}
+
+.form .input-group {
+    display: grid;
+    width: 100%;
+    gap: 0.3rem;
+}
+
+.form button {
+    padding: 0.6rem 1.2rem;
+    border: 1px solid #dcddf5;
+    border-radius: 0.3rem;
+    width: 100%;
+    margin-top: 0.6rem;
+}
+
+.form .box-text {
+    border: 1px solid #dcddf5;
+    border-radius: 0.3rem;
+    padding: 0.6rem 1.2rem;
+    width: 100%;
+    text-align: center;
+}
+
+.form .box-text.success-text {
+    background-color: #d9fffc;
+}
+
+.form .box-text.error-text {
+    background-color: #fff3f3;
+}
+
+.form .error-text {
+    color: #FF5A5F;
+}
+
+.form .success-text {
+    color: #00A699;
+}
+
+@media (max-width: 768pxpx) {
+    .form_header {
+        padding: 1rem;
+        border-bottom: none;
+    }
+
+    .form_body {
+        padding: 1rem;
+    }
+}
+
+hr {
+    margin: 1.6rem 0;
+}
+
+body {
+    background-color: #fff;
+    font-size: 1.6rem;
+}
+
+.container {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+}
+
+main {
+    position: relative;
+    margin-left: 25%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+}
+
+main .padding-container {
+    padding: 3rem;
+    width: 100%;
+}
+
+main section {
+    width: 100%;
+    height: inherit;
+}
+
+@media (max-width: 768px) {
+    main {
+        border-top: 1px solid #dcddf5;
+        padding: 1rem;
+        min-height: unset;
+        margin-left: 0;
+    }
+
+    .padding-container {
+        padding: 1rem;
+    }
+}

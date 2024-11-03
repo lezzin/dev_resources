@@ -1,0 +1,73 @@
+<script>
+import { inject, onMounted, ref, watch } from 'vue';
+import errorMessages from '../utils/errorMessages';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '../firebase';
+import { useRouter } from 'vue-router';
+import InputField from '../components/InputField.vue';
+
+export default {
+    components: {
+        InputField
+    },
+    setup() {
+        const router = useRouter();
+        const user = inject("user");
+
+        const emailError = ref("");
+        const formMessage = ref("");
+        const email = ref("");
+
+        const updatePassword = async () => {
+            formMessage.value = '';
+            emailError.value = '';
+
+            if (!email.value) {
+                emailError.value = errorMessages.requiredEmail;
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email.value);
+                formMessage.value = 'E-mail enviado com sucesso';
+            } catch (error) {
+                emailError.value = error.message;
+            }
+        }
+
+        onMounted(() => {
+            document.title = `Ferramentas para Devs | Perfil`;
+
+            if (!user) {
+                router.push("/");
+            }
+
+            email.value = user.value.email;
+        });
+
+        return {
+            updatePassword,
+            email,
+            emailError,
+            formMessage
+        };
+    }
+};
+</script>
+
+<template>
+    <form @submit.prevent="updatePassword" class="form">
+        <div class="header-top form_header">
+            <h2 class="title">Seu perfil de usuário</h2>
+        </div>
+
+        <div class="form_body">
+            <p class="box-text success-text" v-if="formMessage">{{ formMessage }}</p>
+
+            <InputField label="Email" id="email" v-model="email" :error="emailError" placeholder="seuemail@email.com"
+                type="email" />
+
+            <button class="btn-primary" type="submit" title="Alterar senha">Alterar senha</button>
+        </div>
+    </form>
+</template>
