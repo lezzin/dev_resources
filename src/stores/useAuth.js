@@ -15,7 +15,5 @@ export const useAuth = defineStore('auth', () => {
 
     initAuthListener();
 
-    return {
-        user
-    };
+    return { user };
 });

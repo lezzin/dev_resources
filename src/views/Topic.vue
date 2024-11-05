@@ -201,7 +201,7 @@ watch(user, (newUser) => {
 
 .topic_header {
     border-bottom: 1px solid #dcddf5;
-    padding: 0.9090909091rem 3rem;
+    padding: 0.9091 3rem;
     margin-bottom: 0;
     position: fixed;
     width: 75%;

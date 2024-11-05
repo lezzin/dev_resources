@@ -11,11 +11,6 @@ html {
     line-height: 1.5;
 }
 
-::-moz-selection {
-    background-color: #646bd4;
-    color: #fff;
-}
-
 ::selection {
     background-color: #646bd4;
     color: #fff;
@@ -25,10 +20,8 @@ img {
     z-index: -1;
     max-width: 100%;
     height: auto;
-    -o-object-fit: cover;
     object-fit: cover;
     display: flex;
-    -webkit-user-drag: none;
 }
 
 img.sm {
@@ -178,7 +171,7 @@ form .btn-primary {
 
 .form_header {
     border-bottom: 1px solid #dcddf5;
-    padding: 0.9090909091rem 3rem;
+    padding: 0.9091 3rem;
     margin-bottom: 0;
     height: 10vh;
 }

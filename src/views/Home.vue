@@ -35,7 +35,6 @@
 
 .home-image img {
     border-radius: 1rem;
-    -o-object-position: center;
     object-position: center;
 }
 
