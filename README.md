@@ -4,6 +4,8 @@
 
 <h4 align="center"><a href="https://mydevresources.vercel.app">Acessar projeto</a></h4>
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/6451cef86ff742528c583a2704ec8c45)](https://app.codacy.com/gh/lezzin/dev_resources/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+
 ---
 
 Um website que oferece links de uma variedade de recursos gratuitos para desenvolvedores, desde livros a ferramentas
