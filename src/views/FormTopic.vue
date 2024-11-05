@@ -1,90 +1,83 @@
-<script>
+<script setup>
 import errorMessages from '../utils/errorMessages';
-import { inject, onMounted, ref, watch } from 'vue';
+import { db } from '../firebase';
+
 import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { useRouter } from 'vue-router';
-import { db } from '../firebase';
+import { onMounted, ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+
+import { useToast } from '../composables/useToast';
+import { useAuth } from '../stores/useAuth';
+
 import InputField from '../components/InputField.vue';
 
-export default {
-    components: {
-        InputField
-    },
-    setup() {
-        const title = ref('');
-        const titleError = ref('');
-        const user = inject("user");
-        const toast = inject("toast");
-        const router = useRouter();
+const router = useRouter();
 
-        const addTopic = async () => {
-            titleError.value = '';
+const { showToast } = useToast();
+const authUser = useAuth();
+const { user } = storeToRefs(authUser);
 
-            if (!title.value) {
-                titleError.value = errorMessages.requiredTitle;
-                return;
-            }
+const title = ref('');
+const titleError = ref('');
 
-            try {
-                const topicsRef = collection(db, 'topics');
-                const q = query(topicsRef, where('title', '==', title.value));
+const addTopic = async () => {
+    titleError.value = '';
 
-                const querySnapshot = await getDocs(q);
-
-                if (querySnapshot.size > 0) {
-                    titleError.value = errorMessages.topicExists;
-                    return;
-                }
-
-                const docRef = await addDoc(topicsRef, {
-                    title: title.value,
-                    contents: [],
-                    created_at: new Date(),
-                    created_by: user.value.uid,
-                });
-
-                const createdTopicId = docRef.id;
-                title.value = '';
-                titleError.value = '';
-                toast.value = {
-                    type: 'success',
-                    text: 'Tópico adicionado com sucesso'
-                };
-                router.push(`/topic/${createdTopicId}`);
-            } catch (error) {
-                handleError(error);
-            }
-        };
-
-        const handleError = (error) => {
-            this.titleError = error.message || this.$root.error_messages.generalError;
-        }
-
-        onMounted(() => {
-            document.title = `Ferramentas para Devs | Adicionar tópico`;
-
-            if (!user) {
-                router.push("/");
-            }
-        })
-
-        watch(user, (newUser) => {
-            if (!newUser) {
-                router.push("/");
-            }
-        });
-
-        watch(title, () => {
-            titleError.value = "";
-        });
-
-        return {
-            addTopic,
-            title,
-            titleError
-        }
+    if (!title.value) {
+        titleError.value = errorMessages.requiredTitle;
+        return;
     }
+
+    try {
+        const topicsRef = collection(db, 'topics');
+        const q = query(topicsRef, where('title', '==', title.value));
+
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.size > 0) {
+            titleError.value = errorMessages.topicExists;
+            return;
+        }
+
+        const docRef = await addDoc(topicsRef, {
+            title: title.value,
+            contents: [],
+            created_at: new Date(),
+            created_by: user.value.uid,
+        });
+
+        const createdTopicId = docRef.id;
+        title.value = '';
+        titleError.value = '';
+        showToast('success', 'Tópico adicionado com sucesso');
+        router.push(`/topic/${createdTopicId}`);
+    } catch (error) {
+        handleError(error);
+    }
+};
+
+const handleError = (error) => {
+    titleError.value = error.message || errorMessages.generalError;
 }
+
+onMounted(() => {
+    document.title = `Ferramentas para Devs | Adicionar tópico`;
+
+    if (!user?.value?.uid) {
+        router.push("/");
+    }
+})
+
+watch(user, (newUser) => {
+    if (!newUser) {
+        router.push("/");
+    }
+});
+
+watch(title, () => {
+    titleError.value = "";
+});
 </script>
 
 <template>

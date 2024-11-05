@@ -1,16 +1,20 @@
-<script>
-export default {
-    props: ['toast'],
-    setup(props, { emit }) {
-        const closeToast = () => {
-            emit('close');
-        };
+<script setup>
+import { toRef } from 'vue';
 
-        return {
-            closeToast
-        };
+const emit = defineEmits(["close"]);
+
+const props = defineProps({
+    toast: {
+        type: Object,
+        required: true
     }
-}
+});
+
+const toast = toRef(props.toast);
+
+const closeToast = () => {
+    emit('close');
+};
 </script>
 
 <template>

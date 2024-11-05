@@ -1,58 +1,57 @@
-<script>
-import { inject, onMounted, ref, watch } from 'vue';
+<script setup>
 import errorMessages from '../utils/errorMessages';
-import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase';
+
+import { sendPasswordResetEmail } from 'firebase/auth';
 import { useRouter } from 'vue-router';
+import { onMounted, ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+
+import { useAuth } from '../stores/useAuth';
+
 import InputField from '../components/InputField.vue';
 
-export default {
-    components: {
-        InputField
-    },
-    setup() {
-        const router = useRouter();
-        const user = inject("user");
+const router = useRouter();
 
-        const emailError = ref("");
-        const formMessage = ref("");
-        const email = ref("");
+const authUser = useAuth();
+const { user } = storeToRefs(authUser);
 
-        const updatePassword = async () => {
-            formMessage.value = '';
-            emailError.value = '';
+const emailError = ref("");
+const formMessage = ref("");
+const email = ref("");
 
-            if (!email.value) {
-                emailError.value = errorMessages.requiredEmail;
-                return;
-            }
+const updatePassword = async () => {
+    formMessage.value = '';
+    emailError.value = '';
 
-            try {
-                await sendPasswordResetEmail(auth, email.value);
-                formMessage.value = 'E-mail enviado com sucesso';
-            } catch (error) {
-                emailError.value = error.message;
-            }
-        }
-
-        onMounted(() => {
-            document.title = `Ferramentas para Devs | Perfil`;
-
-            if (!user) {
-                router.push("/");
-            }
-
-            email.value = user.value.email;
-        });
-
-        return {
-            updatePassword,
-            email,
-            emailError,
-            formMessage
-        };
+    if (!email.value) {
+        emailError.value = errorMessages.requiredEmail;
+        return;
     }
-};
+
+    try {
+        await sendPasswordResetEmail(auth, email.value);
+        formMessage.value = 'E-mail enviado com sucesso';
+    } catch (error) {
+        emailError.value = error.message;
+    }
+}
+
+onMounted(() => {
+    document.title = `Ferramentas para Devs | Perfil`;
+
+    if (!user) {
+        router.push("/");
+    }
+
+    email.value = user.value.email;
+});
+
+watch(user, (_) => {
+    if (!_) {
+        router.push("/");
+    }
+})
 </script>
 
 <template>

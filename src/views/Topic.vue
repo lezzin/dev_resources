@@ -1,147 +1,130 @@
-<script>
-import { ref, watch, onMounted, inject } from 'vue';
+<script setup>
+import errorMessages from '../utils/errorMessages';
 import { db } from '../firebase';
+
 import { doc, getDoc, deleteDoc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { useRoute, useRouter } from 'vue-router'
-import errorMessages from '../utils/errorMessages';
+import { ref, watch, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
 
-export default {
-    setup() {
-        const id = ref('');
-        const title = ref('');
-        const created_at = ref('');
-        const contents = ref([]);
-        const userIsCreator = ref(false);
-        const contentsEmpty = ref(false);
-        const user = inject("user");
-        const toast = inject("toast");
-        const router = useRouter();
-        const route = useRoute();
+import { useToast } from '../composables/useToast';
+import { useAuth } from '../stores/useAuth';
 
-        const loadTopic = async (topicId) => {
-            try {
-                const docRef = doc(db, "topics", topicId);
-                const docSnap = await getDoc(docRef);
+const router = useRouter();
+const route = useRoute();
 
-                if (docSnap.exists()) {
-                    const topicData = docSnap.data();
+const { showToast } = useToast();
+const authUser = useAuth();
+const { user } = storeToRefs(authUser);
 
-                    id.value = topicId;
-                    title.value = topicData.title;
-                    contents.value = topicData.contents;
-                    created_at.value = topicData.created_at;
-                    userIsCreator.value = user.value && user.value.uid === topicData.created_by;
-                    contentsEmpty.value = contents.value.length === 0;
-                    document.title = `Ferramentas para Devs | ${title.value}`;
+const id = ref('');
+const title = ref('');
+const created_at = ref('');
+const contents = ref([]);
+const userIsCreator = ref(false);
+const contentsEmpty = ref(false);
 
-                    sortContents();
-                }
-            } catch (error) {
-                handleError("loadTopicError");
-            }
-        };
+const loadTopic = async (topicId) => {
+    try {
+        const docRef = doc(db, "topics", topicId);
+        const docSnap = await getDoc(docRef);
 
-        const sortContents = () => {
-            contents.value.sort((a, b) => {
-                const descriptionA = a.description.toLowerCase();
-                const descriptionB = b.description.toLowerCase();
-                return descriptionA.localeCompare(descriptionB);
-            });
-        };
+        if (docSnap.exists()) {
+            const topicData = docSnap.data();
 
-        const deleteTopic = async (topicId) => {
-            if (!confirm('Tem certeza que deseja deletar esse tópico? Todo o conteúdo será perdido.')) return;
-
-            try {
-                await deleteDoc(doc(db, 'topics', topicId));
-                toast.value = {
-                    type: 'success',
-                    text: "Tópico removido com sucesso"
-                };
-
-                router.push('/');
-            } catch (error) {
-                handleError('deleteTopicError');
-            }
-        };
-
-        const deleteContent = async (id) => {
-            if (!confirm('Tem certeza que deseja deletar esse conteúdo?')) return;
-
-            try {
-                const topicId = route.params.id;
-                const docRef = doc(db, 'topics', topicId);
-                const docSnap = await getDoc(docRef);
-
-                if (!docSnap.exists()) {
-                    router.push('/');
-                }
-
-                const topicData = docSnap.data();
-                const newContents = topicData.contents.filter(content => content.id !== id);
-                await updateDoc(docRef, { contents: newContents });
-
-                toast.value = {
-                    type: 'success',
-                    text: "Conteúdo removido com sucesso"
-                };
-            } catch (error) {
-                handleError('deleteContentError');
-            }
-        };
-
-        const handleError = (errorMessage) => {
-            toast.value = {
-                type: 'error',
-                text: errorMessages[errorMessage] || 'Erro desconhecido.'
-            };
-        };
-
-        onMounted(() => {
-            const topicId = route.params.id;
-            loadTopic(topicId);
-
-            const unsubscribe = onSnapshot(doc(db, 'topics', topicId), (docSnap) => {
-                if (docSnap.exists()) {
-                    const topicData = docSnap.data();
-                    title.value = topicData.title;
-                    contents.value = topicData.contents;
-
-                    sortContents();
-                }
-            });
-
-            return () => unsubscribe();
-        });
-
-        watch(() => route.params.id, (newId) => {
-            loadTopic(newId);
-        })
-
-        watch(user, (newUser) => {
-            user.value = newUser;
-        });
-
-        watch(contents, () => {
+            id.value = topicId;
+            title.value = topicData.title;
+            contents.value = topicData.contents;
+            created_at.value = topicData.created_at;
+            userIsCreator.value = user?.value?.uid === topicData.created_by;
             contentsEmpty.value = contents.value.length === 0;
-        })
+            document.title = `Ferramentas para Devs | ${title.value}`;
 
-        return {
-            id,
-            title,
-            created_at,
-            contents,
-            user,
-            userIsCreator,
-            contentsEmpty,
-            loadTopic,
-            deleteTopic,
-            deleteContent,
-            handleError,
-            sortContents
-        };
+            sortContents();
+        }
+    } catch (error) {
+        console.log(error);
+        handleError("loadTopicError");
     }
 };
+
+const sortContents = () => {
+    contents.value.sort((a, b) => {
+        const descriptionA = a.description.toLowerCase();
+        const descriptionB = b.description.toLowerCase();
+        return descriptionA.localeCompare(descriptionB);
+    });
+};
+
+const deleteTopic = async (topicId) => {
+    if (!confirm('Tem certeza que deseja deletar esse tópico? Todo o conteúdo será perdido.')) return;
+
+    try {
+        await deleteDoc(doc(db, 'topics', topicId));
+        showToast('success', "Tópico removido com sucesso");
+
+        router.push('/');
+    } catch (error) {
+        handleError('deleteTopicError');
+    }
+};
+
+const deleteContent = async (id) => {
+    if (!confirm('Tem certeza que deseja deletar esse conteúdo?')) return;
+
+    try {
+        const topicId = route.params.id;
+        const docRef = doc(db, 'topics', topicId);
+        const docSnap = await getDoc(docRef);
+
+        if (!docSnap.exists()) {
+            router.push('/');
+        }
+
+        const topicData = docSnap.data();
+        const newContents = topicData.contents.filter(content => content.id !== id);
+        await updateDoc(docRef, { contents: newContents });
+
+        showToast('success', "Conteúdo removido com sucesso");
+    } catch (error) {
+        handleError('deleteContentError');
+    }
+};
+
+const handleError = (errorMessage) => {
+    showToast('error', errorMessages[errorMessage] || 'Erro desconhecido.');
+};
+
+onMounted(() => {
+    const topicId = route.params.id;
+    loadTopic(topicId);
+
+    const unsubscribe = onSnapshot(doc(db, 'topics', topicId), (docSnap) => {
+        if (docSnap.exists()) {
+            const topicData = docSnap.data();
+            title.value = topicData.title;
+            contents.value = topicData.contents;
+
+            sortContents();
+        }
+    });
+
+    return () => unsubscribe();
+});
+
+watch(() => route.params.id, (newId) => {
+    loadTopic(newId);
+})
+
+watch(contents, (newContents) => {
+    contentsEmpty.value = newContents?.value?.length === 0;
+})
+
+watch(user, (newUser) => {
+    if (!newUser) {
+        userIsCreator.value = false;
+    }
+})
 </script>
 
 <template>

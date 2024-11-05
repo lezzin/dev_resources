@@ -1,40 +1,38 @@
-<script>
+<script setup>
 import { ref, onMounted, inject } from 'vue';
-import { RouterLink } from 'vue-router';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import { RouterLink } from 'vue-router';
+
 import { db } from '../firebase';
 
-export default {
-    props: ['isActive'],
-    setup() {
-        const topics = ref([]);
-        const isMobile = inject("isMobile");
-
-        onMounted(() => {
-            const topicsRef = collection(db, 'topics');
-            const topicsQuery = query(topicsRef, orderBy('title'));
-
-            const unsubscribe = onSnapshot(topicsQuery, (snapshot) => {
-                topics.value = snapshot.docs.map(doc => {
-                    return {
-                        route: doc.id, ...doc.data()
-                    }
-                })
-            });
-
-            return () => unsubscribe();
-        });
-
-        return {
-            topics,
-            isMobile
-        };
+const props = defineProps({
+    isActive: {
+        type: Boolean,
+        required: true
     }
-}
+});
+
+const topics = ref([]);
+const isMobile = inject("isMobile");
+
+onMounted(() => {
+    const topicsRef = collection(db, 'topics');
+    const topicsQuery = query(topicsRef, orderBy('title'));
+
+    const unsubscribe = onSnapshot(topicsQuery, (snapshot) => {
+        topics.value = snapshot.docs.map(doc => {
+            return {
+                route: doc.id, ...doc.data()
+            }
+        })
+    });
+
+    return () => unsubscribe();
+});
 </script>
 
 <template>
-    <nav id="navigation" v-if="!isMobile | isActive">
+    <nav id="navigation" v-if="!isMobile | props.isActive">
         <RouterLink class="link" to="/" title="Ir para a página inicial">
             <i class="fa-solid fa-house"></i>
             Início

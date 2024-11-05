@@ -1,51 +1,41 @@
-<script>
-import { RouterLink } from 'vue-router';
-import Navbar from './Navbar.vue';
-import { inject, ref } from 'vue';
-import { signOut } from 'firebase/auth';
+<script setup>
 import { auth } from '../firebase';
 
-export default {
-    components: {
-        Navbar
-    },
-    setup() {
-        const isMenuActive = ref(false);
-        const isMobile = inject('isMobile');
-        const toast = inject('toast');
-        const user = inject('user');
+import { signOut } from 'firebase/auth';
+import { RouterLink } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import { inject, ref } from 'vue';
 
-        const toggleMenu = () => {
-            isMenuActive.value = !isMenuActive.value;
+import { useToast } from '../composables/useToast';
+import { useAuth } from '../stores/useAuth';
+
+import Navbar from './Navbar.vue';
+
+const { showToast } = useToast();
+const authUser = useAuth();
+const { user } = storeToRefs(authUser);
+
+const isMenuActive = ref(false);
+const isMobile = inject('isMobile');
+
+const toggleMenu = () => {
+    isMenuActive.value = !isMenuActive.value;
+};
+
+const logoutUser = async () => {
+    try {
+        await signOut(auth);
+    } catch ({ code, message }) {
+        const errors = {
+            "auth/network-request-failed":
+                "Falha na conexão de rede. Verifique sua conexão e tente novamente.",
+            "auth/internal-error": "Erro interno do servidor. Tente novamente mais tarde.",
+            "auth/no-current-user": "Nenhum usuário autenticado no momento.",
         };
 
-        const logoutUser = async () => {
-            try {
-                await signOut(auth);
-            } catch ({ code, message }) {
-                const errors = {
-                    "auth/network-request-failed":
-                        "Falha na conexão de rede. Verifique sua conexão e tente novamente.",
-                    "auth/internal-error": "Erro interno do servidor. Tente novamente mais tarde.",
-                    "auth/no-current-user": "Nenhum usuário autenticado no momento.",
-                };
-
-                toast.value = {
-                    type: 'error',
-                    text: errors[code] ?? `Erro ao sair: ${message}`
-                };
-            }
-        };
-
-        return {
-            isMobile,
-            isMenuActive,
-            user,
-            logoutUser,
-            toggleMenu
-        };
+        showToast('error', errors[code] ?? `Erro ao sair: ${message}`);
     }
-}
+};
 </script>
 
 <template>

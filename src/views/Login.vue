@@ -1,75 +1,67 @@
-<script>
-import { inject, onMounted, ref } from 'vue';
+<script setup>
 import errorMessages from "../utils/errorMessages";
+import { auth } from '../firebase';
+
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'vue-router';
-import { auth } from '../firebase';
+import { onMounted, ref } from 'vue';
+import { storeToRefs } from "pinia";
+
+import { useAuth } from '../stores/useAuth';
+
 import InputField from '../components/InputField.vue';
 
-export default {
-    components: {
-        InputField
-    },
-    setup() {
-        const email = ref('');
-        const emailError = ref('');
-        const password = ref('');
-        const passwordError = ref('');
-        const formMessage = ref(null);
-        const router = useRouter();
+const router = useRouter();
 
-        const loginUser = async () => {
-            formMessage.value = null;
-            emailError.value = '';
-            passwordError.value = '';
+const authUser = useAuth();
+const { user } = storeToRefs(authUser);
 
-            if (!email.value) {
-                emailError.value = errorMessages.requiredEmail;
-            }
+const email = ref('');
+const emailError = ref('');
+const password = ref('');
+const passwordError = ref('');
+const formMessage = ref(null);
 
-            if (!password.value) {
-                passwordError.value = errorMessages.requiredPassword;
-            }
+const loginUser = async () => {
+    formMessage.value = null;
+    emailError.value = '';
+    passwordError.value = '';
 
-            if (!email.value || !password.value) {
-                return;
-            }
+    if (!email.value) {
+        emailError.value = errorMessages.requiredEmail;
+    }
 
-            try {
-                await signInWithEmailAndPassword(auth, email.value, password.value);
-                router.push('/');
-            } catch (error) {
-                handleError(error);
-            }
-        };
+    if (!password.value) {
+        passwordError.value = errorMessages.requiredPassword;
+    }
 
-        const handleError = (error) => {
-            const errorMessage = errorMessages[error.code] || "Erro desconhecido. Tente novamente mais tarde.";
-            formMessage.value = {
-                type: 'error',
-                text: errorMessage
-            };
-        }
+    if (!email.value || !password.value) {
+        return;
+    }
 
-        onMounted(() => {
-            document.title = `Ferramentas para Devs | Login`;
-
-            const user = inject("user");
-            if (user.value !== null) {
-                router.push("/");
-            }
-        });
-
-        return {
-            formMessage,
-            email,
-            password,
-            emailError,
-            passwordError,
-            loginUser
-        }
+    try {
+        await signInWithEmailAndPassword(auth, email.value, password.value);
+        router.push('/');
+    } catch (error) {
+        handleError(error);
     }
 };
+
+const handleError = (error) => {
+    const errorMessage = errorMessages[error.code] || "Erro desconhecido. Tente novamente mais tarde.";
+    formMessage.value = {
+        type: 'error',
+        text: errorMessage
+    };
+}
+
+onMounted(() => {
+    document.title = `Ferramentas para Devs | Login`;
+
+    if (user?.value?.uid) {
+        router.push("/");
+    }
+});
 </script>
 
 <template>

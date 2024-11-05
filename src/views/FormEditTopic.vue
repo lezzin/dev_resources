@@ -1,92 +1,88 @@
-<script>
-import { ref, watch, onMounted, inject } from 'vue';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+<script setup>
 import errorMessages from "../utils/errorMessages";
-import { useRoute, useRouter } from 'vue-router';
 import { db } from "../firebase";
+
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { useRoute, useRouter } from 'vue-router';
+import { ref, watch, onMounted } from 'vue';
+import { storeToRefs } from "pinia";
+
+import { useToast } from '../composables/useToast';
+import { useAuth } from '../stores/useAuth';
+
 import InputField from '../components/InputField.vue';
 
-export default {
-    components: {
-        InputField
-    },
-    setup() {
-        const user = inject('user');
-        const toast = inject('toast');
-        const router = useRouter();
-        const route = useRoute();
+const router = useRouter();
+const route = useRoute();
 
-        const topicTitle = ref('');
-        const titleError = ref('');
-        const topicError = ref('');
+const { showToast } = useToast();
+const authUser = useAuth();
+const { user } = storeToRefs(authUser);
 
-        const editTopic = async () => {
-            titleError.value = '';
-            topicError.value = '';
+const topicTitle = ref('');
+const titleError = ref('');
+const topicError = ref('');
 
-            if (!topicTitle.value) {
-                titleError.value = errorMessages.requiredTitle;
-                return;
-            }
+const editTopic = async () => {
+    titleError.value = '';
+    topicError.value = '';
 
-            try {
-                const topicId = route.params.id; 
-                const topicRef = doc(db, 'topics', topicId);
+    if (!topicTitle.value) {
+        titleError.value = errorMessages.requiredTitle;
+        return;
+    }
 
-                await updateDoc(topicRef, {
-                    title: topicTitle.value
-                });
+    try {
+        const topicId = route.params.id;
+        const topicRef = doc(db, 'topics', topicId);
 
-                toast.value = {
-                    type: 'success',
-                    text: 'Tópico editado com sucesso',
-                };
-                router.push(`/topic/${topicId}`);
-            } catch (error) {
-                handleError(error);
-            }
-        };
-
-        const handleError = (error) => {
-            titleError.value = error.message || errorMessages.generalError;
-        };
-
-        const loadTopic = async () => {
-            try {
-                const topicId = route.params.id;
-                const topicRef = doc(db, 'topics', topicId);
-                const docSnap = await getDoc(topicRef);
-
-                if (!docSnap.exists()) {
-                    topicError.value = errorMessages.topicNotFound;
-                    return;
-                }
-
-                const topicData = docSnap.data();
-                topicTitle.value = topicData.title;
-            } catch (error) {
-                handleError(error);
-            }
-        };
-
-        onMounted(() => {
-            document.title = `Ferramentas para Devs | Editar Tópico`;
-            if (!user.value) router.push('/');
-            loadTopic();
+        await updateDoc(topicRef, {
+            title: topicTitle.value
         });
 
-        watch(user, (newUser) => {
-            if (!newUser) router.push('/');
-        });
-
-        return {
-            topicTitle,
-            titleError,
-            topicError,
-            editTopic,
-        };
-    },
+        showToast('success', 'Tópico editado com sucesso');
+        router.push(`/topic/${topicId}`);
+    } catch (error) {
+        handleError(error);
+    }
 };
+
+const handleError = (error) => {
+    titleError.value = error.message || errorMessages.generalError;
+};
+
+const loadTopic = async () => {
+    try {
+        const topicId = route.params.id;
+        const topicRef = doc(db, 'topics', topicId);
+        const docSnap = await getDoc(topicRef);
+
+        if (!docSnap.exists()) {
+            topicError.value = errorMessages.topicNotFound;
+            return;
+        }
+
+        const topicData = docSnap.data();
+        topicTitle.value = topicData.title;
+    } catch (error) {
+        handleError(error);
+    }
+};
+
+onMounted(() => {
+    document.title = `Ferramentas para Devs | Editar Tópico`;
+
+    if (!user?.value?.uid) {
+        router.push('/');
+        return;
+    };
+
+    loadTopic();
+});
+
+watch(user, (newUser) => {
+    if (!newUser) router.push('/');
+});
 </script>
 
 <template>
