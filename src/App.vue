@@ -30,7 +30,6 @@ provide('isMobile', isMobile);
 
 <template>
     <div class="container">
-        <Toast :toast="toast" @close="closeToast" />
 
         <TopicMenu />
 
@@ -38,4 +37,8 @@ provide('isMobile', isMobile);
             <RouterView></RouterView>
         </main>
     </div>
+
+    <Teleport to="#toast">
+        <Toast :toast="toast" @close="closeToast" />
+    </Teleport>
 </template>

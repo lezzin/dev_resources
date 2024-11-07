@@ -46,8 +46,9 @@ const closeToast = () => {
     bottom: 1.5rem;
     right: 1.5rem;
     display: grid;
-    grid-template-columns: 1.5rem 1fr;
-    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
+    grid-template-columns: 1.8rem 1fr;
+    box-shadow: 0 1rem 3rem #0000002d;
+    border: 1px solid #dcddf5;
     background-color: #fff;
     border-radius: 3px;
     overflow: hidden;

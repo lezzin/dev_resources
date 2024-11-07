@@ -171,7 +171,7 @@ form .btn-primary {
 
 .form_header {
     border-bottom: 1px solid #dcddf5;
-    padding: 0.9091 3rem;
+    padding: 0.9091rem 3rem;
     margin-bottom: 0;
     height: 10vh;
 }
@@ -181,6 +181,7 @@ form .btn-primary {
     flex-direction: column;
     padding: 3rem;
     gap: 1.2rem;
+    max-width: 500px;
 }
 
 .form .input-group {
