@@ -27,7 +27,7 @@ onMounted(() => {
         <div class="row items-center q-py-sm q-px-lg">
             <QBtn :color="`${$q.dark.isActive ? 'white' : 'dark'}`" @click="$emit('toggle')" flat round icon="menu"
                 class="q-mr-sm">
-                <QTooltip>Alternar menu lateral</QTooltip>
+                <QTooltip>Fechar menu lateral</QTooltip>
             </QBtn>
 
             <RouterLink to="/">

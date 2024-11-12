@@ -1,27 +1,32 @@
 <script setup>
-import { QImg, useQuasar } from 'quasar';
+import { QBtn, QImg, useQuasar } from 'quasar';
+import { useAside } from '../composables/useAside';
+import { onMounted } from 'vue';
 const $q = useQuasar();
+const asideComposable = useAside();
+
+onMounted(() => (document.title = "Ferramentas para Devs"));
 </script>
 
 <template>
-    <section class="column justify-center text-primary q-py-lg">
-        <h2 :class="`q-my-none ${$q.screen.lt.md ? 'text-h4' : 'text-h2'}`">
-            Olá, usuário! Bem-vindo ao site de ferramentas para devs.
-        </h2>
+    <section>
+        <div class="column justify-center items-center text-center" style="min-height: calc(80vh - 43px);">
+            <QImg src="../assets/img/einstein.webp" :ratio="16 / 9"
+                :style="`max-width: ${$q.screen.lt.md ? 100 : 62}%;`" class="rounded-borders" />
 
-        <h3 class="text-h5">
-            Aqui você encontrará diversos materiais e links úteis para estudos e desenvolvimento de
-            projetos.
-        </h3>
+            <h2 :class="`q-mb-md text-primary ${$q.screen.lt.md ? 'text-h4' : 'text-h2'}`">
+                Olá, bem-vindo ao site de ferramentas para devs
+            </h2>
 
-        <QImg :ratio="16 / 9" src="../assets/img/einstein.webp" alt="Albert Einstein utilizando um computador - IA"
-            class="shadow-4 q-mb-lg rounded-borders">
-            <div class="absolute-bottom">
-                Imagem gerada por inteligência artificial
-            </div>
-        </QImg>
+            <h3 class="text-h5 q-mb-md">
+                Aqui você encontrará diversos materiais e links úteis para estudos e desenvolvimento de
+                projetos.
+            </h3>
 
-        <p :class="`${$q.dark.isActive ? '' : 'text-dark'}`">
+            <QBtn color="primary" label="Navegar pelos tópicos" icon="start" @click="asideComposable.showMenu" />
+        </div>
+
+        <p :class="`q-mt-lg q-pt-lg text-center ${$q.dark.isActive ? '' : 'text-dark'}`">
             <span>Criado com ❤️ por </span>
             <a href="https://lezzin.github.io" target="_blank" style="color: inherit;">lezzin</a>
         </p>

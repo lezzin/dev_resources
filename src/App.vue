@@ -4,15 +4,15 @@ import { QBtn, QDrawer, QHeader, QImg, QLayout, QPage, QPageContainer, QScrollAr
 import { useAuth } from './stores/useAuth';
 import { storeToRefs } from 'pinia';
 import { auth } from './firebase';
-import { ref } from 'vue';
 import Navbar from './components/Navbar.vue';
+import { useAside } from './composables/useAside';
+import { toRef } from 'vue';
 
+const asideComposable = useAside();
+const isMenuActive = toRef(asideComposable.isActive);
 
 const authUser = useAuth();
 const { user } = storeToRefs(authUser);
-
-const isMenuActive = ref(false);
-const toggleMenu = () => (isMenuActive.value = !isMenuActive.value);
 
 const logoutUser = async () => {
     await authUser.logout(auth);
@@ -24,8 +24,8 @@ const logoutUser = async () => {
     <QLayout view="lHh lpR lFf">
         <QHeader :class="`text-white ${$q.dark.isActive ? 'bg-dark' : 'bg-grey-4'} shadow-2`">
             <QToolbar class="row items-center q-py-sm">
-                <QBtn :color="`${$q.dark.isActive ? 'white' : 'dark'}`" @click="toggleMenu" flat round icon="menu"
-                    class="q-mr-sm">
+                <QBtn :color="`${$q.dark.isActive ? 'white' : 'dark'}`" @click="asideComposable.showMenu" flat round
+                    icon="menu" class="q-mr-sm">
                     <QTooltip>Alternar menu lateral</QTooltip>
                 </QBtn>
 
@@ -48,8 +48,8 @@ const logoutUser = async () => {
                         <QTooltip>Sair do perfil de administrador</QTooltip>
                     </QBtn>
 
-                    <QBtn v-if="!user" unelevated color="primary" to="/login" icon="admin_panel_settings"
-                        label="Admin" />
+                    <QBtn v-if="!user" unelevated :color="`${$q.dark.isActive ? 'grey-10' : 'secondary'}`" to="/login"
+                        icon="admin_panel_settings" label="Admin" />
 
                     <QBtn round unelevated :color="`${$q.dark.isActive ? 'grey-9' : 'secondary'}`"
                         @click="() => $q.dark.toggle()" :icon="$q.dark.isActive ? 'dark_mode' : 'light_mode'">
@@ -62,7 +62,7 @@ const logoutUser = async () => {
         <QDrawer v-model="isMenuActive" overlay side="left"
             :class="`${$q.dark.isActive ? 'bg-grey-10' : 'bg-grey-3'} shadow-2`" :width="350">
             <QScrollArea class="fit">
-                <Navbar @toggle="toggleMenu" />
+                <Navbar @toggle="asideComposable.closeMenu" />
             </QScrollArea>
         </QDrawer>
 
