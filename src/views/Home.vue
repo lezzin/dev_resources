@@ -16,7 +16,7 @@ const $q = useQuasar();
             </h3>
         </div>
 
-        <QImg :ratio="16 / 9" src="/src/assets/img/einstein.webp" alt="Albert Einstein utilizando um computador - IA"
+        <QImg :ratio="16 / 9" src="../assets/img/einstein.webp" alt="Albert Einstein utilizando um computador - IA"
             class="shadow-4 q-mb-lg rounded-borders">
             <div class="absolute-bottom">
                 Imagem gerada por inteligência artificial

@@ -48,7 +48,7 @@ const logoutUser = async () => {
             </QToolbar>
         </QHeader>
 
-        <QDrawer v-model="isMenuActive" overlay :width="400" :breakpoint="500" bordered>
+        <QDrawer v-model="isMenuActive" show-if-above side="left" :width="400" :breakpoint="500" bordered>
             <QScrollArea class="fit">
                 <Navbar @toggle="toggleMenu" />
             </QScrollArea>
