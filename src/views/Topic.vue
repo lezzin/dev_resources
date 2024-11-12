@@ -122,7 +122,7 @@ watch(user, (newUser) => {
 </script>
 
 <template>
-    <section>
+    <section class="q-mx-auto" style="max-width: 1080px;">
         <div class="table-responsive">
             <QTable :rows="contents" :columns="columns.data" flat row-key="id" rows-per-page-label="Linhas por página:"
                 :rows-per-page-options="[9, 15, 25, 50, 0]">

@@ -24,7 +24,7 @@ onMounted(() => {
 
 <template>
     <nav class="q-pt-sm column g-gutter-md">
-        <div class="row items-center q-py-sm q-px-lg">
+        <div class="row items-center q-py-sm q-px-lg" v-if="$q.screen.lt.md">
             <QBtn :color="`${$q.dark.isActive ? 'white' : 'dark'}`" @click="$emit('toggle')" flat round icon="menu"
                 class="q-mr-sm">
                 <QTooltip>Fechar menu lateral</QTooltip>
