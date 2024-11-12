@@ -1,6 +1,6 @@
 <script setup>
 import { RouterView } from 'vue-router';
-import { QBtn, QDrawer, QHeader, QLayout, QPage, QPageContainer, QScrollArea, QToolbar, QTooltip } from 'quasar';
+import { QBtn, QDrawer, QHeader, QImg, QLayout, QPage, QPageContainer, QScrollArea, QToolbar, QTooltip } from 'quasar';
 import { useAuth } from './stores/useAuth';
 import { storeToRefs } from 'pinia';
 import { auth } from './firebase';
@@ -27,6 +27,8 @@ const logoutUser = async () => {
                 <QBtn @click="toggleMenu" flat round icon="menu" class="q-mr-sm">
                     <QTooltip>Alternar menu lateral</QTooltip>
                 </QBtn>
+
+                <QImg src="./assets/logo.svg" width="32px" height="32px" />
 
                 <div class="q-ml-auto">
                     <div v-if="user" class="q-gutter-sm items-center">

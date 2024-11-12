@@ -1,5 +1,5 @@
 <script setup>
-import { QBanner, QCard, QCardSection, QForm, QIcon, QSeparator } from 'quasar';
+import { QCard, QCardSection, QForm, QSeparator } from 'quasar';
 
 const emit = defineEmits(["send"]);
 

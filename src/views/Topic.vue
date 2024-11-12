@@ -8,7 +8,7 @@ import { ref, watch, onMounted, reactive } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useAuth } from '../stores/useAuth';
-import { QTable, QTh, QTd, QTr, QBtn, QBtnGroup, QTooltip, QImg, QIcon, QSpace, useQuasar } from 'quasar';
+import { QTable, QTh, QTd, QTr, QBtn, QBtnGroup, QTooltip, QImg, useQuasar } from 'quasar';
 import { useTopic } from '../composables/useTopic';
 import { useContent } from '../composables/useContent';
 
@@ -176,7 +176,7 @@ watch(user, (newUser) => {
                 </template>
 
                 <template v-slot:no-data>
-                    <QImg src="/src/assets/img/content_empty_lg.webp" />
+                    <QImg src="../assets/img/content_empty_lg.webp" />
                 </template>
             </QTable>
         </div>
