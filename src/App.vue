@@ -21,8 +21,8 @@ const logoutUser = async () => {
 </script>
 
 <template>
-    <QLayout view="hHh lpR fFf">
-        <QHeader elevated class="bg-primary text-white" height-hint="64">
+    <QLayout view="hHh lpR lFf">
+        <QHeader elevated class="bg-primary text-white">
             <QToolbar class="row items-center q-py-sm" style="max-width: 1080px; margin: 0 auto">
                 <QBtn @click="toggleMenu" flat round icon="menu" class="q-mr-sm">
                     <QTooltip>Alternar menu lateral</QTooltip>
@@ -50,7 +50,7 @@ const logoutUser = async () => {
             </QToolbar>
         </QHeader>
 
-        <QDrawer v-model="isMenuActive" show-if-above bordered class="bg-grey-3" :width="400">
+        <QDrawer v-model="isMenuActive" overlay side="left" bordered class="bg-grey-3 shadow-2" :width="350">
             <QScrollArea class="fit">
                 <Navbar />
             </QScrollArea>
