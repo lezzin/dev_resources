@@ -3,8 +3,9 @@ import { ref, onMounted } from 'vue';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 
 import { db } from '../firebase';
-import { QBtn, QImg, QTooltip } from 'quasar';
+import { QBtn, QImg, QTooltip, useQuasar } from 'quasar';
 
+const $q = useQuasar();
 const topics = ref([]);
 
 onMounted(() => {
@@ -23,6 +24,17 @@ onMounted(() => {
 
 <template>
     <nav class="q-pt-sm column g-gutter-md">
+        <div class="row items-center q-py-sm q-px-lg">
+            <QBtn :color="`${$q.dark.isActive ? 'white' : 'dark'}`" @click="$emit('toggle')" flat round icon="menu"
+                class="q-mr-sm">
+                <QTooltip>Alternar menu lateral</QTooltip>
+            </QBtn>
+
+            <RouterLink to="/">
+                <QImg src="../assets/logo.svg" width="32px" height="32px" />
+            </RouterLink>
+        </div>
+
         <QBtn class="google-copy ellipsis items-start" padding="1rem 2rem" unelevated to="/" icon="home" label="Início"
             size="md" />
 

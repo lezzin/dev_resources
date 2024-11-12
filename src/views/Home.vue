@@ -21,9 +21,9 @@ const $q = useQuasar();
             </div>
         </QImg>
 
-        <p class="text-dark">
+        <p :class="`${$q.dark.isActive ? '' : 'text-dark'}`">
             <span>Criado com ❤️ por </span>
-            <a href="https://lezzin.github.io" target="_blank" class="text-dark">lezzin</a>
+            <a href="https://lezzin.github.io" target="_blank" style="color: inherit;">lezzin</a>
         </p>
     </section>
 </template>

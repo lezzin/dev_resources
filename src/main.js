@@ -14,6 +14,9 @@ const app = createApp({ render: () => h(App) });
 app.use(Quasar, {
     plugins: {
         Notify
+    },
+    config: {
+        dark: 'auto'
     }
 });
 

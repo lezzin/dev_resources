@@ -28,14 +28,16 @@ const isUserCreator = ref(false);
 
 const $q = useQuasar();
 
-const columns = reactive([
-    { name: 'website', label: 'Website', align: 'left', field: 'title' },
-    { name: 'description', label: 'Descrição', align: 'left', field: 'description' },
-]);
+const columns = reactive({
+    data: [
+        { name: 'website', label: 'Website', align: 'left', field: 'title' },
+        { name: 'description', label: 'Descrição', align: 'left', field: 'description' },
+    ]
+});
 
 const loadTopic = async (topicId) => {
-    if (user.value && !columns.find(col => col.name === 'actions')) {
-        columns.push({ name: 'actions', label: 'Ações', align: 'center', field: 'actions' });
+    if (user.value && !columns.data.find(col => col.name === 'actions')) {
+        columns.data.push({ name: 'actions', label: 'Ações', align: 'center', field: 'actions' });
     }
 
     try {
@@ -109,6 +111,10 @@ watch(() => route.params.id, (newId) => {
 })
 
 watch(user, (newUser) => {
+    if (newUser && !columns.data.find(col => col.name === 'actions')) {
+        columns.data.push({ name: 'actions', label: 'Ações', align: 'left', field: 'actions' });
+    }
+
     if (!newUser) {
         isUserCreator.value = false;
     }
@@ -118,7 +124,7 @@ watch(user, (newUser) => {
 <template>
     <section>
         <div class="table-responsive">
-            <QTable :rows="contents" :columns="columns" flat row-key="id" rows-per-page-label="Linhas por página:"
+            <QTable :rows="contents" :columns="columns.data" flat row-key="id" rows-per-page-label="Linhas por página:"
                 :rows-per-page-options="[9, 15, 25, 50, 0]">
                 <template v-slot:top>
                     <div class="flex justify-between items-center full-width">
@@ -155,7 +161,8 @@ watch(user, (newUser) => {
                 <template v-slot:body="props">
                     <QTr :props="props">
                         <QTd>
-                            <a target="_blank" :href="props.row.link" class="text-primary">
+                            <a target="_blank" :href="props.row.link"
+                                :class="`${$q.dark.isActive ? 'text-white' : 'text-primary'}`">
                                 {{ props.row.title }}
                             </a>
                         </QTd>
