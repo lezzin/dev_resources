@@ -122,7 +122,9 @@ watch(user, (newUser) => {
                 :rows-per-page-options="[9, 15, 25, 50, 0]">
                 <template v-slot:top>
                     <div class="flex justify-between items-center full-width">
-                        <h2 class="text-h4 text-weight-bold q-ma-none">{{ title }}</h2>
+                        <h2 :class="`${$q.screen.lt.md ? 'text-h5' : 'text-h4'} text-weight-bold q-ma-none`">
+                            {{ title }}
+                        </h2>
 
                         <QBtnGroup rounded v-if="isUserCreator">
                             <QBtn unelevated outline color="primary" :to="`/topic/${id}/edit`" icon="edit">
