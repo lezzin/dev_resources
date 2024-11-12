@@ -21,8 +21,8 @@ const logoutUser = async () => {
 </script>
 
 <template>
-    <QLayout view="lHh Lpr lff" container class="shadow-2 rounded-borders" style="min-height: 100vh;">
-        <QHeader elevated class="bg-primary text-white">
+    <QLayout view="hHh lpR fFf">
+        <QHeader elevated class="bg-primary text-white" height-hint="64">
             <QToolbar class="row items-center q-py-sm" style="max-width: 1080px; margin: 0 auto">
                 <QBtn @click="toggleMenu" flat round icon="menu" class="q-mr-sm">
                     <QTooltip>Alternar menu lateral</QTooltip>
@@ -50,14 +50,14 @@ const logoutUser = async () => {
             </QToolbar>
         </QHeader>
 
-        <QDrawer v-model="isMenuActive" show-if-above side="left" :width="400" :breakpoint="500" bordered>
+        <QDrawer v-model="isMenuActive" show-if-above bordered class="bg-grey-3" :width="400">
             <QScrollArea class="fit">
-                <Navbar @toggle="toggleMenu" />
+                <Navbar />
             </QScrollArea>
         </QDrawer>
 
-        <QPageContainer>
-            <QPage padding style="max-width: 1080px; margin: 0 auto">
+        <QPageContainer style="max-width: 1080px; margin: 0 auto">
+            <QPage padding>
                 <RouterView />
             </QPage>
         </QPageContainer>

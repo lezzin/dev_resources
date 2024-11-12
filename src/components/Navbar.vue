@@ -3,11 +3,9 @@ import { ref, onMounted } from 'vue';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 
 import { db } from '../firebase';
-import { QBtn, QImg, QTooltip, useQuasar } from 'quasar';
+import { QBtn, QImg, QTooltip } from 'quasar';
 
-const $q = useQuasar();
 const topics = ref([]);
-
 
 onMounted(() => {
     const topicsRef = collection(db, 'topics');
@@ -24,21 +22,18 @@ onMounted(() => {
 </script>
 
 <template>
-    <aside class="fixed-left bg-primary full-width q-pt-md">
-        <div class="q-px-lg q-mb-lg">
-            <QBtn unelevated color="secondary" @click="$emit('toggle')" icon="close" label="Fechar menu" class="q-ml-md"
-                v-if="$q.screen.lt.md">
-                <QTooltip>Fechar menu lateral</QTooltip>
-            </QBtn>
-        </div>
+    <nav class="q-pt-sm column g-gutter-md">
+        <QBtn class="google-copy ellipsis items-start" padding="1rem 2rem" unelevated to="/" icon="home" label="Início"
+            size="md" />
 
-        <nav :class="`column g-gutter-md ${$q.screen.lt.md ? 'q-pt-none' : 'q-pt-md'}`">
-            <QBtn class="items-start" color="primary" padding="1rem 2rem" unelevated to="/" icon="home" label="Início"
-                size="md" />
-
-            <QBtn class="items-start" color="primary" padding="1rem 2rem" unelevated v-for="topic in topics"
-                :key="topic.id" :to="'/topic/' + topic.route" :label="topic.title" icon="local_fire_department"
-                size="md" />
-        </nav>
-    </aside>
+        <QBtn class="google-copy ellipsis items-start" padding="1rem 2rem" unelevated v-for="topic in topics"
+            :key="topic.id" :to="'/topic/' + topic.route" :label="topic.title" icon="local_fire_department" size="md" />
+    </nav>
 </template>
+
+<style>
+.google-copy {
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+}
+</style>

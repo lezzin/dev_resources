@@ -1,5 +1,7 @@
 import errorMessages from "./errorMessages";
 
+export const TITLE_MAX_LENGTH = 20;
+
 export const validateLink = (val) => {
     const urlRegex = /^(http|https):\/\//i;
     return urlRegex.test(val) || errorMessages.invalidLink;
@@ -8,6 +10,10 @@ export const validateLink = (val) => {
 export const validateTitle = (val) => {
     if (!val) {
         return errorMessages.requiredTitle;
+    }
+
+    if (val.length > TITLE_MAX_LENGTH) {
+        return errorMessages.maximumSize;
     }
 }
 

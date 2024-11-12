@@ -1,3 +1,5 @@
+import { TITLE_MAX_LENGTH } from "./validations";
+
 export default {
     // Authentication errors
     "auth/invalid-credential": "Email ou senha inválidos",
@@ -22,6 +24,8 @@ export default {
     "invalidLink": "Inicie o link com http:// ou https://",
     "requiredTitle": "Preencha o título",
     "requiredDescription": "Preencha a descrição",
+
+    "maximumSize": `Insira menos que ${TITLE_MAX_LENGTH} caracteres.`,
 
     "generalError": "Erro desconhecido",
 };
