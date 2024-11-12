@@ -1,111 +1,41 @@
 <script setup>
-import { ref, onMounted, inject } from 'vue';
+import { ref, onMounted } from 'vue';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
-import { RouterLink } from 'vue-router';
 
 import { db } from '../firebase';
-
-const props = defineProps({
-    isActive: {
-        type: Boolean,
-        required: true
-    }
-});
+import { QBtn, QTooltip } from 'quasar';
 
 const topics = ref([]);
-const isMobile = inject("isMobile");
 
 onMounted(() => {
     const topicsRef = collection(db, 'topics');
     const topicsQuery = query(topicsRef, orderBy('title'));
 
-    const unsubscribe = onSnapshot(topicsQuery, (snapshot) => {
+    onSnapshot(topicsQuery, (snapshot) => {
         topics.value = snapshot.docs.map(doc => {
             return {
                 route: doc.id, ...doc.data()
             }
         })
     });
-
-    return () => unsubscribe();
 });
 </script>
 
 <template>
-    <nav id="navigation" v-if="!isMobile | props.isActive">
-        <RouterLink class="link" to="/" title="Ir para a página inicial">
-            <i class="fa-solid fa-house"></i>
-            Início
-        </RouterLink>
+    <aside class="fixed-left bg-primary full-width q-pt-md">
+        <div class="q-px-lg q-mb-lg">
+            <QBtn unelevated color="secondary" @click="$emit('toggle')" icon="close" label="Fechar menu">
+                <QTooltip>Fechar menu lateral</QTooltip>
+            </QBtn>
+        </div>
 
-        <RouterLink class="link" v-for="topic in topics" :key="topic.id" :to="'/topic/' + topic.route"
-            title="Ir para o tópico">
-            <i class="fa-solid fa-fire"></i>
-            {{ topic.title }}
-        </RouterLink>
-    </nav>
+        <nav class="column g-gutter-md">
+            <QBtn class="items-start" color="primary" padding="1rem 2rem" unelevated to="/" icon="home" label="Início"
+                size="md" />
+
+            <QBtn class="items-start" color="primary" padding="1rem 2rem" unelevated v-for="topic in topics"
+                :key="topic.id" :to="'/topic/' + topic.route" :label="topic.title" icon="local_fire_department"
+                size="md" />
+        </nav>
+    </aside>
 </template>
-
-<style scoped>
-nav {
-    display: flex;
-    flex-direction: column;
-}
-
-.link,
-.router-link-active {
-    text-decoration: none;
-    padding: 1rem 1rem 1rem 3rem;
-    overflow: hidden;
-    position: relative;
-    font-weight: 400;
-}
-
-.link:hover:not(.router-link-exact-active),
-.router-link-active:hover:not(.router-link-exact-active) {
-    text-decoration: none;
-}
-
-.link:hover:not(.router-link-exact-active)::before,
-.router-link-active:hover:not(.router-link-exact-active)::before {
-    opacity: 0.3;
-}
-
-.link::before,
-.router-link-active::before {
-    z-index: -1;
-    content: "";
-    position: absolute;
-    inset: 0;
-    display: block;
-    background-color: #646bd4;
-    border-top-right-radius: 10rem;
-    border-bottom-right-radius: 10rem;
-    opacity: 0;
-    transform: translateX(-3rem);
-    transition: all 0.3s ease;
-}
-
-.link.router-link-exact-active,
-.router-link-active.router-link-exact-active {
-    color: #fff;
-    pointer-events: none;
-}
-
-.link.router-link-exact-active::before,
-.router-link-active.router-link-exact-active::before {
-    transform: translateX(0);
-    opacity: 1;
-}
-
-@media (max-width: 768px) {
-    nav {
-        padding: 1.5rem 0;
-    }
-
-    .link,
-    .router-link-active {
-        padding-left: 1.5rem;
-    }
-}
-</style>

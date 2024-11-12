@@ -7,40 +7,35 @@ import { useRoute, useRouter } from 'vue-router';
 import { ref, watch, onMounted } from 'vue';
 import { storeToRefs } from "pinia";
 
-import { useToast } from '../composables/useToast';
 import { useAuth } from '../stores/useAuth';
 
-import InputField from '../components/InputField.vue';
+import FormCard from "../components/layout/FormCard.vue";
+import { QBtn, QBtnGroup, QInput, useQuasar } from "quasar";
+import { validateTitle } from "../utils/validations";
+import { useTopic } from "../composables/useTopic";
+
+const $q = useQuasar();
 
 const router = useRouter();
 const route = useRoute();
 
-const { showToast } = useToast();
 const authUser = useAuth();
 const { user } = storeToRefs(authUser);
 
-const topicTitle = ref('');
-const titleError = ref('');
-const topicError = ref('');
+const topicComposable = useTopic();
+
+const title = ref('');
 
 const editTopic = async () => {
-    titleError.value = '';
-    topicError.value = '';
-
-    if (!topicTitle.value) {
-        titleError.value = errorMessages.requiredTitle;
-        return;
-    }
-
     try {
         const topicId = route.params.id;
-        const topicRef = doc(db, 'topics', topicId);
+        await topicComposable.editTopic(title.value, topicId);
 
-        await updateDoc(topicRef, {
-            title: topicTitle.value
+        $q.notify({
+            message: 'Tópico editado com sucesso',
+            color: 'green'
         });
 
-        showToast('success', 'Tópico editado com sucesso');
         router.push(`/topic/${topicId}`);
     } catch (error) {
         handleError(error);
@@ -48,22 +43,18 @@ const editTopic = async () => {
 };
 
 const handleError = (error) => {
-    titleError.value = error.message || errorMessages.generalError;
+    $q.notify({
+        message: errorMessages[error.code] || errorMessages.generalError,
+        color: 'error'
+    });
 };
 
 const loadTopic = async () => {
+    const topicId = route.params.id;
+
     try {
-        const topicId = route.params.id;
-        const topicRef = doc(db, 'topics', topicId);
-        const docSnap = await getDoc(topicRef);
-
-        if (!docSnap.exists()) {
-            topicError.value = errorMessages.topicNotFound;
-            return;
-        }
-
-        const topicData = docSnap.data();
-        topicTitle.value = topicData.title;
+        const topicData = await topicComposable.loadTopic(topicId);
+        title.value = topicData.title;
     } catch (error) {
         handleError(error);
     }
@@ -71,12 +62,6 @@ const loadTopic = async () => {
 
 onMounted(() => {
     document.title = `Ferramentas para Devs | Editar Tópico`;
-
-    if (!user?.value?.uid) {
-        router.push('/');
-        return;
-    };
-
     loadTopic();
 });
 
@@ -86,21 +71,15 @@ watch(user, (newUser) => {
 </script>
 
 <template>
-    <form @submit.prevent="editTopic" class="form">
-        <p class="error-text" v-if="topicError">{{ topicError }}</p>
+    <FormCard title="Editar tópico" @send="editTopic" :message="message">
+        <template #form>
+            <QInput outlined dense hide-bottom-space v-model="title" label="Título do tópico"
+                :rules="[validateTitle]" />
 
-        <div class="header-top form_header">
-            <h2 class="title">Editar Tópico</h2>
-            <a class="btn-outline-primary" href="javascript:history.back()" title="Voltar para a página anterior">
-                <i class="fa-solid fa-arrow-left"></i>
-            </a>
-        </div>
-
-        <div class="form_body">
-            <InputField label="Título" id="topic-title" v-model="topicTitle" :error="titleError"
-                placeholder="Estudos, materiais..." />
-
-            <button class="btn-primary" title="Editar tópico">Editar</button>
-        </div>
-    </form>
+            <QBtnGroup>
+                <QBtn type="submit" color="primary" icon="edit" label="Editar" :disabled="!title" />
+                <QBtn flat color="red" @click="() => $router.back()" icon="arrow_back" label="Voltar" />
+            </QBtnGroup>
+        </template>
+    </FormCard>
 </template>

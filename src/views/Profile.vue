@@ -1,5 +1,4 @@
 <script setup>
-import errorMessages from '../utils/errorMessages';
 import { auth } from '../firebase';
 
 import { sendPasswordResetEmail } from 'firebase/auth';
@@ -9,64 +8,49 @@ import { storeToRefs } from 'pinia';
 
 import { useAuth } from '../stores/useAuth';
 
-import InputField from '../components/InputField.vue';
+import FormCard from '../components/layout/FormCard.vue';
+import { QBtn, QInput, useQuasar } from 'quasar';
+import { validateEmail } from '../utils/validations';
 
 const router = useRouter();
+const $q = useQuasar();
 
 const authUser = useAuth();
 const { user } = storeToRefs(authUser);
 
-const emailError = ref("");
-const formMessage = ref("");
 const email = ref("");
 
 const updatePassword = async () => {
-    formMessage.value = '';
-    emailError.value = '';
-
-    if (!email.value) {
-        emailError.value = errorMessages.requiredEmail;
-        return;
-    }
-
     try {
         await sendPasswordResetEmail(auth, email.value);
-        formMessage.value = 'E-mail enviado com sucesso';
+
+        $q.notify({
+            message: 'E-mail enviado com sucesso',
+            color: 'green'
+        });
     } catch (error) {
-        emailError.value = error.message;
+        $q.notify({
+            message: error.message,
+            color: 'red'
+        });
     }
 }
 
 onMounted(() => {
     document.title = `Ferramentas para Devs | Perfil`;
-
-    if (!user) {
-        router.push("/");
-    }
-
     email.value = user.value.email;
 });
-
-watch(user, (_) => {
-    if (!_) {
-        router.push("/");
-    }
-})
 </script>
 
 <template>
-    <form @submit.prevent="updatePassword" class="form">
-        <div class="header-top form_header">
-            <h2 class="title">Seu perfil de usuário</h2>
-        </div>
+    <FormCard title="Seu perfil de administrador" @send="updatePassword">
+        <template #form>
+            <form @submit.prevent="updatePassword" class="q-gutter-sm">
+                <QInput outlined dense hide-bottom-space v-model="email" label="Email" type="email"
+                    :rules="[validateEmail]" />
 
-        <div class="form_body">
-            <p class="box-text success-text" v-if="formMessage">{{ formMessage }}</p>
-
-            <InputField label="Email" id="email" v-model="email" :error="emailError" placeholder="seuemail@email.com"
-                type="email" />
-
-            <button class="btn-primary" type="submit" title="Alterar senha">Alterar senha</button>
-        </div>
-    </form>
+                <QBtn color="primary" type="submit" title="Alterar senha" label="Alterar senha" :disabled="!email" />
+            </form>
+        </template>
+    </FormCard>
 </template>

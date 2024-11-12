@@ -10,14 +10,18 @@
         "deploy": "vite build && gh-pages -d dist"
     },
     "dependencies": {
+        "@quasar/extras": "^1.16.13",
         "firebase": "^11.0.1",
         "pinia": "^2.2.6",
+        "quasar": "^2.17.2",
         "vue": "^3.5.12",
         "vue-router": "^4.4.5"
     },
     "devDependencies": {
+        "@quasar/vite-plugin": "^1.8.1",
         "@vitejs/plugin-vue": "^5.1.4",
         "gh-pages": "^6.2.0",
+        "sass-embedded": "^1.80.2",
         "vite": "^5.4.10"
     }
 }

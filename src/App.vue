@@ -1,44 +1,63 @@
 <script setup>
-import { auth } from './firebase';
-
 import { RouterView } from 'vue-router';
-import { onMounted, onBeforeUnmount, ref, provide } from 'vue';
+import { QBtn, QDrawer, QHeader, QLayout, QPage, QPageContainer, QScrollArea, QToolbar, QTooltip } from 'quasar';
+import { useAuth } from './stores/useAuth';
+import { storeToRefs } from 'pinia';
+import { auth } from './firebase';
+import { ref } from 'vue';
+import Navbar from './components/Navbar.vue';
 
-import { useToast } from './composables/useToast';
 
-import Toast from './components/Toast.vue';
-import TopicMenu from './components/TopicMenu.vue';
+const authUser = useAuth();
+const { user } = storeToRefs(authUser);
 
-const { closeToast, toast } = useToast();
+const isMenuActive = ref(false);
+const toggleMenu = () => (isMenuActive.value = !isMenuActive.value);
 
-const isMobile = ref(window.innerWidth <= 768);
-
-const handleResize = () => {
-    isMobile.value = window.innerWidth <= 768;
+const logoutUser = async () => {
+    await authUser.logout(auth);
 };
 
-onMounted(() => {
-    window.addEventListener('resize', handleResize);
-});
-
-onBeforeUnmount(() => {
-    window.removeEventListener('resize', handleResize);
-});
-
-provide('isMobile', isMobile);
 </script>
 
 <template>
-    <div class="container">
+    <QLayout view="lHh Lpr lff" container class="shadow-2 rounded-borders" style="min-height: 100vh;">
+        <QHeader elevated class="bg-primary text-white">
+            <QToolbar class="row items-center q-py-sm" style="max-width: 1080px; margin: 0 auto">
+                <QBtn @click="toggleMenu" flat round icon="menu" class="q-mr-sm">
+                    <QTooltip>Alternar menu lateral</QTooltip>
+                </QBtn>
 
-        <TopicMenu />
+                <div class="q-ml-auto">
+                    <div v-if="user" class="q-gutter-sm items-center">
+                        <QBtn round unelevated color="secondary" to="/topic-form" icon="add">
+                            <QTooltip>Adicionar novo tópico</QTooltip>
+                        </QBtn>
 
-        <main>
-            <RouterView></RouterView>
-        </main>
-    </div>
+                        <QBtn round unelevated color="secondary" to="/profile" icon="person">
+                            <QTooltip>Visualizar perfil de administrador</QTooltip>
+                        </QBtn>
 
-    <Teleport to="#toast">
-        <Toast :toast="toast" @close="closeToast" />
-    </Teleport>
+                        <QBtn round unelevated color="red" @click="logoutUser" icon="logout">
+                            <QTooltip>Sair do perfil de administrador</QTooltip>
+                        </QBtn>
+                    </div>
+
+                    <QBtn v-else unelevated color="primary" to="/login" icon="admin_panel_settings" label="Admin" />
+                </div>
+            </QToolbar>
+        </QHeader>
+
+        <QDrawer v-model="isMenuActive" overlay :width="400" :breakpoint="500" bordered>
+            <QScrollArea class="fit">
+                <Navbar @toggle="toggleMenu" />
+            </QScrollArea>
+        </QDrawer>
+
+        <QPageContainer>
+            <QPage padding style="max-width: 1080px; margin: 0 auto">
+                <RouterView />
+            </QPage>
+        </QPageContainer>
+    </QLayout>
 </template>
