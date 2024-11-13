@@ -36,6 +36,8 @@ const columns = reactive({
 });
 
 const loadTopic = async (topicId) => {
+    $q.loading.show();
+
     if (user.value && !columns.data.find(col => col.name === 'actions')) {
         columns.data.push({ name: 'actions', label: 'Ações', align: 'center', field: 'actions' });
     }
@@ -50,6 +52,8 @@ const loadTopic = async (topicId) => {
         document.title = `Ferramentas para Devs | ${title.value}`;
     } catch (error) {
         handleError(error.code);
+    } finally {
+        $q.loading.hide();
     }
 };
 
@@ -185,7 +189,12 @@ watch(user, (newUser) => {
                 </template>
 
                 <template v-slot:no-data>
-                    <QImg src="../assets/img/content_empty_lg.webp" />
+                    <div class="full-width row flex-center q-gutter-sm">
+                        <q-icon size="1rem" name="sentiment_dissatisfied" />
+                        <span>
+                            Nenhum conteúdo disponível por enquanto. Que tal explorar outros tópicos enquanto isso?
+                        </span>
+                    </div>
                 </template>
             </QTable>
         </div>
