@@ -48,7 +48,7 @@ const updateActionColumn = () => {
     }
 
     if (isUserCreated(topicData.created_by)) {
-        columns.data.push({ name: 'actions', label: 'Ações', align: 'center', field: 'actions' });
+        columns.data.push({ name: 'actions', label: 'Ações', align: 'left', field: 'actions' });
     }
 };
 
