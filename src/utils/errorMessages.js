@@ -2,6 +2,9 @@ import { TITLE_MAX_LENGTH } from "./variables";
 
 export default {
     // Authentication errors
+    "auth/network-request-failed": "Falha na conexão de rede. Verifique sua conexão e tente novamente.",
+    "auth/internal-error": "Erro interno do servidor. Tente novamente mais tarde.",
+    "auth/no-current-user": "Nenhum usuário autenticado no momento.",
     "auth/invalid-credential": "Email ou senha inválidos",
     "auth/too-many-requests": "Muitas tentativas. Tente novamente mais tarde",
     "logoutError": "Erro ao deslogar, se o erro persistir, recarregue a página",

@@ -34,7 +34,7 @@ const ACTIONS_ALIGNMENT = "right";
 
             <QCardActions :align="ACTIONS_ALIGNMENT">
                 <QBtn type="submit" color="primary" icon="check" label="Enviar formulário" :form="formId" />
-                <QBtn outline color="red" @click="$router.back()" icon="arrow_back" label="Voltar" class="q-ml-auto" />
+                <QBtn color="red" @click="$router.back()" icon="arrow_back" label="Voltar" class="q-ml-auto" />
             </QCardActions>
         </QCard>
     </section>

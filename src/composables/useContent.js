@@ -49,11 +49,12 @@ const addContent = async (topicId, description, link, title, created_by) => {
 
         await updateDoc(topicRef, { contents: topicData.contents });
     } catch (error) {
+        console.error(error);
         throwError('addContentError');
     }
 };
 
-const editContent = async (contentId, topicId, description, link, title, created_by) => {
+const editContent = async (contentId, topicId, description, link, title) => {
     try {
         const topicRef = doc(db, 'topics', topicId);
         const docSnap = await getDoc(topicRef);
@@ -63,21 +64,19 @@ const editContent = async (contentId, topicId, description, link, title, created
         }
 
         const topicData = docSnap.data();
-        const newContents = topicData.contents.map(content => {
-            if (content.id === contentId) {
-                return {
-                    id: contentId,
-                    description: description,
-                    link: link,
-                    title: title,
-                    created_by: created_by
-                };
-            }
-            return content;
-        });
+        const updatedContents = topicData.contents.map(content => (
+            (content.id === contentId) ? {
+                ...content,
+                id: contentId,
+                description: description,
+                link: link,
+                title: title,
+            } : content
+        ));
 
-        await updateDoc(topicRef, { contents: newContents });
+        await updateDoc(topicRef, { contents: updatedContents });
     } catch (error) {
+        console.error(error);
         throwError('editContentError');
     }
 };

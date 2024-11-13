@@ -9,6 +9,7 @@ import { notifyUser } from "../utils/notification";
 import { validateTitle } from "../utils/validations";
 import { useTopic } from "../composables/useTopic";
 import { useAuth } from '../stores/useAuth';
+import { PAGE_TITLE } from '../utils/variables';
 
 import FormCard from "../components/FormCard.vue";
 
@@ -50,7 +51,7 @@ const loadTopic = async () => {
 };
 
 onMounted(() => {
-    document.title = `Ferramentas para Devs | Editar Tópico`;
+    document.title = `${PAGE_TITLE} Editar Tópico`;
     loadTopic();
 });
 

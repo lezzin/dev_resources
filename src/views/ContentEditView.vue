@@ -9,6 +9,7 @@ import { useAuth } from '../stores/useAuth';
 import { validateLink } from '../utils/validations';
 import { useContent } from '../composables/useContent';
 import { notifyUser } from '../utils/notification';
+import { PAGE_TITLE } from '../utils/variables';
 
 import FormCard from '../components/FormCard.vue';
 
@@ -30,9 +31,9 @@ const loadContent = async () => {
         const { id: topicId, contentId } = route.params;
         const { link, description, title } = await contentComposable.loadContent(contentId, topicId);
 
-        contentDescription.value = description;
         contentLink.value = link;
         contentTitle.value = title;
+        contentDescription.value = description;
     } catch (error) {
         handleError(error);
     }
@@ -43,7 +44,13 @@ const editContent = async () => {
     const topicId = route.params.id;
 
     try {
-        await contentComposable.editContent(contentId, topicId, contentDescription.value, contentLink.value, contentTitle.value, user.value.uid);
+        await contentComposable.editContent(
+            contentId,
+            topicId,
+            contentDescription.value,
+            contentLink.value,
+            contentTitle.value
+        );
 
         notifyUser('Conteúdo editado com sucesso', 'success');
         router.push('/topic/' + topicId);
@@ -57,7 +64,7 @@ const handleError = (error) => {
 }
 
 onMounted(() => {
-    document.title = `Ferramentas para Devs | Editar conteúdo`;
+    document.title = `${PAGE_TITLE} Editar conteúdo`;
     contentTopicId.value = route.params.id;
     loadContent();
 });

@@ -21,63 +21,63 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            component: () => import('../views/Home.vue'),
+            component: () => import('../views/HomeView.vue'),
             meta: {
                 requiresAuth: false
             }
         },
         {
             path: '/login',
-            component: () => import('../views/Login.vue'),
+            component: () => import('../views/LoginView.vue'),
             meta: {
                 requiresAuth: false
             }
         },
         {
             path: '/profile',
-            component: () => import('../views/Profile.vue'),
+            component: () => import('../views/ProfileView.vue'),
             meta: {
                 requiresAuth: true
             }
         },
         {
             path: '/topic-form',
-            component: () => import('../views/FormTopic.vue'),
+            component: () => import('../views/TopicAddView.vue'),
             meta: {
                 requiresAuth: true
             }
         },
         {
             path: '/topic/:id',
-            component: () => import('../views/Topic.vue'),
+            component: () => import('../views/TopicView.vue'),
             meta: {
                 requiresAuth: false
             }
         },
         {
             path: '/topic/:id/content-form',
-            component: () => import('../views/FormContent.vue'),
+            component: () => import('../views/ContentAddView.vue'),
             meta: {
                 requiresAuth: true
             }
         },
         {
             path: '/topic/:id/edit',
-            component: () => import('../views/FormEditTopic.vue'),
+            component: () => import('../views/TopicEditView.vue'),
             meta: {
                 requiresAuth: true
             }
         },
         {
             path: '/topic/:id/content/:contentId/edit',
-            component: () => import('../views/FormEditContent.vue'),
+            component: () => import('../views/ContentEditView.vue'),
             meta: {
                 requiresAuth: true
             }
         },
         {
             path: '/:catchAll(.*)',
-            component: () => import('../views/NotFound.vue'),
+            component: () => import('../views/NotFoundView.vue'),
             meta: {
                 requiresAuth: false
             }

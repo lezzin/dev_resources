@@ -9,6 +9,7 @@ import errorMessages from '../utils/errorMessages';
 import { validateTitle } from '../utils/validations';
 import { useTopic } from '../composables/useTopic';
 import { notifyUser } from '../utils/notification';
+import { PAGE_TITLE } from '../utils/variables';
 
 import FormCard from '../components/FormCard.vue';
 
@@ -30,7 +31,7 @@ const addTopic = async () => {
     }
 };
 
-onMounted(() => (document.title = `Ferramentas para Devs | Adicionar tópico`));
+onMounted(() => (document.title = `${PAGE_TITLE} Adicionar tópico`));
 </script>
 
 <template>

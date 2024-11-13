@@ -1,7 +1,7 @@
 <script setup>
 import { doc, onSnapshot } from 'firebase/firestore';
 import { useRoute, useRouter } from 'vue-router'
-import { ref, watch, onMounted, reactive } from 'vue';
+import { watch, onMounted, reactive } from 'vue';
 import { storeToRefs } from 'pinia';
 import { QTable, QTh, QTd, QTr, QBtn, QBtnGroup, QTooltip, QPage, useQuasar } from 'quasar';
 
@@ -11,6 +11,7 @@ import { db } from '../utils/firebase';
 import { useAuth } from '../stores/useAuth';
 import { useTopic } from '../composables/useTopic';
 import { useContent } from '../composables/useContent';
+import { PAGE_TITLE } from '../utils/variables';
 
 const $q = useQuasar();
 const router = useRouter();
@@ -22,10 +23,12 @@ const contentComposable = useContent();
 const authUser = useAuth();
 const { user } = storeToRefs(authUser);
 
-const id = ref('');
-const title = ref('');
-const contents = ref([]);
-const isUserCreator = ref(false);
+const topicData = reactive({
+    id: '',
+    title: '',
+    contents: [],
+    created_by: '',
+});
 
 const columns = reactive({
     data: [
@@ -34,21 +37,46 @@ const columns = reactive({
     ]
 });
 
+const isUserCreated = (createdBy) => {
+    return user.value?.uid === createdBy;
+};
+
+const updateActionColumn = () => {
+    const actionIndex = columns.data.findIndex(col => col.name === 'actions');
+    if (actionIndex !== -1) {
+        columns.data.splice(actionIndex, 1);
+    }
+
+    if (isUserCreated(topicData.created_by)) {
+        columns.data.push({ name: 'actions', label: 'Ações', align: 'center', field: 'actions' });
+    }
+};
+
 const loadTopic = async (topicId) => {
     $q.loading.show();
 
-    if (user.value && !columns.data.find(col => col.name === 'actions')) {
-        columns.data.push({ name: 'actions', label: 'Ações', align: 'center', field: 'actions' });
-    }
-
     try {
-        const topicData = await topicComposable.loadTopic(topicId);
+        const topic = await topicComposable.loadTopic(topicId);
 
-        id.value = topicId;
-        title.value = topicData.title;
-        contents.value = topicData.contents;
-        isUserCreator.value = user.value?.uid === topicData.created_by;
-        document.title = `Ferramentas para Devs | ${title.value}`;
+        topicData.id = topicId;
+        topicData.title = topic.title;
+        topicData.contents = topic.contents;
+        topicData.created_by = topic.created_by;
+        document.title = `${PAGE_TITLE} ${topicData.title}`;
+
+        updateActionColumn();
+
+        const docRef = doc(db, 'topics', topicId);
+        onSnapshot(docRef, (docSnap) => {
+            if (!docSnap.exists()) return;
+
+            const { title, contents, created_by } = docSnap.data();
+            topicData.title = title;
+            topicData.contents = contents;
+            topicData.created_by = created_by;
+
+            updateActionColumn();
+        });
     } catch (error) {
         handleError(error);
     } finally {
@@ -64,7 +92,7 @@ const deleteTopic = async (topicId) => {
         notifyUser('Tópico removido com sucesso', 'success');
         router.push('/');
     } catch (error) {
-        handleError('deleteTopicError');
+        handleError(error);
     }
 };
 
@@ -87,53 +115,40 @@ const handleError = (error) => {
 onMounted(() => {
     const topicId = route.params.id;
     loadTopic(topicId);
-
-    onSnapshot(doc(db, 'topics', topicId), (docSnap) => {
-        if (docSnap.exists()) {
-            const topicData = docSnap.data();
-            title.value = topicData.title;
-            contents.value = topicData.contents;
-        }
-    });
 });
 
 watch(() => route.params.id, (newId) => {
     loadTopic(newId);
-})
+});
 
 watch(user, (newUser) => {
-    if (newUser && !columns.data.find(col => col.name === 'actions')) {
-        columns.data.push({ name: 'actions', label: 'Ações', align: 'left', field: 'actions' });
-    }
-
-    if (!newUser) {
-        isUserCreator.value = false;
-    }
-})
+    if (!newUser) updateActionColumn();
+});
 </script>
 
 <template>
     <QPage padding>
         <section class="q-mx-auto q-pa-md" style="max-width: 1080px;">
             <div class="table-responsive">
-                <QTable :rows="contents" :columns="columns.data" flat row-key="id"
+                <QTable :rows="topicData.contents" :columns="columns.data" flat row-key="id"
                     rows-per-page-label="Linhas por página:" class="q-pa-md">
                     <template v-slot:top>
                         <div class="flex justify-between items-center full-width q-gutter-md">
                             <h2 :class="`${$q.screen.lt.md ? 'text-h5' : 'text-h4'} text-weight-bold q-ma-none`">
-                                {{ title }}
+                                {{ topicData.title }}
                             </h2>
 
-                            <QBtnGroup rounded v-if="isUserCreator">
-                                <QBtn unelevated outline color="primary" :to="`/topic/${id}/edit`" icon="edit">
+                            <QBtnGroup rounded v-if="isUserCreated(topicData.created_by)">
+                                <QBtn unelevated outline color="primary" :to="`/topic/${topicData.id}/edit`"
+                                    icon="edit">
                                     <QTooltip>Editar tópico</QTooltip>
                                 </QBtn>
 
-                                <QBtn unelevated color="red" @click="deleteTopic(id)" icon="delete">
+                                <QBtn unelevated color="red" @click="deleteTopic(topicData.id)" icon="delete">
                                     <QTooltip>Remover tópico</QTooltip>
                                 </QBtn>
 
-                                <QBtn unelevated color="primary" :to="`/topic/${id}/content-form`" icon="add">
+                                <QBtn unelevated color="primary" :to="`/topic/${topicData.id}/content-form`" icon="add">
                                     <QTooltip>Adicionar novo conteúdo</QTooltip>
                                 </QBtn>
                             </QBtnGroup>
@@ -159,16 +174,15 @@ watch(user, (newUser) => {
                                 </a>
                             </QTd>
                             <QTd>{{ props.row.description }}</QTd>
-                            <QTd v-if="user">
+                            <QTd v-if="isUserCreated(props.row.created_by)">
                                 <QBtnGroup>
                                     <QBtn unelevated outline size="sm" color="primary"
-                                        :to="`/topic/${$route.params.id}/content/${props.row.id}/edit`"
-                                        v-if="isUserCreator" icon="edit">
+                                        :to="`/topic/${$route.params.id}/content/${props.row.id}/edit`" icon="edit">
                                         <QTooltip>Editar conteúdo</QTooltip>
                                     </QBtn>
 
-                                    <QBtn unelevated outline size="sm" color="red" v-if="isUserCreator"
-                                        @click="deleteContent(props.row.id)" icon="delete">
+                                    <QBtn unelevated outline size="sm" color="red" @click="deleteContent(props.row.id)"
+                                        icon="delete">
                                         <QTooltip>Remover conteúdo</QTooltip>
                                     </QBtn>
                                 </QBtnGroup>

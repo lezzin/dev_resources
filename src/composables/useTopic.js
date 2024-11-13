@@ -48,6 +48,7 @@ const deleteTopic = async (topicId) => {
     try {
         await deleteDoc(doc(db, 'topics', topicId));
     } catch (error) {
+        console.error(error);
         throwError('deleteTopicError');
     }
 };
@@ -57,24 +58,27 @@ const loadTopic = async (topicId) => {
         const docRef = doc(db, "topics", topicId);
         const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-            const topicData = docSnap.data();
-
-            return {
-                ...topicData,
-                contents: sortContents(topicData.contents)
-            };
+        if (!docSnap.exists()) {
+            throwError('topicNotFound');
         }
+
+        const topicData = docSnap.data();
+
+        return {
+            ...topicData,
+            contents: sortContents(topicData.contents)
+        };
     } catch (error) {
+        console.error(error);
         throwError("loadTopicError");
     }
 };
 
 const sortContents = (contents) => {
     return contents.sort((a, b) => {
-        const descriptionA = a.description.toLowerCase();
-        const descriptionB = b.description.toLowerCase();
-        return descriptionA.localeCompare(descriptionB);
+        const titleA = a.title.toLowerCase();
+        const titleB = b.title.toLowerCase();
+        return titleA.localeCompare(titleB);
     });
 };
 

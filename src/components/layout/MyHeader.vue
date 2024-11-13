@@ -6,6 +6,7 @@ import { storeToRefs } from 'pinia';
 import { useAuth } from '../../stores/useAuth';
 import { useAside } from '../../composables/useAside';
 import { notifyUser } from '../../utils/notification';
+import errorMessages from '../../utils/errorMessages';
 
 const $q = useQuasar();
 
@@ -16,14 +17,8 @@ const asideComposable = useAside();
 const logoutUser = async () => {
     try {
         await authUser.logout();
-    } catch ({ code, message }) {
-        const errors = {
-            "auth/network-request-failed": "Falha na conexão de rede. Verifique sua conexão e tente novamente.",
-            "auth/internal-error": "Erro interno do servidor. Tente novamente mais tarde.",
-            "auth/no-current-user": "Nenhum usuário autenticado no momento.",
-        };
-
-        notifyUser(errors[code] ?? `Erro ao sair: ${message}`, 'error');
+    } catch (error) {
+        notifyUser(errorMessages[error.code] ?? errorMessages.generalError(error), 'error');
     }
 };
 </script>

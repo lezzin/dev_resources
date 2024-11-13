@@ -19,6 +19,7 @@ export const useAuth = defineStore('auth', () => {
         try {
             await signOut(auth);
         } catch (error) {
+            console.error(error);
             throw error;
         }
     };

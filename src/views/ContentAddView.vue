@@ -9,6 +9,7 @@ import { validateLink } from '../utils/validations';
 import { notifyUser } from '../utils/notification';
 import { useAuth } from '../stores/useAuth';
 import { useContent } from '../composables/useContent';
+import { PAGE_TITLE } from '../utils/variables';
 
 import FormCard from '../components/FormCard.vue';
 
@@ -27,7 +28,13 @@ const contentTopicId = ref(route.params.id);
 
 const addContent = async () => {
     try {
-        await contentComposable.addContent(contentTopicId.value, contentDescription.value, contentLink.value, contentTitle.value, user.value.uid);
+        await contentComposable.addContent(
+            contentTopicId.value,
+            contentDescription.value,
+            contentLink.value,
+            contentTitle.value,
+            user.value.uid
+        );
 
         notifyUser("Conteúdo adicionado com sucesso", 'success');
         router.push('/topic/' + contentTopicId.value);
@@ -36,12 +43,12 @@ const addContent = async () => {
     }
 };
 
-onMounted(() => (document.title = `Ferramentas para Devs | Adicionar conteúdo`));
+onMounted(() => (document.title = `${PAGE_TITLE} Adicionar conteúdo`));
 </script>
 
 <template>
     <QPage padding>
-        <FormCard title="Adicionar novo link" @send="addContent" formId="new-link-form">
+        <FormCard title="Adicionar novo conteúdo" @send="addContent" formId="new-link-form">
             <QInput outlined dense hide-bottom-space v-model="contentTitle" label="Título do site/material"
                 :rules="[val => !!val || errorMessages.requiredTitle]" />
 

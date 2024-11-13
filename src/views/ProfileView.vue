@@ -9,6 +9,7 @@ import { auth } from '../utils/firebase';
 import { useAuth } from '../stores/useAuth';
 import { validateEmail } from '../utils/validations';
 import { notifyUser } from '../utils/notification';
+import { PAGE_TITLE } from '../utils/variables';
 
 import FormCard from '../components/FormCard.vue';
 
@@ -27,7 +28,7 @@ const updatePassword = async () => {
 }
 
 onMounted(() => {
-    document.title = `Ferramentas para Devs | Perfil`;
+    document.title = `${PAGE_TITLE} Perfil`;
     email.value = user.value.email;
 });
 </script>

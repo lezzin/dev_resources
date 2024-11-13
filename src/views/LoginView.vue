@@ -10,6 +10,7 @@ import { validateEmail, validatePassword } from "../utils/validations";
 import { auth } from '../utils/firebase';
 import { useAuth } from '../stores/useAuth';
 import { notifyUser } from "../utils/notification";
+import { PAGE_TITLE } from '../utils/variables';
 
 import FormCard from "../components/FormCard.vue";
 
@@ -31,7 +32,7 @@ const loginUser = async () => {
 };
 
 onMounted(() => {
-    document.title = `Ferramentas para Devs | Login`;
+    document.title = `${PAGE_TITLE} Login`;
 
     if (user.value?.uid) {
         router.push("/");
