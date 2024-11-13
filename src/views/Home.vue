@@ -10,9 +10,8 @@ onMounted(() => (document.title = "Ferramentas para Devs"));
 
 <template>
     <QPage>
-        <section class="column justify-between q-pa-md">
-            <div class="column justify-center items-center text-center q-mx-auto"
-                style="min-height: calc(80vh - 43px); max-width: 720px;">
+        <section class="column justify-around q-pa-md">
+            <div class="column justify-center items-center text-center q-mx-auto" style="max-width: 720px;">
                 <QImg src="../assets/logo.svg" width="144px" height="144px" />
 
                 <h2
