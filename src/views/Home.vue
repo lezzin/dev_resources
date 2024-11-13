@@ -23,16 +23,16 @@ onMounted(() => (document.title = "Ferramentas para Devs"));
             </h3>
 
             <div class="q-gutter-sm flex items-center justify-center">
-                <QBtn color="primary" label="Explore as Ferramentas" icon="rocket_launch"
+                <QBtn color="primary" rounded size="lg" label="Explorar ferramentas" icon="rocket_launch"
                     @click="asideComposable.showMenu" />
 
-                <QBtn :color="$q.dark.isActive ? 'secondary' : 'dark'" outline label="Sugerir um link"
+                <QBtn :color="$q.dark.isActive ? 'secondary' : 'dark'" rounded size="lg" outline label="Sugerir um link"
                     icon="mail_outline" href="https://lezzin.github.io#contact-section" target="_blank" />
             </div>
         </div>
 
         <p :class="`q-mt-lg q-pt-lg text-center ${$q.dark.isActive ? '' : 'text-dark'}`">
-            <span>Criado com ❤️ por </span>
+            <span>Criado com ☕ por </span>
             <a href="https://lezzin.github.io" target="_blank" style="color: inherit;">lezzin</a>
         </p>
     </section>
