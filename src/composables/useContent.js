@@ -1,10 +1,36 @@
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "../utils/firebase";
 
 const throwError = (code, message = 'Erro ao realizar operação') => {
     const error = new Error(message);
     error.code = code;
     throw error;
+}
+
+const lower = (word) => {
+    return String(word).toLowerCase();
+}
+
+const searchContent = async (query) => {
+    const filteredContents = [];
+    const queryLower = lower(query);
+
+    const querySnapshot = await getDocs(collection(db, "topics"));
+    querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const contents = Object.values(data.contents);
+
+        contents.forEach(content => {
+            const title = lower(content.title);
+            const description = lower(content.description);
+
+            if (title.includes(queryLower) || description.includes(queryLower)) {
+                filteredContents.push(content);
+            }
+        })
+    });
+
+    return filteredContents;
 }
 
 const loadContent = async (contentId, topicId) => {
@@ -100,6 +126,7 @@ const deleteContent = async (contentId, topicId) => {
 
 export const useContent = () => {
     return {
+        searchContent,
         loadContent,
         addContent,
         editContent,

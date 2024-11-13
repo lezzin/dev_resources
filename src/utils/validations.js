@@ -31,3 +31,7 @@ export const validatePassword = (val) => {
 
     return val.length >= 6 || 'A senha deve ter no mínimo 6 caracteres.';
 };
+
+export const validateSearch = (val) => {
+    return val.length >= 4 || 'A pesquisa deve ter no mínimo 4 caracteres.';
+};
