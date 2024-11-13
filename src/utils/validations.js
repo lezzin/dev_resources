@@ -1,6 +1,5 @@
 import errorMessages from "./errorMessages";
-
-export const TITLE_MAX_LENGTH = 20;
+import { TITLE_MAX_LENGTH } from "./variables";
 
 export const validateLink = (val) => {
     const urlRegex = /^(http|https):\/\//i;

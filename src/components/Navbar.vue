@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 
-import { db } from '../firebase';
+import { db } from '../utils/firebase';
 import { QBtn, QImg, QTooltip, useQuasar } from 'quasar';
 
 const $q = useQuasar();

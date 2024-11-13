@@ -1,8 +1,6 @@
 <script setup>
 import errorMessages from "../utils/errorMessages";
-import { db } from "../firebase";
 
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useRoute, useRouter } from 'vue-router';
 import { ref, watch, onMounted } from 'vue';
 import { storeToRefs } from "pinia";
@@ -10,11 +8,10 @@ import { storeToRefs } from "pinia";
 import { useAuth } from '../stores/useAuth';
 
 import FormCard from "../components/layout/FormCard.vue";
-import { QBtn, QBtnGroup, QInput, QPage, useQuasar } from "quasar";
+import { QInput, QPage } from "quasar";
 import { validateTitle } from "../utils/validations";
 import { useTopic } from "../composables/useTopic";
-
-const $q = useQuasar();
+import { notifyUser } from "../utils/notification";
 
 const router = useRouter();
 const route = useRoute();
@@ -31,11 +28,7 @@ const editTopic = async () => {
         const topicId = route.params.id;
         await topicComposable.editTopic(title.value, topicId);
 
-        $q.notify({
-            message: 'Tópico editado com sucesso',
-            color: 'green'
-        });
-
+        notifyUser('Tópico editado com sucesso', 'success');
         router.push(`/topic/${topicId}`);
     } catch (error) {
         handleError(error);
@@ -43,10 +36,7 @@ const editTopic = async () => {
 };
 
 const handleError = (error) => {
-    $q.notify({
-        message: errorMessages[error.code] || errorMessages.generalError,
-        color: 'error'
-    });
+    notifyUser(errorMessages[error.code] || errorMessages.generalError(error), 'error');
 };
 
 const loadTopic = async () => {
@@ -72,16 +62,9 @@ watch(user, (newUser) => {
 
 <template>
     <QPage padding>
-        <FormCard title="Editar tópico" @send="editTopic" :message="message">
-            <template #form>
-                <QInput outlined dense hide-bottom-space v-model="title" label="Título do tópico"
-                    :rules="[validateTitle]" />
-
-                <QBtnGroup>
-                    <QBtn type="submit" color="primary" icon="edit" label="Editar" :disabled="!title" />
-                    <QBtn flat color="red" @click="() => $router.back()" icon="arrow_back" label="Voltar" />
-                </QBtnGroup>
-            </template>
+        <FormCard title="Editar tópico" @send="editTopic" formId="edit-topic-form">
+            <QInput outlined dense hide-bottom-space v-model="title" label="Título do tópico"
+                :rules="[validateTitle]" />
         </FormCard>
     </QPage>
 </template>

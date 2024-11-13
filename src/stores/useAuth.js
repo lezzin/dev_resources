@@ -1,9 +1,9 @@
-import { auth } from '../firebase';
+import { auth } from '../utils/firebase';
 
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { defineStore } from 'pinia';
-import { useQuasar } from 'quasar';
 import { ref } from 'vue';
+import { notifyUser } from '../utils/notification';
 
 export const useAuth = defineStore('auth', () => {
     const user = ref(auth.currentUser);
@@ -27,12 +27,7 @@ export const useAuth = defineStore('auth', () => {
                 "auth/no-current-user": "Nenhum usuário autenticado no momento.",
             };
 
-            const $q = useQuasar();
-
-            $q.notify({
-                message: errors[code] ?? `Erro ao sair: ${message}`,
-                color: 'red'
-            });
+            notifyUser(errors[code] ?? `Erro ao sair: ${message}`, 'error');
         }
     };
 

@@ -18,14 +18,6 @@ Um website que oferece links de uma variedade de recursos gratuitos para desenvo
 - Gerenciamento de conteúdos (adicionar, editar, excluir)
 - Seção na página inicial com artigos sobre dicas e tutoriais da plataforma [dev.to](https://dev.to/)
 
-## Guia de Instalação
-
-Para usar o aplicativo localmente, é necessário configurar um servidor local:
-
-1. Utilize um servidor local, como XAMPP ou Live Server (Extensão do VSCode).
-   - Se estiver usando XAMPP, adicione a pasta do projeto, inicie o servidor e acesse o arquivo `index.html` em um navegador da web.
-   - Se estiver usando a extensão Live Server, abra o VSCode e clique em "Go Live" no canto inferior esquerdo da tela.
-
 ## Tecnologias Utilizadas
 
 - HTML

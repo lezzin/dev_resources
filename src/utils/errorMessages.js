@@ -1,4 +1,4 @@
-import { TITLE_MAX_LENGTH } from "./validations";
+import { TITLE_MAX_LENGTH } from "./variables";
 
 export default {
     // Authentication errors
@@ -27,5 +27,5 @@ export default {
 
     "maximumSize": `Insira menos que ${TITLE_MAX_LENGTH} caracteres.`,
 
-    "generalError": "Erro desconhecido",
+    generalError: (error) => ("Erro desconhecido: " + error?.message),
 };

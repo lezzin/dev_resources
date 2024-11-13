@@ -1,5 +1,5 @@
-import { doc, getDoc, deleteDoc, addDoc, collection, where, query, getDocs } from "firebase/firestore";
-import { db } from "../firebase";
+import { doc, getDoc, deleteDoc, addDoc, collection, where, query, getDocs, updateDoc } from "firebase/firestore";
+import { db } from "../utils/firebase";
 
 const throwError = (code, message = 'Erro ao realizar operação') => {
     const error = new Error(message);
@@ -38,6 +38,8 @@ const editTopic = async (title, topicId) => {
 
         await updateDoc(topicRef, { title: title });
     } catch (error) {
+        console.log(error);
+
         throwError('editTopicError');
     }
 };

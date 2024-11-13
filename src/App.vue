@@ -3,7 +3,7 @@ import { RouterLink, RouterView } from 'vue-router';
 import { QBtn, QDrawer, QHeader, QImg, QLayout, QPage, QPageContainer, QScrollArea, QToolbar, QTooltip } from 'quasar';
 import { useAuth } from './stores/useAuth';
 import { storeToRefs } from 'pinia';
-import { auth } from './firebase';
+import { auth } from './utils/firebase';
 import Navbar from './components/Navbar.vue';
 import { useAside } from './composables/useAside';
 import { toRef } from 'vue';
@@ -45,8 +45,9 @@ const logoutUser = async () => {
                         <QTooltip>Sair do perfil de administrador</QTooltip>
                     </QBtn>
 
-                    <QBtn v-if="!user" unelevated color="secondary" to="/login" icon="admin_panel_settings"
-                        label="Admin" />
+                    <QBtn round unelevated outline color="white" to="/login" icon="admin_panel_settings" v-if="!user">
+                        <QTooltip>Acessar perfil de administrador</QTooltip>
+                    </QBtn>
 
                     <QBtn round unelevated color="secondary" @click="() => $q.dark.toggle()"
                         :icon="$q.dark.isActive ? 'dark_mode' : 'light_mode'">

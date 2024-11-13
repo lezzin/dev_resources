@@ -10,10 +10,10 @@ onMounted(() => (document.title = "Ferramentas para Devs"));
 
 <template>
     <QPage>
-        <section class="column justify-between">
+        <section class="column justify-between q-pa-md">
             <div class="column justify-center items-center text-center q-mx-auto"
                 style="min-height: calc(80vh - 43px); max-width: 720px;">
-                <QImg src="../assets/logo.svg" width="144px" height="144px" class="hover-effect" />
+                <QImg src="../assets/logo.svg" width="144px" height="144px" />
 
                 <h2
                     :class="`q-mb-md ${$q.dark.isActive ? 'text-white' : 'text-dark'} text-weight-bold ${$q.screen.lt.md ? 'text-h4' : 'text-h2'}`">
@@ -43,16 +43,8 @@ onMounted(() => (document.title = "Ferramentas para Devs"));
 </template>
 
 <style lang="scss" scoped>
-.hover-effect {
-    transition: scale .3s ease-in-out;
-
-    &:hover {
-        scale: 1.05;
-    }
-}
-
 section {
-    background-image: linear-gradient(180deg, rgba($primary, 0.01), rgba($primary, 1) 85%),
+    background-image: linear-gradient(180deg, rgba($primary, 0.01), rgba($primary, 0.8) 85%),
         radial-gradient(ellipse at top left, rgba($secondary, 0.5), transparent 50%),
         radial-gradient(ellipse at top right, rgba($accent, 0.5), transparent 50%),
         radial-gradient(ellipse at center right, rgba($purple, 0.5), transparent 50%),

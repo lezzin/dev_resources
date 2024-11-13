@@ -4,12 +4,12 @@ import { useRoute, useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuth } from '../stores/useAuth';
-import { QBtn, QBtnGroup, QInput, QPage, useQuasar } from 'quasar';
+import { QInput, QPage } from 'quasar';
 import FormCard from '../components/layout/FormCard.vue';
 import { validateLink } from '../utils/validations';
 import { useContent } from '../composables/useContent';
+import { notifyUser } from '../utils/notification';
 
-const $q = useQuasar();
 const contentComposable = useContent();
 
 const router = useRouter();
@@ -27,19 +27,10 @@ const addContent = async () => {
     try {
         await contentComposable.addContent(contentTopicId.value, contentDescription.value, contentLink.value, contentTitle.value, user.value.uid);
 
-        $q.notify({
-            message: "Conteúdo adicionado com sucesso",
-            color: 'green'
-        });
-
+        notifyUser("Conteúdo adicionado com sucesso", 'success');
         router.push('/topic/' + contentTopicId.value);
     } catch (error) {
-        console.log(error);
-
-        $q.notify({
-            message: errorMessages[error.code] || errorMessages.generalError,
-            color: 'red'
-        })
+        notifyUser(errorMessages[error.code] || errorMessages.generalError(error), 'error');
     }
 };
 
@@ -48,23 +39,15 @@ onMounted(() => (document.title = `Ferramentas para Devs | Adicionar conteúdo`)
 
 <template>
     <QPage padding>
-        <FormCard title="Adicionar novo link" @send="addContent">
-            <template #form>
-                <QInput outlined dense hide-bottom-space v-model="contentTitle" label="Título do site/material"
-                    :rules="[val => !!val || errorMessages.requiredTitle]" />
+        <FormCard title="Adicionar novo link" @send="addContent" formId="new-link-form">
+            <QInput outlined dense hide-bottom-space v-model="contentTitle" label="Título do site/material"
+                :rules="[val => !!val || errorMessages.requiredTitle]" />
 
-                <QInput outlined dense hide-bottom-space v-model="contentLink" label="Link do site/material"
-                    :rules="[val => !!val || errorMessages.requiredLink, validateLink]" />
+            <QInput outlined dense hide-bottom-space v-model="contentLink" label="Link do site/material"
+                :rules="[val => !!val || errorMessages.requiredLink, validateLink]" />
 
-                <QInput outlined dense hide-bottom-space v-model="contentDescription" label="Descrição do site/material"
-                    :rules="[val => !!val || errorMessages.requiredDescription]" />
-
-                <QBtnGroup>
-                    <QBtn type="submit" color="primary" icon="add" label="Adicionar"
-                        :disabled="!contentTitle || !contentLink || !contentDescription" />
-                    <QBtn flat color="red" @click="() => $router.back()" icon="arrow_back" label="Voltar" />
-                </QBtnGroup>
-            </template>
+            <QInput outlined dense hide-bottom-space v-model="contentDescription" label="Descrição do site/material"
+                :rules="[val => !!val || errorMessages.requiredDescription]" />
         </FormCard>
     </QPage>
 </template>

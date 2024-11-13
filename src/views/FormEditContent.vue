@@ -1,19 +1,17 @@
 <script setup>
 import errorMessages from '../utils/errorMessages';
-import { db } from '../firebase';
 
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useRoute, useRouter } from 'vue-router';
 import { ref, onMounted, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useAuth } from '../stores/useAuth';
 import FormCard from '../components/layout/FormCard.vue';
-import { QBtn, QBtnGroup, QInput, QPage, useQuasar } from 'quasar';
+import { QInput, QPage } from 'quasar';
 import { validateLink } from '../utils/validations';
 import { useContent } from '../composables/useContent';
+import { notifyUser } from '../utils/notification';
 
-const $q = useQuasar();
 const contentComposable = useContent();
 
 const router = useRouter();
@@ -29,34 +27,12 @@ const contentTitle = ref('');
 
 const loadContent = async () => {
     try {
-        const topicId = route.params.id;
-        const contentId = route.params.contentId;
+        const { id: topicId, contentId } = route.params;
+        const { link, description, title } = await contentComposable.loadContent(contentId, topicId);
 
-        const topicRef = doc(db, 'topics', topicId);
-        const docSnap = await getDoc(topicRef);
-
-        if (!docSnap.exists()) {
-            $q.notify({
-                message: errorMessages.topicNotFound,
-                color: 'red'
-            });
-            return;
-        }
-
-        const topicData = docSnap.data();
-        const content = topicData.contents.find(content => content.id === contentId);
-
-        if (!content) {
-            $q.notify({
-                message: errorMessages.contentNotFound,
-                color: 'red'
-            });
-            return;
-        }
-
-        contentDescription.value = content.description;
-        contentLink.value = content.link;
-        contentTitle.value = content.title;
+        contentDescription.value = description;
+        contentLink.value = link;
+        contentTitle.value = title;
     } catch (error) {
         handleError(error);
     }
@@ -69,23 +45,16 @@ const editContent = async () => {
     try {
         await contentComposable.editContent(contentId, topicId, contentDescription.value, contentLink.value, contentTitle.value, user.value.uid);
 
-        $q.notify({
-            message: 'Conteúdo editado com sucesso',
-            color: 'green'
-        });
-
+        notifyUser('Conteúdo editado com sucesso', 'success');
         router.push('/topic/' + topicId);
     } catch (error) {
-        handleError(error.code);
+        handleError(error);
     }
 };
 
 const handleError = (error) => {
-    $q.notify({
-        message: error.message || errorMessages.generalError,
-        color: 'red'
-    });
-};
+    notifyUser(errorMessages[error.code] || errorMessages.generalError(error), 'error');
+}
 
 onMounted(() => {
     document.title = `Ferramentas para Devs | Editar conteúdo`;
@@ -100,24 +69,17 @@ watch(user, (newUser) => {
 
 <template>
     <QPage padding>
-        <FormCard title="Editar conteúdo" @send="editContent">
-            <template #form>
-                <QInput outlined dense hide-bottom-space v-model="contentTitle" label="Título do site/material"
-                    :rules="[val => !!val || errorMessages.requiredTitle]" />
+        <FormCard title="Editar conteúdo" @send="editContent" formId="edit-link-form">
+            <QInput outlined dense hide-bottom-space v-model="contentTitle" label="Título do site/material"
+                :rules="[val => !!val || errorMessages.requiredTitle]" />
 
-                <QInput outlined dense hide-bottom-space v-model="contentLink" label="Link do site/material" :rules="[
-                    val => !!val || errorMessages.requiredLink,
-                    validateLink
-                ]" />
+            <QInput outlined dense hide-bottom-space v-model="contentLink" label="Link do site/material" :rules="[
+                val => !!val || errorMessages.requiredLink,
+                validateLink
+            ]" />
 
-                <QInput outlined dense hide-bottom-space v-model="contentDescription" label="Descrição do site/material"
-                    :rules="[val => !!val || errorMessages.requiredDescription]" />
-
-                <QBtnGroup>
-                    <QBtn type="submit" color="primary" icon="edit" label="Editar" />
-                    <QBtn flat color="red" @click="() => $router.back()" icon="arrow_back" label="Voltar" />
-                </QBtnGroup>
-            </template>
+            <QInput outlined dense hide-bottom-space v-model="contentDescription" label="Descrição do site/material"
+                :rules="[val => !!val || errorMessages.requiredDescription]" />
         </FormCard>
     </QPage>
 </template>

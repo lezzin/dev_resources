@@ -1,10 +1,32 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../utils/firebase";
 
 const throwError = (code, message = 'Erro ao realizar operação') => {
     const error = new Error(message);
     error.code = code;
     throw error;
+}
+
+const loadContent = async (contentId, topicId) => {
+    try {
+        const topicRef = doc(db, 'topics', topicId);
+        const docSnap = await getDoc(topicRef);
+
+        if (!docSnap.exists()) {
+            throwError('topicNotFound');
+        }
+
+        const topicData = docSnap.data();
+        const content = topicData.contents.find(content => content.id === contentId);
+
+        if (!content) {
+            throwError('contentNotFound');
+        }
+
+        return content;
+    } catch (error) {
+        throwError(error);
+    }
 }
 
 const addContent = async (topicId, description, link, title, created_by) => {
@@ -79,8 +101,9 @@ const deleteContent = async (contentId, topicId) => {
 
 export const useContent = () => {
     return {
-        deleteContent,
+        loadContent,
+        addContent,
         editContent,
-        addContent
+        deleteContent
     }
 }

@@ -1,6 +1,6 @@
 <script setup>
 import errorMessages from '../utils/errorMessages';
-import { db } from '../firebase';
+import { db } from '../utils/firebase';
 
 import { doc, onSnapshot } from 'firebase/firestore';
 import { useRoute, useRouter } from 'vue-router'
@@ -8,9 +8,10 @@ import { ref, watch, onMounted, reactive } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useAuth } from '../stores/useAuth';
-import { QTable, QTh, QTd, QTr, QBtn, QBtnGroup, QTooltip, QImg, useQuasar, QPage } from 'quasar';
+import { QTable, QTh, QTd, QTr, QBtn, QBtnGroup, QTooltip, QPage, useQuasar } from 'quasar';
 import { useTopic } from '../composables/useTopic';
 import { useContent } from '../composables/useContent';
+import { notifyUser } from '../utils/notification';
 
 const router = useRouter();
 const route = useRoute();
@@ -51,7 +52,7 @@ const loadTopic = async (topicId) => {
         isUserCreator.value = user.value?.uid === topicData.created_by;
         document.title = `Ferramentas para Devs | ${title.value}`;
     } catch (error) {
-        handleError(error.code);
+        handleError(error);
     } finally {
         $q.loading.hide();
     }
@@ -62,12 +63,7 @@ const deleteTopic = async (topicId) => {
 
     try {
         await topicComposable.deleteTopic(topicId);
-
-        $q.notify({
-            message: 'Tópico removido com sucesso',
-            color: 'green'
-        });
-
+        notifyUser('Tópico removido com sucesso', 'success');
         router.push('/');
     } catch (error) {
         handleError('deleteTopicError');
@@ -80,21 +76,14 @@ const deleteContent = async (contentId) => {
     try {
         const topicId = route.params.id;
         contentComposable.deleteContent(contentId, topicId);
-
-        $q.notify({
-            message: 'Conteúdo removido com sucesso',
-            color: 'green'
-        });
+        notifyUser('Conteúdo removido com sucesso', 'success');
     } catch (error) {
-        handleError(error.code);
+        handleError(error);
     }
 };
 
-const handleError = (errorMessage) => {
-    $q.notify({
-        message: errorMessages[errorMessage] || errorMessages.generalError,
-        color: 'red'
-    });
+const handleError = (error) => {
+    notifyUser(errorMessages[error.code] || errorMessages.generalError(error), 'error');
 };
 
 onMounted(() => {
@@ -127,12 +116,13 @@ watch(user, (newUser) => {
 
 <template>
     <QPage padding>
-        <section class="q-mx-auto" style="max-width: 1080px;">
+        <section class="q-mx-auto q-pa-md" style="max-width: 1080px;">
             <div class="table-responsive">
                 <QTable :rows="contents" :columns="columns.data" flat row-key="id"
-                    rows-per-page-label="Linhas por página:" :rows-per-page-options="[9, 15, 25, 50, 0]">
+                    rows-per-page-label="Linhas por página:" :rows-per-page-options="[9, 15, 25, 50, 0]"
+                    class="q-pa-md">
                     <template v-slot:top>
-                        <div class="flex justify-between items-center full-width">
+                        <div class="flex justify-between items-center full-width q-gutter-md">
                             <h2 :class="`${$q.screen.lt.md ? 'text-h5' : 'text-h4'} text-weight-bold q-ma-none`">
                                 {{ title }}
                             </h2>

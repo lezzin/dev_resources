@@ -1,21 +1,19 @@
 <script setup>
 import errorMessages from '../utils/errorMessages';
-import { db } from '../firebase';
 
-import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useAuth } from '../stores/useAuth';
 
-import { QBtn, QBtnGroup, QInput, QPage, useQuasar, } from 'quasar';
+import { QInput, QPage } from 'quasar';
 import FormCard from '../components/layout/FormCard.vue';
 import { validateTitle } from '../utils/validations';
 import { useTopic } from '../composables/useTopic';
+import { notifyUser } from '../utils/notification';
 
 const router = useRouter();
-const $q = useQuasar();
 const topicComposable = useTopic();
 
 const authUser = useAuth();
@@ -26,19 +24,10 @@ const title = ref('');
 const addTopic = async () => {
     try {
         const createdTopicId = await topicComposable.addTopic(title.value, user.value.uid);
-
-        $q.notify({
-            message: 'Tópico adicionado com sucesso',
-            color: 'green'
-        });
-
+        notifyUser('Tópico adicionado com sucesso', 'success');
         router.push(`/topic/${createdTopicId}`);
     } catch (error) {
-        console.log(error);
-        $q.notify({
-            message: errorMessages[error.message] || errorMessages.generalError,
-            color: 'red'
-        });
+        notifyUser(errorMessages[error.message] || errorMessages.generalError(error), 'error');
     }
 };
 
@@ -47,16 +36,9 @@ onMounted(() => (document.title = `Ferramentas para Devs | Adicionar tópico`));
 
 <template>
     <QPage padding>
-        <FormCard title="Adicionar novo tópico" @send="addTopic">
-            <template #form>
-                <QInput outlined dense hide-bottom-space v-model="title" label="Título do tópico"
-                    :rules="[validateTitle]" />
-
-                <QBtnGroup>
-                    <QBtn type="submit" color="primary" icon="add" label="Adicionar" :disabled="!title" />
-                    <QBtn flat color="red" @click="() => $router.back()" icon="arrow_back" label="Voltar" />
-                </QBtnGroup>
-            </template>
+        <FormCard title="Adicionar novo tópico" @send="addTopic" formId="add-topic-form">
+            <QInput outlined dense hide-bottom-space v-model="title" label="Título do tópico"
+                :rules="[validateTitle]" />
         </FormCard>
     </QPage>
 </template>
