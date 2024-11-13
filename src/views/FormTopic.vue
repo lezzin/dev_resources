@@ -9,7 +9,7 @@ import { storeToRefs } from 'pinia';
 
 import { useAuth } from '../stores/useAuth';
 
-import { QBtn, QBtnGroup, QInput, useQuasar, } from 'quasar';
+import { QBtn, QBtnGroup, QInput, QPage, useQuasar, } from 'quasar';
 import FormCard from '../components/layout/FormCard.vue';
 import { validateTitle } from '../utils/validations';
 import { useTopic } from '../composables/useTopic';
@@ -46,15 +46,17 @@ onMounted(() => (document.title = `Ferramentas para Devs | Adicionar tópico`));
 </script>
 
 <template>
-    <FormCard title="Adicionar novo tópico" @send="addTopic">
-        <template #form>
-            <QInput outlined dense hide-bottom-space v-model="title" label="Título do tópico"
-                :rules="[validateTitle]" />
+    <QPage padding>
+        <FormCard title="Adicionar novo tópico" @send="addTopic">
+            <template #form>
+                <QInput outlined dense hide-bottom-space v-model="title" label="Título do tópico"
+                    :rules="[validateTitle]" />
 
-            <QBtnGroup>
-                <QBtn type="submit" color="primary" icon="add" label="Adicionar" :disabled="!title" />
-                <QBtn flat color="red" @click="() => $router.back()" icon="arrow_back" label="Voltar" />
-            </QBtnGroup>
-        </template>
-    </FormCard>
+                <QBtnGroup>
+                    <QBtn type="submit" color="primary" icon="add" label="Adicionar" :disabled="!title" />
+                    <QBtn flat color="red" @click="() => $router.back()" icon="arrow_back" label="Voltar" />
+                </QBtnGroup>
+            </template>
+        </FormCard>
+    </QPage>
 </template>

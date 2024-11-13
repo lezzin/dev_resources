@@ -10,7 +10,7 @@ import { storeToRefs } from "pinia";
 import { useAuth } from '../stores/useAuth';
 
 import FormCard from "../components/layout/FormCard.vue";
-import { QBtn, QBtnGroup, QInput, useQuasar } from "quasar";
+import { QBtn, QBtnGroup, QInput, QPage, useQuasar } from "quasar";
 import { validateTitle } from "../utils/validations";
 import { useTopic } from "../composables/useTopic";
 
@@ -71,15 +71,17 @@ watch(user, (newUser) => {
 </script>
 
 <template>
-    <FormCard title="Editar tópico" @send="editTopic" :message="message">
-        <template #form>
-            <QInput outlined dense hide-bottom-space v-model="title" label="Título do tópico"
-                :rules="[validateTitle]" />
+    <QPage padding>
+        <FormCard title="Editar tópico" @send="editTopic" :message="message">
+            <template #form>
+                <QInput outlined dense hide-bottom-space v-model="title" label="Título do tópico"
+                    :rules="[validateTitle]" />
 
-            <QBtnGroup>
-                <QBtn type="submit" color="primary" icon="edit" label="Editar" :disabled="!title" />
-                <QBtn flat color="red" @click="() => $router.back()" icon="arrow_back" label="Voltar" />
-            </QBtnGroup>
-        </template>
-    </FormCard>
+                <QBtnGroup>
+                    <QBtn type="submit" color="primary" icon="edit" label="Editar" :disabled="!title" />
+                    <QBtn flat color="red" @click="() => $router.back()" icon="arrow_back" label="Voltar" />
+                </QBtnGroup>
+            </template>
+        </FormCard>
+    </QPage>
 </template>

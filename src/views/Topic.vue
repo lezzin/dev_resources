@@ -8,7 +8,7 @@ import { ref, watch, onMounted, reactive } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useAuth } from '../stores/useAuth';
-import { QTable, QTh, QTd, QTr, QBtn, QBtnGroup, QTooltip, QImg, useQuasar } from 'quasar';
+import { QTable, QTh, QTd, QTr, QBtn, QBtnGroup, QTooltip, QImg, useQuasar, QPage } from 'quasar';
 import { useTopic } from '../composables/useTopic';
 import { useContent } from '../composables/useContent';
 
@@ -126,77 +126,79 @@ watch(user, (newUser) => {
 </script>
 
 <template>
-    <section class="q-mx-auto" style="max-width: 1080px;">
-        <div class="table-responsive">
-            <QTable :rows="contents" :columns="columns.data" flat row-key="id" rows-per-page-label="Linhas por página:"
-                :rows-per-page-options="[9, 15, 25, 50, 0]">
-                <template v-slot:top>
-                    <div class="flex justify-between items-center full-width">
-                        <h2 :class="`${$q.screen.lt.md ? 'text-h5' : 'text-h4'} text-weight-bold q-ma-none`">
-                            {{ title }}
-                        </h2>
+    <QPage padding>
+        <section class="q-mx-auto" style="max-width: 1080px;">
+            <div class="table-responsive">
+                <QTable :rows="contents" :columns="columns.data" flat row-key="id"
+                    rows-per-page-label="Linhas por página:" :rows-per-page-options="[9, 15, 25, 50, 0]">
+                    <template v-slot:top>
+                        <div class="flex justify-between items-center full-width">
+                            <h2 :class="`${$q.screen.lt.md ? 'text-h5' : 'text-h4'} text-weight-bold q-ma-none`">
+                                {{ title }}
+                            </h2>
 
-                        <QBtnGroup rounded v-if="isUserCreator">
-                            <QBtn unelevated outline color="primary" :to="`/topic/${id}/edit`" icon="edit">
-                                <QTooltip>Editar tópico</QTooltip>
-                            </QBtn>
-
-                            <QBtn unelevated color="red" @click="deleteTopic(id)" icon="delete">
-                                <QTooltip>Remover tópico</QTooltip>
-                            </QBtn>
-
-                            <QBtn unelevated color="primary" :to="`/topic/${id}/content-form`" icon="add">
-                                <QTooltip>Adicionar novo conteúdo</QTooltip>
-                            </QBtn>
-                        </QBtnGroup>
-                    </div>
-                </template>
-
-                <template v-slot:header="props">
-                    <QTr :props="props">
-                        <QTh v-for="col in props.cols" :key="col.name" :props="props">
-                            <span class="text-weight-bold">
-                                {{ col.label }}
-                            </span>
-                        </QTh>
-                    </QTr>
-                </template>
-
-                <template v-slot:body="props">
-                    <QTr :props="props">
-                        <QTd>
-                            <a target="_blank" :href="props.row.link"
-                                :class="`${$q.dark.isActive ? 'text-white' : 'text-primary'}`">
-                                {{ props.row.title }}
-                            </a>
-                        </QTd>
-                        <QTd>{{ props.row.description }}</QTd>
-                        <QTd v-if="user">
-                            <QBtnGroup>
-                                <QBtn unelevated outline size="sm" color="primary"
-                                    :to="`/topic/${$route.params.id}/content/${props.row.id}/edit`" v-if="isUserCreator"
-                                    icon="edit">
-                                    <QTooltip>Editar conteúdo</QTooltip>
+                            <QBtnGroup rounded v-if="isUserCreator">
+                                <QBtn unelevated outline color="primary" :to="`/topic/${id}/edit`" icon="edit">
+                                    <QTooltip>Editar tópico</QTooltip>
                                 </QBtn>
 
-                                <QBtn unelevated outline size="sm" color="red" v-if="isUserCreator"
-                                    @click="deleteContent(props.row.id)" icon="delete">
-                                    <QTooltip>Remover conteúdo</QTooltip>
+                                <QBtn unelevated color="red" @click="deleteTopic(id)" icon="delete">
+                                    <QTooltip>Remover tópico</QTooltip>
+                                </QBtn>
+
+                                <QBtn unelevated color="primary" :to="`/topic/${id}/content-form`" icon="add">
+                                    <QTooltip>Adicionar novo conteúdo</QTooltip>
                                 </QBtn>
                             </QBtnGroup>
-                        </QTd>
-                    </QTr>
-                </template>
+                        </div>
+                    </template>
 
-                <template v-slot:no-data>
-                    <div class="full-width row flex-center q-gutter-sm">
-                        <q-icon size="1rem" name="sentiment_dissatisfied" />
-                        <span>
-                            Nenhum conteúdo disponível por enquanto. Que tal explorar outros tópicos enquanto isso?
-                        </span>
-                    </div>
-                </template>
-            </QTable>
-        </div>
-    </section>
+                    <template v-slot:header="props">
+                        <QTr :props="props">
+                            <QTh v-for="col in props.cols" :key="col.name" :props="props">
+                                <span class="text-weight-bold">
+                                    {{ col.label }}
+                                </span>
+                            </QTh>
+                        </QTr>
+                    </template>
+
+                    <template v-slot:body="props">
+                        <QTr :props="props">
+                            <QTd>
+                                <a target="_blank" :href="props.row.link"
+                                    :class="`${$q.dark.isActive ? 'text-white' : 'text-primary'}`">
+                                    {{ props.row.title }}
+                                </a>
+                            </QTd>
+                            <QTd>{{ props.row.description }}</QTd>
+                            <QTd v-if="user">
+                                <QBtnGroup>
+                                    <QBtn unelevated outline size="sm" color="primary"
+                                        :to="`/topic/${$route.params.id}/content/${props.row.id}/edit`"
+                                        v-if="isUserCreator" icon="edit">
+                                        <QTooltip>Editar conteúdo</QTooltip>
+                                    </QBtn>
+
+                                    <QBtn unelevated outline size="sm" color="red" v-if="isUserCreator"
+                                        @click="deleteContent(props.row.id)" icon="delete">
+                                        <QTooltip>Remover conteúdo</QTooltip>
+                                    </QBtn>
+                                </QBtnGroup>
+                            </QTd>
+                        </QTr>
+                    </template>
+
+                    <template v-slot:no-data>
+                        <div class="full-width row flex-center q-gutter-sm">
+                            <q-icon size="1rem" name="sentiment_dissatisfied" />
+                            <span>
+                                Nenhum conteúdo disponível por enquanto. Que tal explorar outros tópicos enquanto isso?
+                            </span>
+                        </div>
+                    </template>
+                </QTable>
+            </div>
+        </section>
+    </QPage>
 </template>

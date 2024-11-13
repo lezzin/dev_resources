@@ -1,5 +1,5 @@
 <script setup>
-import { QBtn, QImg, useQuasar } from 'quasar';
+import { QBtn, QImg, QPage, useQuasar } from 'quasar';
 import { useAside } from '../composables/useAside';
 import { onMounted } from 'vue';
 const $q = useQuasar();
@@ -9,41 +9,54 @@ onMounted(() => (document.title = "Ferramentas para Devs"));
 </script>
 
 <template>
-    <section>
-        <div class="column justify-center items-center text-center q-mx-auto"
-            style="min-height: calc(80vh - 43px); max-width: 720px;">
-            <QImg src="../assets/logo.svg" width="144px" height="144px" class="hover-effect" />
+    <QPage>
+        <section class="column justify-between">
+            <div class="column justify-center items-center text-center q-mx-auto"
+                style="min-height: calc(80vh - 43px); max-width: 720px;">
+                <QImg src="../assets/logo.svg" width="144px" height="144px" class="hover-effect" />
 
-            <h2 :class="`q-mb-md text-primary text-weight-bold ${$q.screen.lt.md ? 'text-h4' : 'text-h2'}`">
-                Bem-vindo ao Hub de Ferramentas para Devs
-            </h2>
+                <h2
+                    :class="`q-mb-md ${$q.dark.isActive ? 'text-white' : 'text-dark'} text-weight-bold ${$q.screen.lt.md ? 'text-h4' : 'text-h2'}`">
+                    Bem-vindo ao Hub de Ferramentas para Devs
+                </h2>
 
-            <h3 :class="`${$q.dark.isActive ? 'text-grey-6' : 'text-dark'} text-h5 q-mt-none q-mb-lg`">
-                Descubra materiais essenciais, recursos úteis e links para impulsionar seu aprendizado e seus projetos.
-            </h3>
+                <h3 :class="`${$q.dark.isActive ? 'text-grey-2' : 'text-dark'} text-h5 q-mt-none q-mb-lg`">
+                    Descubra materiais essenciais, recursos úteis e links para impulsionar seu aprendizado e seus
+                    projetos.
+                </h3>
 
-            <div class="q-gutter-sm flex items-center justify-center">
-                <QBtn color="primary" rounded size="lg" label="Explorar ferramentas" icon="rocket_launch"
-                    @click="asideComposable.showMenu" />
+                <div class="q-gutter-sm flex items-center justify-center">
+                    <QBtn color="primary" rounded size="lg" label="Explorar ferramentas" icon="rocket_launch"
+                        @click="asideComposable.showMenu" />
 
-                <QBtn :color="$q.dark.isActive ? 'secondary' : 'dark'" rounded size="lg" outline label="Sugerir um link"
-                    icon="mail_outline" href="https://lezzin.github.io#contact-section" target="_blank" />
+                    <QBtn :color="$q.dark.isActive ? 'white' : 'dark'" rounded outline size="lg" label="Sugerir um link"
+                        icon="mail_outline" href="https://lezzin.github.io#contact-section" target="_blank" />
+                </div>
             </div>
-        </div>
 
-        <p :class="`q-mt-lg q-pt-lg text-center ${$q.dark.isActive ? '' : 'text-dark'}`">
-            <span>Criado com ☕ por </span>
-            <a href="https://lezzin.github.io" target="_blank" style="color: inherit;">lezzin</a>
-        </p>
-    </section>
+            <p class="q-mt-lg text-center">
+                <span>Criado com ☕ por </span>
+                <a href="https://lezzin.github.io" target="_blank" style="color: inherit;">lezzin</a>
+            </p>
+        </section>
+    </QPage>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .hover-effect {
     transition: scale .3s ease-in-out;
 
     &:hover {
         scale: 1.05;
     }
+}
+
+section {
+    background-image: linear-gradient(180deg, rgba($primary, 0.01), rgba($primary, 1) 85%),
+        radial-gradient(ellipse at top left, rgba($secondary, 0.5), transparent 50%),
+        radial-gradient(ellipse at top right, rgba($accent, 0.5), transparent 50%),
+        radial-gradient(ellipse at center right, rgba($purple, 0.5), transparent 50%),
+        radial-gradient(ellipse at center left, rgba($pink, 0.5), transparent 50%);
+    min-height: 92.1vh;
 }
 </style>

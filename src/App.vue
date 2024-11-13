@@ -64,9 +64,7 @@ const logoutUser = async () => {
         </QDrawer>
 
         <QPageContainer>
-            <QPage padding>
-                <RouterView />
-            </QPage>
+            <RouterView />
         </QPageContainer>
     </QLayout>
 </template>

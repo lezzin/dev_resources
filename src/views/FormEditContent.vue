@@ -9,7 +9,7 @@ import { storeToRefs } from 'pinia';
 
 import { useAuth } from '../stores/useAuth';
 import FormCard from '../components/layout/FormCard.vue';
-import { QBtn, QBtnGroup, QInput, useQuasar } from 'quasar';
+import { QBtn, QBtnGroup, QInput, QPage, useQuasar } from 'quasar';
 import { validateLink } from '../utils/validations';
 import { useContent } from '../composables/useContent';
 
@@ -99,23 +99,25 @@ watch(user, (newUser) => {
 </script>
 
 <template>
-    <FormCard title="Editar conteúdo" @send="editContent">
-        <template #form>
-            <QInput outlined dense hide-bottom-space v-model="contentTitle" label="Título do site/material"
-                :rules="[val => !!val || errorMessages.requiredTitle]" />
+    <QPage padding>
+        <FormCard title="Editar conteúdo" @send="editContent">
+            <template #form>
+                <QInput outlined dense hide-bottom-space v-model="contentTitle" label="Título do site/material"
+                    :rules="[val => !!val || errorMessages.requiredTitle]" />
 
-            <QInput outlined dense hide-bottom-space v-model="contentLink" label="Link do site/material" :rules="[
-                val => !!val || errorMessages.requiredLink,
-                validateLink
-            ]" />
+                <QInput outlined dense hide-bottom-space v-model="contentLink" label="Link do site/material" :rules="[
+                    val => !!val || errorMessages.requiredLink,
+                    validateLink
+                ]" />
 
-            <QInput outlined dense hide-bottom-space v-model="contentDescription" label="Descrição do site/material"
-                :rules="[val => !!val || errorMessages.requiredDescription]" />
+                <QInput outlined dense hide-bottom-space v-model="contentDescription" label="Descrição do site/material"
+                    :rules="[val => !!val || errorMessages.requiredDescription]" />
 
-            <QBtnGroup>
-                <QBtn type="submit" color="primary" icon="edit" label="Editar" />
-                <QBtn flat color="red" @click="() => $router.back()" icon="arrow_back" label="Voltar" />
-            </QBtnGroup>
-        </template>
-    </FormCard>
+                <QBtnGroup>
+                    <QBtn type="submit" color="primary" icon="edit" label="Editar" />
+                    <QBtn flat color="red" @click="() => $router.back()" icon="arrow_back" label="Voltar" />
+                </QBtnGroup>
+            </template>
+        </FormCard>
+    </QPage>
 </template>

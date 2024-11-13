@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuth } from '../stores/useAuth';
-import { QBtn, QBtnGroup, QInput, useQuasar } from 'quasar';
+import { QBtn, QBtnGroup, QInput, QPage, useQuasar } from 'quasar';
 import FormCard from '../components/layout/FormCard.vue';
 import { validateLink } from '../utils/validations';
 import { useContent } from '../composables/useContent';
@@ -47,22 +47,24 @@ onMounted(() => (document.title = `Ferramentas para Devs | Adicionar conteúdo`)
 </script>
 
 <template>
-    <FormCard title="Adicionar novo link" @send="addContent">
-        <template #form>
-            <QInput outlined dense hide-bottom-space v-model="contentTitle" label="Título do site/material"
-                :rules="[val => !!val || errorMessages.requiredTitle]" />
+    <QPage padding>
+        <FormCard title="Adicionar novo link" @send="addContent">
+            <template #form>
+                <QInput outlined dense hide-bottom-space v-model="contentTitle" label="Título do site/material"
+                    :rules="[val => !!val || errorMessages.requiredTitle]" />
 
-            <QInput outlined dense hide-bottom-space v-model="contentLink" label="Link do site/material"
-                :rules="[val => !!val || errorMessages.requiredLink, validateLink]" />
+                <QInput outlined dense hide-bottom-space v-model="contentLink" label="Link do site/material"
+                    :rules="[val => !!val || errorMessages.requiredLink, validateLink]" />
 
-            <QInput outlined dense hide-bottom-space v-model="contentDescription" label="Descrição do site/material"
-                :rules="[val => !!val || errorMessages.requiredDescription]" />
+                <QInput outlined dense hide-bottom-space v-model="contentDescription" label="Descrição do site/material"
+                    :rules="[val => !!val || errorMessages.requiredDescription]" />
 
-            <QBtnGroup>
-                <QBtn type="submit" color="primary" icon="add" label="Adicionar"
-                    :disabled="!contentTitle || !contentLink || !contentDescription" />
-                <QBtn flat color="red" @click="() => $router.back()" icon="arrow_back" label="Voltar" />
-            </QBtnGroup>
-        </template>
-    </FormCard>
+                <QBtnGroup>
+                    <QBtn type="submit" color="primary" icon="add" label="Adicionar"
+                        :disabled="!contentTitle || !contentLink || !contentDescription" />
+                    <QBtn flat color="red" @click="() => $router.back()" icon="arrow_back" label="Voltar" />
+                </QBtnGroup>
+            </template>
+        </FormCard>
+    </QPage>
 </template>

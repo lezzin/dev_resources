@@ -9,7 +9,7 @@ import { storeToRefs } from 'pinia';
 import { useAuth } from '../stores/useAuth';
 
 import FormCard from '../components/layout/FormCard.vue';
-import { QBtn, QInput, useQuasar } from 'quasar';
+import { QBtn, QInput, QPage, useQuasar } from 'quasar';
 import { validateEmail } from '../utils/validations';
 
 const router = useRouter();
@@ -43,14 +43,17 @@ onMounted(() => {
 </script>
 
 <template>
-    <FormCard title="Seu perfil de administrador" @send="updatePassword">
-        <template #form>
-            <form @submit.prevent="updatePassword" class="q-gutter-sm">
-                <QInput outlined dense hide-bottom-space v-model="email" label="Email" type="email"
-                    :rules="[validateEmail]" />
+    <QPage padding>
+        <FormCard title="Seu perfil de administrador" @send="updatePassword">
+            <template #form>
+                <form @submit.prevent="updatePassword" class="q-gutter-sm">
+                    <QInput outlined dense hide-bottom-space v-model="email" label="Email" type="email"
+                        :rules="[validateEmail]" />
 
-                <QBtn color="primary" type="submit" title="Alterar senha" label="Alterar senha" :disabled="!email" />
-            </form>
-        </template>
-    </FormCard>
+                    <QBtn color="primary" type="submit" title="Alterar senha" label="Alterar senha"
+                        :disabled="!email" />
+                </form>
+            </template>
+        </FormCard>
+    </QPage>
 </template>
