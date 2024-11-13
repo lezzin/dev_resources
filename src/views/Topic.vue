@@ -119,8 +119,7 @@ watch(user, (newUser) => {
         <section class="q-mx-auto q-pa-md" style="max-width: 1080px;">
             <div class="table-responsive">
                 <QTable :rows="contents" :columns="columns.data" flat row-key="id"
-                    rows-per-page-label="Linhas por página:" :rows-per-page-options="[9, 15, 25, 50, 0]"
-                    class="q-pa-md">
+                    rows-per-page-label="Linhas por página:" class="q-pa-md">
                     <template v-slot:top>
                         <div class="flex justify-between items-center full-width q-gutter-md">
                             <h2 :class="`${$q.screen.lt.md ? 'text-h5' : 'text-h4'} text-weight-bold q-ma-none`">

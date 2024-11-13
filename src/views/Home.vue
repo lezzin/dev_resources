@@ -49,6 +49,6 @@ section {
         radial-gradient(ellipse at top right, rgba($accent, 0.5), transparent 50%),
         radial-gradient(ellipse at center right, rgba($purple, 0.5), transparent 50%),
         radial-gradient(ellipse at center left, rgba($pink, 0.5), transparent 50%);
-    min-height: 92.1vh;
+    min-height: 92vh;
 }
 </style>

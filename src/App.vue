@@ -22,8 +22,8 @@ const logoutUser = async () => {
 
 <template>
     <QLayout view="hHh lpR lFf">
-        <QHeader class="text-white">
-            <QToolbar class=" row items-center q-py-sm">
+        <QHeader class="text-white" style="min-height: 8vh;">
+            <QToolbar class="row items-center q-py-sm full-height">
                 <QBtn @click="asideComposable.toggleMenu" flat round icon="menu" class="q-mr-sm">
                     <QTooltip>Alternar menu lateral</QTooltip>
                 </QBtn>
