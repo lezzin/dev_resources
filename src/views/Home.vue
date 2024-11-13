@@ -22,7 +22,7 @@ onMounted(() => (document.title = "Ferramentas para Devs"));
                 Descubra materiais essenciais, recursos úteis e links para impulsionar seu aprendizado e seus projetos.
             </h3>
 
-            <div class="q-gutter-sm flex">
+            <div class="q-gutter-sm flex items-center justify-center">
                 <QBtn color="primary" label="Explore as Ferramentas" icon="rocket_launch"
                     @click="asideComposable.showMenu" />
 
