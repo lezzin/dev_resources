@@ -57,7 +57,7 @@ const logoutUser = async () => {
             </QToolbar>
         </QHeader>
 
-        <QDrawer v-model="isMenuActive" overlay :class="`${$q.dark.isActive ? 'bg-grey-10' : 'bg-grey-3'} shadow-2`"
+        <QDrawer v-model="isMenuActive" :class="`${$q.dark.isActive ? 'bg-grey-10' : 'bg-grey-3'} shadow-2`"
             :width="350">
             <QScrollArea class="fit">
                 <Navbar @toggle="asideComposable.closeMenu" />
