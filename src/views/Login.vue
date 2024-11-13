@@ -1,18 +1,17 @@
 <script setup>
-import errorMessages from "../utils/errorMessages";
-import { auth } from '../utils/firebase';
-
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { QInput, QPage } from "quasar";
 import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { storeToRefs } from "pinia";
 
-import { useAuth } from '../stores/useAuth';
-
-import { QInput, QPage } from "quasar";
-import FormCard from "../components/layout/FormCard.vue";
+import errorMessages from "../utils/errorMessages";
 import { validateEmail, validatePassword } from "../utils/validations";
+import { auth } from '../utils/firebase';
+import { useAuth } from '../stores/useAuth';
 import { notifyUser } from "../utils/notification";
+
+import FormCard from "../components/FormCard.vue";
 
 const router = useRouter();
 

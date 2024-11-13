@@ -1,18 +1,18 @@
 <script setup>
-import errorMessages from '../utils/errorMessages';
-import { db } from '../utils/firebase';
-
 import { doc, onSnapshot } from 'firebase/firestore';
 import { useRoute, useRouter } from 'vue-router'
 import { ref, watch, onMounted, reactive } from 'vue';
 import { storeToRefs } from 'pinia';
-
-import { useAuth } from '../stores/useAuth';
 import { QTable, QTh, QTd, QTr, QBtn, QBtnGroup, QTooltip, QPage, useQuasar } from 'quasar';
+
+import errorMessages from '../utils/errorMessages';
+import { notifyUser } from '../utils/notification';
+import { db } from '../utils/firebase';
+import { useAuth } from '../stores/useAuth';
 import { useTopic } from '../composables/useTopic';
 import { useContent } from '../composables/useContent';
-import { notifyUser } from '../utils/notification';
 
+const $q = useQuasar();
 const router = useRouter();
 const route = useRoute();
 
@@ -26,8 +26,6 @@ const id = ref('');
 const title = ref('');
 const contents = ref([]);
 const isUserCreator = ref(false);
-
-const $q = useQuasar();
 
 const columns = reactive({
     data: [

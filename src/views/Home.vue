@@ -2,6 +2,7 @@
 import { QBtn, QImg, QPage, useQuasar } from 'quasar';
 import { useAside } from '../composables/useAside';
 import { onMounted } from 'vue';
+
 const $q = useQuasar();
 const asideComposable = useAside();
 

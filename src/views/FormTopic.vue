@@ -1,17 +1,16 @@
 <script setup>
-import errorMessages from '../utils/errorMessages';
-
 import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { QInput, QPage } from 'quasar';
 
 import { useAuth } from '../stores/useAuth';
-
-import { QInput, QPage } from 'quasar';
-import FormCard from '../components/layout/FormCard.vue';
+import errorMessages from '../utils/errorMessages';
 import { validateTitle } from '../utils/validations';
 import { useTopic } from '../composables/useTopic';
 import { notifyUser } from '../utils/notification';
+
+import FormCard from '../components/FormCard.vue';
 
 const router = useRouter();
 const topicComposable = useTopic();

@@ -1,25 +1,27 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
-
-import { db } from '../utils/firebase';
 import { QBtn, QImg, QTooltip, useQuasar } from 'quasar';
 
+import { db } from '../../utils/firebase';
+
 const $q = useQuasar();
+
 const topics = ref([]);
 
-onMounted(() => {
+const loadTopics = () => {
     const topicsRef = collection(db, 'topics');
     const topicsQuery = query(topicsRef, orderBy('title'));
 
-    onSnapshot(topicsQuery, (snapshot) => {
-        topics.value = snapshot.docs.map(doc => {
-            return {
-                route: doc.id, ...doc.data()
-            }
-        })
+    onSnapshot(topicsQuery, ({ docs }) => {
+        topics.value = docs.map(doc => ({
+            ...doc.data(),
+            route: doc.id
+        }));
     });
-});
+}
+
+onMounted(loadTopics);
 </script>
 
 <template>
@@ -31,7 +33,7 @@ onMounted(() => {
             </QBtn>
 
             <RouterLink to="/">
-                <QImg src="../assets/logo.svg" width="32px" height="32px" />
+                <QImg src="../../assets/logo.svg" width="32px" height="32px" />
             </RouterLink>
         </div>
 

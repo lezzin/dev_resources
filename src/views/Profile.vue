@@ -1,19 +1,16 @@
 <script setup>
-import { auth } from '../utils/firebase';
-
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { QInput, QPage } from 'quasar';
 
+import errorMessages from '../utils/errorMessages';
+import { auth } from '../utils/firebase';
 import { useAuth } from '../stores/useAuth';
-
-import FormCard from '../components/layout/FormCard.vue';
-import { QInput, QPage, useQuasar } from 'quasar';
 import { validateEmail } from '../utils/validations';
 import { notifyUser } from '../utils/notification';
-import errorMessages from '../utils/errorMessages';
 
-const $q = useQuasar();
+import FormCard from '../components/FormCard.vue';
 
 const authUser = useAuth();
 const { user } = storeToRefs(authUser);
