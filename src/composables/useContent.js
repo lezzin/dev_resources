@@ -1,19 +1,25 @@
 import { collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "../utils/firebase";
 
+const HIGHLIGHT_CLASS = "text-primary text-weight-bold";
+
 const throwError = (code, message = 'Erro ao realizar operação') => {
     const error = new Error(message);
     error.code = code;
     throw error;
 }
-
-const lower = (word) => {
+const toLower = (word) => {
     return String(word).toLowerCase();
+}
+
+const replaceWithHighlight = (text, search) => {
+    const regex = new RegExp(search, 'gi');
+    return String(text).replace(regex, (match) => `<span class="${HIGHLIGHT_CLASS}">${match}</span>`);
 }
 
 const searchContent = async (query) => {
     const filteredContents = [];
-    const queryLower = lower(query);
+    const queryLower = toLower(query);
 
     const querySnapshot = await getDocs(collection(db, "topics"));
     querySnapshot.forEach((doc) => {
@@ -21,13 +27,17 @@ const searchContent = async (query) => {
         const contents = Object.values(data.contents);
 
         contents.forEach(content => {
-            const title = lower(content.title);
-            const description = lower(content.description);
+            const title = toLower(content.title);
+            const description = toLower(content.description);
 
             if (title.includes(queryLower) || description.includes(queryLower)) {
-                filteredContents.push(content);
+                filteredContents.push({
+                    ...content,
+                    description: replaceWithHighlight(content.description, query),
+                    title: replaceWithHighlight(content.title, query)
+                });
             }
-        })
+        });
     });
 
     return filteredContents;

@@ -1,15 +1,14 @@
 <script setup>
-import { QBtn, QCard, QCardSection, QDialog, QIcon, QInnerLoading, QInput, QItem, QItemLabel, QItemSection, QList, QSpinnerGears, QTooltip, useQuasar } from 'quasar';
+import { QBtn, QCard, QCardActions, QCardSection, QDialog, QIcon, QInnerLoading, QInput, QItem, QItemLabel, QItemSection, QList, QSeparator, QSpinnerGears, QTooltip, useQuasar } from 'quasar';
 import { ref, reactive, watch, computed } from 'vue';
 
 import { useContent } from '../composables/useContent';
 import { validateSearch } from '../utils/validations';
 import { notifyUser } from '../utils/notification';
+import { SEARCH_MIN_LENGTH } from '../utils/variables';
 
 const $q = useQuasar();
 const contentComposable = useContent();
-
-const searchInputRef = ref(null);
 
 const searchText = ref("");
 const searchedLinks = reactive({ data: [] });
@@ -17,26 +16,32 @@ const isShowingSearchCard = ref(false);
 const isLoadingResults = ref(false);
 const isNoResults = ref(false);
 
-const feedbackIcon = computed(() => {
-    return isNoResults.value ? 'search_off' : 'search';
-});
-
-const feedbackColor = computed(() => {
-    return $q.dark.isActive ? 'grey-4' : 'dark';
-});
-
-const feedbackMessage = computed(() => {
-    return isNoResults.value ? 'Nenhum resultado encontrado.' : 'Digite pelo menos 4 caracteres para começar a pesquisar...';
-});
+const feedbackIcon = computed(() => (isNoResults.value ? 'search_off' : 'search'));
+const feedbackColor = computed(() => ($q.dark.isActive ? 'grey-4' : 'dark'));
+const feedbackMessage = computed(() => (
+    isNoResults.value ?
+        'Nenhum resultado encontrado.' :
+        `Digite pelo menos ${SEARCH_MIN_LENGTH} caracteres para começar a pesquisar...`
+));
 
 const openSearchCard = () => {
     isShowingSearchCard.value = true;
 };
 
+const closeSearchCard = () => {
+    isShowingSearchCard.value = false;
+    searchedLinks.data = {};
+    searchText.value = "";
+};
+
+const clearSearchCard = () => {
+    searchedLinks.data = {};
+};
+
 const searchLinks = async () => {
     isNoResults.value = false;
 
-    if (!searchText.value || searchText.value.trim().length < 4) return;
+    if (!searchText.value || searchText.value.trim().length < SEARCH_MIN_LENGTH) return;
 
     isLoadingResults.value = true;
 
@@ -61,15 +66,15 @@ watch(searchText, searchLinks);
             <QTooltip>Pesquisar por link</QTooltip>
         </QBtn>
 
-        <QDialog v-model="isShowingSearchCard" backdrop-filter="blur(4px)">
+        <QDialog v-model="isShowingSearchCard" backdrop-filter="blur(4px)" @hide="closeSearchCard">
             <QCard bordered class="search-card fixed-center">
                 <QInnerLoading :showing="isLoadingResults" class="z-top">
                     <QSpinnerGears size="50px" color="primary" />
                 </QInnerLoading>
 
                 <QCardSection>
-                    <QInput clearable autofocus filled dense v-model="searchText" debounce="500" ref="searchInputRef"
-                        placeholder="Pesquisar por conteúdo" :rules="[validateSearch]">
+                    <QInput clearable autofocus filled dense v-model="searchText" debounce="500"
+                        placeholder="Pesquisar por link" :rules="[validateSearch]" @clear="clearSearchCard">
                         <template v-slot:prepend>
                             <QIcon name="search" />
                         </template>
@@ -79,16 +84,16 @@ watch(searchText, searchLinks);
                         <template v-if="searchedLinks.data.length">
                             <QItem v-for="(content, index) in searchedLinks.data" :key="index" :href="content.link"
                                 target="_blank" class="q-pa-sm" clickable v-ripple>
-                                <QItemSection no-wrap>
-                                    <QItemLabel lines="1">
-                                        {{ content.title }}
-                                    </QItemLabel>
-                                    <QItemLabel caption class="ellipsis text-grey" lines="2">
-                                        {{ content.description }}
-                                    </QItemLabel>
-                                </QItemSection>
                                 <QItemSection avatar>
                                     <QIcon name="open_in_new" color="primary" />
+                                </QItemSection>
+                                <QItemSection no-wrap>
+                                    <QItemLabel lines="1">
+                                        <span v-html="content.title"></span>
+                                    </QItemLabel>
+                                    <QItemLabel caption lines="1">
+                                        <span v-html="content.description"></span>
+                                    </QItemLabel>
                                 </QItemSection>
                             </QItem>
                         </template>
@@ -105,6 +110,13 @@ watch(searchText, searchLinks);
                         </template>
                     </QList>
                 </QCardSection>
+
+                <QSeparator />
+
+                <QCardActions align="center">
+                    <QBtn flat icon="mail_outline" size="sm" label="Sugerir um link"
+                        href="https://lezzin.github.io#contact-section" target="_blank" />
+                </QCardActions>
             </QCard>
         </QDialog>
     </div>

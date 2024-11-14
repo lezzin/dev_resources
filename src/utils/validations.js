@@ -1,5 +1,5 @@
+import { DESCRIPTION_MAX_LENGTH, SEARCH_MIN_LENGTH, TITLE_MAX_LENGTH } from "./variables";
 import errorMessages from "./errorMessages";
-import { DESCRIPTION_MAX_LENGTH, TITLE_MAX_LENGTH } from "./variables";
 
 export const validateLink = (val) => {
     if (!val) {
@@ -52,5 +52,5 @@ export const validateSearch = (val) => {
         return true;
     }
 
-    return val.trim().length >= 4 || 'A pesquisa deve ter no mínimo 4 caracteres.';
+    return val.trim().length >= SEARCH_MIN_LENGTH || `A pesquisa deve ter no mínimo ${SEARCH_MIN_LENGTH} caracteres.`;
 };
