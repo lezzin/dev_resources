@@ -34,13 +34,6 @@ const router = createRouter({
             }
         },
         {
-            path: '/profile',
-            component: () => import('../views/ProfileView.vue'),
-            meta: {
-                requiresAuth: true
-            }
-        },
-        {
             path: '/topic-form',
             component: () => import('../views/TopicAddView.vue'),
             meta: {

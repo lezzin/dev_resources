@@ -1,5 +1,5 @@
 <script setup>
-import { QBtn, QImg, QToolbar, QTooltip, useQuasar } from 'quasar';
+import { QBtn, QIcon, QImg, QItem, QItemSection, QList, QMenu, QToolbar, QTooltip, useQuasar } from 'quasar';
 import { RouterLink } from 'vue-router';
 import { storeToRefs } from 'pinia';
 
@@ -8,6 +8,8 @@ import { useAside } from '../../composables/useAside';
 import { notifyUser } from '../../utils/notification';
 import errorMessages from '../../utils/errorMessages';
 import SearchForm from '../SearchForm.vue';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '../../utils/firebase';
 
 const $q = useQuasar();
 
@@ -22,6 +24,15 @@ const logoutUser = async () => {
         notifyUser(errorMessages[error.code] ?? errorMessages.generalError(error), 'error');
     }
 };
+
+const sendPasswordEmail = async () => {
+    try {
+        await sendPasswordResetEmail(auth, user.value.email);
+        notifyUser('E-mail de redefinição enviado com sucesso', 'success');
+    } catch (error) {
+        notifyUser(errorMessages.generalError(error), 'error');
+    }
+}
 </script>
 
 <template>
@@ -43,8 +54,23 @@ const logoutUser = async () => {
                 <QTooltip>Adicionar novo tópico</QTooltip>
             </QBtn>
 
-            <QBtn round unelevated color="secondary" to="/profile" icon="person" v-if="user">
-                <QTooltip>Visualizar perfil de administrador</QTooltip>
+            <QBtn round unelevated color="secondary" icon="person" v-if="user">
+                <QMenu transition-show="jump-down" transition-hide="jump-up">
+                    <QList style="min-width: 100px">
+                        <QItem clickable>
+                            <QItemSection avatar>
+                                <QIcon color="primary" name="password" />
+                            </QItemSection>
+                            <QItemSection @click.stop="sendPasswordEmail" no-wrap>Alterar senha</QItemSection>
+                        </QItem>
+                        <QItem clickable>
+                            <QItemSection avatar>
+                                <QIcon color="negative" name="logout" />
+                            </QItemSection>
+                            <QItemSection @click.stop="logoutUser">Sair</QItemSection>
+                        </QItem>
+                    </QList>
+                </QMenu>
             </QBtn>
 
             <QBtn round unelevated flat color="white" to="/login" icon="admin_panel_settings" v-if="!user">
