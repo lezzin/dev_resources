@@ -8,8 +8,8 @@ import errorMessages from '../../utils/errorMessages';
 import { useContent } from '../../composables/useContent';
 import { notifyUser } from '../../utils/notification';
 
-import FormCard from '../../components/FormCard.vue';
-import MyInput from '../../components/MyInput.vue';
+import CardForm from '../form/CardForm.vue';
+import FormInput from '../form/FormInput.vue';
 
 const emit = defineEmits(["close"]);
 
@@ -62,8 +62,8 @@ const handleError = (error) => {
     notifyUser(errorMessages[error.code] || errorMessages.generalError(error), 'error');
 }
 
-const titleHint = computed(() => (`Insira até ${TITLE_MAX_LENGTH} caracteres - (${contentTitle.value.length} de ${TITLE_MAX_LENGTH})`));
-const descriptionHint = computed(() => (`Insira até ${DESCRIPTION_MAX_LENGTH} caracteres - (${contentDescription.value.length} de ${DESCRIPTION_MAX_LENGTH})`));
+const titleHint = computed(() => (`(${contentTitle.value.length} de ${TITLE_MAX_LENGTH} caracteres)`));
+const descriptionHint = computed(() => (`(${contentDescription.value.length} de ${DESCRIPTION_MAX_LENGTH} caracteres)`));
 
 onMounted(() => {
     contentTopicId.value = route.params.id;
@@ -72,12 +72,12 @@ onMounted(() => {
 </script>
 
 <template>
-    <FormCard title="Editar conteúdo" @send="editContent" formId="edit-link-form" @close="emit('close')">
-        <MyInput v-model="contentTitle" label="Título do site/material" :rules="[validateTitle]" :hint="titleHint" />
+    <CardForm title="Editar conteúdo" @send="editContent" formId="edit-link-form" @close="emit('close')">
+        <FormInput v-model="contentTitle" label="Título do site/material" :rules="[validateTitle]" :hint="titleHint" />
 
-        <MyInput v-model="contentDescription" label="Descrição do site/material" :rules="[validateDescription]"
+        <FormInput v-model="contentDescription" label="Descrição do site/material" :rules="[validateDescription]"
             :hint="descriptionHint" />
 
-        <MyInput v-model="contentLink" label="Link do site/material" :rules="[validateLink]" />
-    </FormCard>
+        <FormInput v-model="contentLink" label="Link do site/material" :rules="[validateLink]" />
+    </CardForm>
 </template>

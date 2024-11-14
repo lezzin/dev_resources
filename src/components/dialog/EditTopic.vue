@@ -8,8 +8,8 @@ import { validateTitle } from "../../utils/validations";
 import { useTopic } from "../../composables/useTopic";
 import { TITLE_MAX_LENGTH } from '../../utils/variables';
 
-import FormCard from "../../components/FormCard.vue";
-import MyInput from '../../components/MyInput.vue';
+import CardForm from "../form/CardForm.vue";
+import FormInput from '../form/FormInput.vue';
 
 const emit = defineEmits(["close"]);
 
@@ -23,6 +23,7 @@ const editTopic = async () => {
         const topicId = route.params.id;
         await topicComposable.editTopic(title.value, topicId);
 
+        notifyUser('Tópico editado com sucesso', 'success');
         emit('close');
     } catch (error) {
         handleError(error);
@@ -44,13 +45,13 @@ const loadTopic = async () => {
     }
 };
 
-const titleHint = computed(() => (`Insira até ${TITLE_MAX_LENGTH} caracteres - (${title.value.length} de ${TITLE_MAX_LENGTH})`));
+const titleHint = computed(() => (`(${title.value.length} de ${TITLE_MAX_LENGTH} caracteres)`));
 
 onMounted(loadTopic);
 </script>
 
 <template>
-    <FormCard title="Editar tópico" @send="editTopic" formId="edit-topic-form" @close="emit('close')">
-        <MyInput v-model="title" label="Título do tópico" :rules="[validateTitle]" :hint="titleHint" />
-    </FormCard>
+    <CardForm title="Editar tópico" @send="editTopic" formId="edit-topic-form" @close="emit('close')">
+        <FormInput v-model="title" label="Título do tópico" :rules="[validateTitle]" :hint="titleHint" />
+    </CardForm>
 </template>

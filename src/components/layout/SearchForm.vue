@@ -2,10 +2,10 @@
 import { QBtn, QCard, QCardActions, QCardSection, QDialog, QIcon, QInnerLoading, QInput, QItem, QItemLabel, QItemSection, QList, QSeparator, QSpinnerGears, QTooltip, useQuasar } from 'quasar';
 import { ref, reactive, watch, computed } from 'vue';
 
-import { useContent } from '../composables/useContent';
-import { validateSearch } from '../utils/validations';
-import { notifyUser } from '../utils/notification';
-import { SEARCH_MIN_LENGTH } from '../utils/variables';
+import { useContent } from '../../composables/useContent';
+import { validateSearch } from '../../utils/validations';
+import { notifyUser } from '../../utils/notification';
+import { SEARCH_MIN_LENGTH } from '../../utils/variables';
 
 const $q = useQuasar();
 const contentComposable = useContent();
@@ -66,6 +66,9 @@ watch(searchText, searchLinks);
             <QTooltip>Pesquisar por link</QTooltip>
         </QBtn>
 
+    </div>
+
+    <Teleport to="#dialog">
         <QDialog v-model="isShowingSearchCard" backdrop-filter="blur(4px)" @hide="closeSearchCard">
             <QCard bordered class="search-card fixed-center">
                 <QInnerLoading :showing="isLoadingResults" class="z-top">
@@ -119,17 +122,18 @@ watch(searchText, searchLinks);
                 </QCardActions>
             </QCard>
         </QDialog>
-    </div>
+    </Teleport>
 </template>
 
 <style scoped lang="scss">
 .search-card {
+    --min-height: 31vh;
     width: 90%;
     max-width: 500px;
-    min-height: 27.5vh;
+    min-height: 31vh;
 
     @media(max-width: 768px) {
-        min-height: 30vh;
+        min-height: calc(var(--min-height) + 3.5vh);
     }
 }
 

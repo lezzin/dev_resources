@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { QPage } from 'quasar';
 
@@ -11,8 +11,8 @@ import { useTopic } from '../composables/useTopic';
 import { notifyUser } from '../utils/notification';
 import { PAGE_TITLE, TITLE_MAX_LENGTH } from '../utils/variables';
 
-import FormCard from '../components/FormCard.vue';
-import MyInput from '../components/MyInput.vue';
+import CardForm from '../components/form/CardForm.vue';
+import FormInput from '../components/form/FormInput.vue';
 
 const router = useRouter();
 const topicComposable = useTopic();
@@ -32,17 +32,23 @@ const addTopic = async () => {
     }
 };
 
-const titleHint = computed(() => (`Insira até ${TITLE_MAX_LENGTH} caracteres - (${title.value.length} de ${TITLE_MAX_LENGTH})`));
+const titleHint = computed(() => (`(${title.value.length} de ${TITLE_MAX_LENGTH} caracteres)`));
 
 onMounted(() => (document.title = `${PAGE_TITLE} Adicionar tópico`));
+
+watch(user, (newUser) => {
+    if (!newUser) {
+        router.push('/');
+    }
+})
 </script>
 
 <template>
     <QPage padding>
         <section class="row justify-center items-center q-pa-md">
-            <FormCard title="Adicionar novo tópico" @send="addTopic" formId="add-topic-form" isNotDialog>
-                <MyInput v-model="title" label="Título do tópico" :rules="[validateTitle]" :hint="titleHint" />
-            </FormCard>
+            <CardForm title="Adicionar novo tópico" @send="addTopic" formId="add-topic-form" isNotDialog>
+                <FormInput v-model="title" label="Título do tópico" :rules="[validateTitle]" :hint="titleHint" />
+            </CardForm>
         </section>
     </QPage>
 </template>

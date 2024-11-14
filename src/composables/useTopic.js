@@ -86,9 +86,9 @@ const sortContents = (contents) => {
 
 export const useTopic = () => {
     return {
+        addTopic,
+        editTopic,
         deleteTopic,
         loadTopic,
-        editTopic,
-        addTopic
     };
 };

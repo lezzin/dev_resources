@@ -12,8 +12,8 @@ import { useAuth } from '../stores/useAuth';
 import { notifyUser } from "../utils/notification";
 import { PAGE_TITLE } from '../utils/variables';
 
-import FormCard from "../components/FormCard.vue";
-import MyInput from '../components/MyInput.vue';
+import CardForm from "../components/form/CardForm.vue";
+import FormInput from '../components/form/FormInput.vue';
 
 const router = useRouter();
 
@@ -44,10 +44,10 @@ onMounted(() => {
 <template>
     <QPage padding>
         <section class="row justify-center items-center q-pa-md">
-            <FormCard title="Entrar como administrador" @send="loginUser" formId="login-form" isNotDialog>
-                <MyInput v-model="email" label="Email" type="email" :rules="[validateEmail]" />
-                <MyInput v-model="password" label="Senha" type="password" :rules="[validatePassword]" />
-            </FormCard>
+            <CardForm title="Entrar como administrador" @send="loginUser" formId="login-form" isNotDialog>
+                <FormInput v-model="email" label="Email" type="email" :rules="[validateEmail]" />
+                <FormInput v-model="password" label="Senha" type="password" :rules="[validatePassword]" />
+            </CardForm>
         </section>
     </QPage>
 </template>
