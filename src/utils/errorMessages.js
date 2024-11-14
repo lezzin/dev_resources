@@ -1,4 +1,4 @@
-import { TITLE_MAX_LENGTH } from "./variables";
+import { DESCRIPTION_MAX_LENGTH, TITLE_MAX_LENGTH } from "./variables";
 
 export default {
     // Authentication errors
@@ -28,7 +28,8 @@ export default {
     "requiredTitle": "Preencha o título",
     "requiredDescription": "Preencha a descrição",
 
-    "maximumSize": `Insira menos que ${TITLE_MAX_LENGTH} caracteres.`,
+    "maximumTitleSize": `Insira menos que ${TITLE_MAX_LENGTH} caracteres.`,
+    "maximumDescriptionSize": `Insira menos que ${DESCRIPTION_MAX_LENGTH} caracteres.`,
 
     generalError: (error) => ("Erro desconhecido: " + error?.message),
 };

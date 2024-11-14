@@ -1,17 +1,18 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { QInput, QPage } from 'quasar';
+import { QPage } from 'quasar';
 
 import { useAuth } from '../stores/useAuth';
 import errorMessages from '../utils/errorMessages';
 import { validateTitle } from '../utils/validations';
 import { useTopic } from '../composables/useTopic';
 import { notifyUser } from '../utils/notification';
-import { PAGE_TITLE } from '../utils/variables';
+import { PAGE_TITLE, TITLE_MAX_LENGTH } from '../utils/variables';
 
 import FormCard from '../components/FormCard.vue';
+import MyInput from '../components/MyInput.vue';
 
 const router = useRouter();
 const topicComposable = useTopic();
@@ -31,14 +32,17 @@ const addTopic = async () => {
     }
 };
 
+const titleHint = computed(() => {
+    return `Insira até ${TITLE_MAX_LENGTH} caracteres - (${title.value.length} de ${TITLE_MAX_LENGTH})`;
+});
+
 onMounted(() => (document.title = `${PAGE_TITLE} Adicionar tópico`));
 </script>
 
 <template>
-    <QPage padding>
+    <QPage>
         <FormCard title="Adicionar novo tópico" @send="addTopic" formId="add-topic-form">
-            <QInput outlined dense hide-bottom-space v-model="title" label="Título do tópico"
-                :rules="[validateTitle]" />
+            <MyInput v-model="title" label="Título do tópico" :rules="[validateTitle]" :hint="titleHint" />
         </FormCard>
     </QPage>
 </template>

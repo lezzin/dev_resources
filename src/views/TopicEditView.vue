@@ -1,17 +1,18 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
 import { storeToRefs } from "pinia";
-import { QInput, QPage } from "quasar";
+import { QPage } from "quasar";
 
 import errorMessages from "../utils/errorMessages";
 import { notifyUser } from "../utils/notification";
 import { validateTitle } from "../utils/validations";
 import { useTopic } from "../composables/useTopic";
 import { useAuth } from '../stores/useAuth';
-import { PAGE_TITLE } from '../utils/variables';
+import { PAGE_TITLE, TITLE_MAX_LENGTH } from '../utils/variables';
 
 import FormCard from "../components/FormCard.vue";
+import MyInput from '../components/MyInput.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -50,6 +51,10 @@ const loadTopic = async () => {
     }
 };
 
+const titleHint = computed(() => {
+    return `Insira até ${TITLE_MAX_LENGTH} caracteres - (${title.value.length} de ${TITLE_MAX_LENGTH})`;
+});
+
 onMounted(() => {
     document.title = `${PAGE_TITLE} Editar Tópico`;
     loadTopic();
@@ -61,10 +66,9 @@ watch(user, (newUser) => {
 </script>
 
 <template>
-    <QPage padding>
+    <QPage>
         <FormCard title="Editar tópico" @send="editTopic" formId="edit-topic-form">
-            <QInput outlined dense hide-bottom-space v-model="title" label="Título do tópico"
-                :rules="[validateTitle]" />
+            <MyInput v-model="title" label="Título do tópico" :rules="[validateTitle]" :hint="titleHint" />
         </FormCard>
     </QPage>
 </template>

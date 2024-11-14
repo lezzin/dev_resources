@@ -1,17 +1,18 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
-import { QInput, QPage } from 'quasar';
-import { onMounted, ref } from 'vue';
+import { QPage } from 'quasar';
+import { computed, onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import errorMessages from '../utils/errorMessages';
-import { validateLink } from '../utils/validations';
+import { validateDescription, validateLink, validateTitle } from '../utils/validations';
 import { notifyUser } from '../utils/notification';
 import { useAuth } from '../stores/useAuth';
 import { useContent } from '../composables/useContent';
-import { PAGE_TITLE } from '../utils/variables';
+import { DESCRIPTION_MAX_LENGTH, PAGE_TITLE, TITLE_MAX_LENGTH } from '../utils/variables';
 
 import FormCard from '../components/FormCard.vue';
+import MyInput from '../components/MyInput.vue';
 
 const contentComposable = useContent();
 
@@ -43,20 +44,27 @@ const addContent = async () => {
     }
 };
 
+const titleHint = computed(() => {
+    return `Insira até ${TITLE_MAX_LENGTH} caracteres - (${contentTitle.value.length} de ${TITLE_MAX_LENGTH})`;
+});
+
+const descriptionHint = computed(() => {
+    return `Insira até ${DESCRIPTION_MAX_LENGTH} caracteres - (${contentDescription.value.length} de ${DESCRIPTION_MAX_LENGTH})`;
+});
+
 onMounted(() => (document.title = `${PAGE_TITLE} Adicionar conteúdo`));
 </script>
 
 <template>
-    <QPage padding>
-        <FormCard title="Adicionar novo conteúdo" @send="addContent" formId="new-link-form">
-            <QInput outlined dense hide-bottom-space v-model="contentTitle" label="Título do site/material"
-                :rules="[val => !!val || errorMessages.requiredTitle]" />
+    <QPage>
+        <FormCard title="Adicionar conteúdo" @send="addContent" formId="add-link-form">
+            <MyInput v-model="contentTitle" label="Título do site/material" :rules="[validateTitle]"
+                :hint="titleHint" />
 
-            <QInput outlined dense hide-bottom-space v-model="contentLink" label="Link do site/material"
-                :rules="[val => !!val || errorMessages.requiredLink, validateLink]" />
+            <MyInput v-model="contentDescription" label="Descrição do site/material" :rules="[validateDescription]"
+                :hint="descriptionHint" />
 
-            <QInput outlined dense hide-bottom-space v-model="contentDescription" label="Descrição do site/material"
-                :rules="[val => !!val || errorMessages.requiredDescription]" />
+            <MyInput v-model="contentLink" label="Link do site/material" :rules="[validateLink]" />
         </FormCard>
     </QPage>
 </template>

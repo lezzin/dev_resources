@@ -18,8 +18,8 @@ const ACTIONS_ALIGNMENT = "right";
 </script>
 
 <template>
-    <section class="flex justify-center q-pa-md">
-        <QCard bordered class="my-card">
+    <section class="flex justify-center items-center q-pa-md" style="min-height: 90vh;">
+        <QCard flat bordered class="my-card">
             <QCardSection>
                 <h2 class="text-h4 q-ma-none">{{ props.title }}</h2>
             </QCardSection>
@@ -32,9 +32,9 @@ const ACTIONS_ALIGNMENT = "right";
                 </QForm>
             </QCardSection>
 
-            <QCardActions :align="ACTIONS_ALIGNMENT">
+            <QCardActions :align="ACTIONS_ALIGNMENT" class="q-gutter-sm">
                 <QBtn type="submit" color="primary" icon="check" label="Enviar formulário" :form="formId" />
-                <QBtn color="red" @click="$router.back()" icon="arrow_back" label="Voltar" class="q-ml-auto" />
+                <QBtn color="red" @click="$router.back()" icon="arrow_back" label="Voltar" />
             </QCardActions>
         </QCard>
     </section>

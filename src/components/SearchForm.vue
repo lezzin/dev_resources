@@ -69,7 +69,7 @@ watch(searchText, searchLinks);
 
         <Transition name="fade">
             <div v-if="isShowingSearchCard" class="fixed-overlay fixed-full z-top" @click.self="closeSearchCard">
-                <QCard bordered flat class="shadow-10 search-card fixed-center">
+                <QCard bordered class="search-card fixed-center">
                     <QInnerLoading :showing="isLoadingResults" class="z-top">
                         <QSpinnerGears size="50px" color="primary" />
                     </QInnerLoading>
@@ -119,6 +119,11 @@ watch(searchText, searchLinks);
 </template>
 
 <style scoped lang="scss">
+.fixed-overlay {
+    background-color: rgba($grey-10, 0.6);
+    backdrop-filter: blur(2px);
+}
+
 .search-card {
     width: 90%;
     max-width: 500px;
@@ -142,10 +147,5 @@ watch(searchText, searchLinks);
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;
-}
-
-.fixed-overlay {
-    background-color: rgba($grey-10, 0.6);
-    backdrop-filter: blur(2px);
 }
 </style>

@@ -1,7 +1,11 @@
 import errorMessages from "./errorMessages";
-import { TITLE_MAX_LENGTH } from "./variables";
+import { DESCRIPTION_MAX_LENGTH, TITLE_MAX_LENGTH } from "./variables";
 
 export const validateLink = (val) => {
+    if (!val) {
+        return errorMessages.requiredLink;
+    }
+
     const urlRegex = /^(http|https):\/\//i;
     return urlRegex.test(val) || errorMessages.invalidLink;
 };
@@ -12,7 +16,17 @@ export const validateTitle = (val) => {
     }
 
     if (val?.length > TITLE_MAX_LENGTH) {
-        return errorMessages.maximumSize;
+        return errorMessages.maximumTitleSize;
+    }
+}
+
+export const validateDescription = (val) => {
+    if (!val) {
+        return errorMessages.requiredDescription;
+    }
+
+    if (val?.length > DESCRIPTION_MAX_LENGTH) {
+        return errorMessages.maximumDescriptionSize;
     }
 }
 
@@ -20,6 +34,7 @@ export const validateEmail = (val) => {
     if (!val) {
         return errorMessages.requiredEmail || 'O email é obrigatório.';
     }
+
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(val) || 'Por favor, insira um email válido.';
 };

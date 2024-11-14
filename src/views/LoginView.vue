@@ -1,6 +1,6 @@
 <script setup>
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { QInput, QPage } from "quasar";
+import { QPage } from "quasar";
 import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { storeToRefs } from "pinia";
@@ -13,6 +13,7 @@ import { notifyUser } from "../utils/notification";
 import { PAGE_TITLE } from '../utils/variables';
 
 import FormCard from "../components/FormCard.vue";
+import MyInput from '../components/MyInput.vue';
 
 const router = useRouter();
 
@@ -41,13 +42,10 @@ onMounted(() => {
 </script>
 
 <template>
-    <QPage padding>
+    <QPage>
         <FormCard title="Entrar como administrador" @send="loginUser" formId="login-form">
-            <QInput outlined dense hide-bottom-space v-model="email" label="Email" type="email"
-                :rules="[validateEmail]" />
-
-            <QInput outlined dense hide-bottom-space v-model="password" label="Senha" type="password"
-                :rules="[validatePassword]" />
+            <MyInput v-model="email" label="Email" type="email" :rules="[validateEmail]" />
+            <MyInput v-model="password" label="Senha" type="password" :rules="[validatePassword]" />
         </FormCard>
     </QPage>
 </template>

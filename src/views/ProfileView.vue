@@ -2,7 +2,7 @@
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { QInput, QPage } from 'quasar';
+import { QPage } from 'quasar';
 
 import errorMessages from '../utils/errorMessages';
 import { auth } from '../utils/firebase';
@@ -12,6 +12,7 @@ import { notifyUser } from '../utils/notification';
 import { PAGE_TITLE } from '../utils/variables';
 
 import FormCard from '../components/FormCard.vue';
+import MyInput from '../components/MyInput.vue';
 
 const authUser = useAuth();
 const { user } = storeToRefs(authUser);
@@ -34,10 +35,9 @@ onMounted(() => {
 </script>
 
 <template>
-    <QPage padding>
+    <QPage>
         <FormCard title="Seu perfil de administrador" @send="updatePassword" formId="profile-form">
-            <QInput outlined dense hide-bottom-space v-model="email" label="Email" type="email"
-                :rules="[validateEmail]" />
+            <MyInput v-model="email" label="Email" type="email" :rules="[validateEmail]" />
         </FormCard>
     </QPage>
 </template>
