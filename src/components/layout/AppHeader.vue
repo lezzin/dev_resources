@@ -12,6 +12,7 @@ import { auth } from '../../utils/firebase';
 
 import SearchForm from '../layout/SearchForm.vue';
 import { computed } from 'vue';
+import { THEME_STORAGE_KEY } from '../../utils/variables';
 
 const $q = useQuasar();
 
@@ -35,6 +36,12 @@ const sendPasswordEmail = async () => {
         notifyUser(errorMessages.generalError(error), 'error');
     }
 }
+
+const toggleTheme = () => {
+    const newTheme = !$q.dark.isActive ? "dark" : "light";
+    $q.localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+    $q.dark.set(newTheme === "dark");
+};
 
 const currentModeTooltip = computed(() => ($q.dark.isActive ? 'Ativar modo claro' : 'Ativar modo escuro'));
 const currentModeIcon = computed(() => ($q.dark.isActive ? 'light_mode' : 'dark_mode'));
@@ -89,7 +96,7 @@ const currentModeColor = computed(() => ($q.dark.isActive ? 'yellow' : 'grey-5')
                 <QTooltip>Acessar perfil de administrador</QTooltip>
             </QBtn>
 
-            <QBtn round unelevated flat :color="currentModeColor" :icon="currentModeIcon" @click="$q.dark.toggle()">
+            <QBtn round unelevated flat :color="currentModeColor" :icon="currentModeIcon" @click="toggleTheme">
                 <QTooltip>{{ currentModeTooltip }}</QTooltip>
             </QBtn>
         </div>
