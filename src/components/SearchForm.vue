@@ -29,12 +29,6 @@ const feedbackMessage = computed(() => {
     return isNoResults.value ? 'Nenhum resultado encontrado.' : 'Digite pelo menos 4 caracteres para começar a pesquisar...';
 });
 
-const closeSearchCard = () => {
-    isShowingSearchCard.value = false;
-    searchedLinks.data = {};
-    searchText.value = '';
-};
-
 const openSearchCard = () => {
     isShowingSearchCard.value = true;
 };

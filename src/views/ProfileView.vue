@@ -1,6 +1,6 @@
 <script setup>
 import { sendPasswordResetEmail } from 'firebase/auth';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { QPage } from 'quasar';
 
