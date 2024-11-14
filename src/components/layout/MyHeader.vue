@@ -55,7 +55,7 @@ const logoutUser = async () => {
                 <QTooltip>Sair do perfil de administrador</QTooltip>
             </QBtn>
 
-            <QBtn round unelevated flat :color="$q.dark.isActive ? 'yellow' : 'grey-5'" @click="() => $q.dark.toggle()"
+            <QBtn round unelevated flat :color="$q.dark.isActive ? 'yellow' : 'grey-5'" @click="$q.dark.toggle()"
                 :icon="$q.dark.isActive ? 'light_mode' : 'dark_mode'">
                 <QTooltip>Alternar o tema</QTooltip>
             </QBtn>

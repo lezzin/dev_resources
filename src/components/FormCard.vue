@@ -19,7 +19,7 @@ const ACTIONS_ALIGNMENT = "right";
 
 <template>
     <section class="flex justify-center q-pa-md">
-        <QCard flat bordered class="my-card">
+        <QCard bordered class="my-card">
             <QCardSection>
                 <h2 class="text-h4 q-ma-none">{{ props.title }}</h2>
             </QCardSection>

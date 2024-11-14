@@ -1,7 +1,7 @@
 <script setup>
-import { toRef } from 'vue';
+import { toRef, watchEffect } from 'vue';
 import { RouterView } from 'vue-router';
-import { QDrawer, QHeader, QLayout, QPageContainer, QScrollArea, useQuasar } from 'quasar';
+import { QDrawer, QHeader, QLayout, QPageContainer, QScrollArea, setCssVar, useQuasar } from 'quasar';
 
 import { useAside } from './composables/useAside';
 
@@ -12,6 +12,8 @@ const $q = useQuasar();
 
 const asideComposable = useAside();
 const isMenuActive = toRef(asideComposable.isActive);
+
+watchEffect(() => setCssVar('negative', $q.dark.isActive ? '#f44336' : 'red'));
 </script>
 
 <template>

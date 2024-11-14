@@ -11,7 +11,7 @@ export const validateTitle = (val) => {
         return errorMessages.requiredTitle;
     }
 
-    if (val.length > TITLE_MAX_LENGTH) {
+    if (val?.length > TITLE_MAX_LENGTH) {
         return errorMessages.maximumSize;
     }
 }
@@ -29,9 +29,13 @@ export const validatePassword = (val) => {
         return errorMessages.requiredPassword || 'A senha é obrigatória.';
     }
 
-    return val.length >= 6 || 'A senha deve ter no mínimo 6 caracteres.';
+    return val?.length >= 6 || 'A senha deve ter no mínimo 6 caracteres.';
 };
 
 export const validateSearch = (val) => {
-    return val.length >= 4 || 'A pesquisa deve ter no mínimo 4 caracteres.';
+    if (!val || val.trim().length === 0) {
+        return true;
+    }
+
+    return val.trim().length >= 4 || 'A pesquisa deve ter no mínimo 4 caracteres.';
 };

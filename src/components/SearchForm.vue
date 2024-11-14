@@ -1,88 +1,111 @@
 <script setup>
-import { QBtn, QCard, QCardSection, QIcon, QInput, QItem, QItemLabel, QItemSection, QList, QTooltip, useQuasar } from 'quasar';
-import debounce from 'lodash.debounce';
-import { ref, reactive, watch } from 'vue';
+import { QBtn, QCard, QCardSection, QIcon, QInnerLoading, QInput, QItem, QItemLabel, QItemSection, QList, QSpinnerGears, QTooltip, useQuasar } from 'quasar';
+import { ref, reactive, watch, computed } from 'vue';
+
 import { useContent } from '../composables/useContent';
 import { validateSearch } from '../utils/validations';
-import { onClickOutside } from '@vueuse/core';
+import { notifyUser } from '../utils/notification';
 
 const $q = useQuasar();
 const contentComposable = useContent();
 
-const searchCard = ref(null);
-const search = ref("");
-const links = reactive({ data: [] });
-const isShowingList = ref(false);
-const loading = ref(false);
-const noResults = ref(false);
+const searchInputRef = ref(null);
+
+const searchText = ref("");
+const searchedLinks = reactive({ data: [] });
+const isShowingSearchCard = ref(false);
+const isLoadingResults = ref(false);
+const isNoResults = ref(false);
+
+const feedbackIcon = computed(() => {
+    return isNoResults.value ? 'search_off' : 'search';
+});
+
+const feedbackColor = computed(() => {
+    return $q.dark.isActive ? 'grey-4' : 'dark';
+});
+
+const feedbackMessage = computed(() => {
+    return isNoResults.value ? 'Nenhum resultado encontrado.' : 'Digite pelo menos 4 caracteres para começar a pesquisar...';
+});
 
 const closeSearchCard = () => {
-    isShowingList.value = false;
-    search.value = '';
-}
+    isShowingSearchCard.value = false;
+    searchedLinks.data = {};
+    searchText.value = '';
+};
+
+const openSearchCard = () => {
+    isShowingSearchCard.value = true;
+};
 
 const searchLinks = async () => {
-    loading.value = true;
-    noResults.value = false;
+    isNoResults.value = false;
+
+    if (!searchText.value || searchText.value.trim().length < 4) return;
+
+    isLoadingResults.value = true;
 
     try {
-        links.data = await contentComposable.searchContent(search.value);
-        noResults.value = links.data.length === 0;
+        const results = await contentComposable.searchContent(searchText.value);
+        isNoResults.value = results.length === 0;
+        searchedLinks.data = results;
     } catch (error) {
-        console.error('Search failed', error);
+        console.error(error);
+        notifyUser('Erro ao pesquisar por conteúdos', 'error');
     } finally {
-        loading.value = false;
+        isLoadingResults.value = false;
     }
-}
+};
 
-watch(search, debounce(async () => {
-    if (search.value.trim().length > 3) {
-        await searchLinks();
-    } else {
-        links.data = [];
-        noResults.value = false;
-    }
-}, 500));
-
-onClickOutside(searchCard, closeSearchCard);
+watch(searchText, searchLinks);
 </script>
 
 <template>
-    <div class="relative-position">
-        <QBtn round unelevated flat color="white" icon="search" @click="isShowingList = true">
+    <div class="relative-position text-dark">
+        <QBtn round unelevated flat color="white" icon="search" @click="openSearchCard">
             <QTooltip>Pesquisar por link</QTooltip>
         </QBtn>
 
-        <Transition>
-            <div v-if="isShowingList" class="fixed-overlay fixed-full">
-                <QCard bordered flat class="shadow-10 search-card fixed-center" ref="searchCard">
+        <Transition name="fade">
+            <div v-if="isShowingSearchCard" class="fixed-overlay fixed-full z-top" @click.self="closeSearchCard">
+                <QCard bordered flat class="shadow-10 search-card fixed-center">
+                    <QInnerLoading :showing="isLoadingResults" class="z-top">
+                        <QSpinnerGears size="50px" color="primary" />
+                    </QInnerLoading>
+
                     <QCardSection>
-                        <QInput filled dense hide-bottom-space v-model="search" placeholder="Pesquisar por conteúdo"
-                            :loading="loading" :rules="[validateSearch]">
+                        <QInput clearable autofocus filled dense v-model="searchText" debounce="500"
+                            ref="searchInputRef" placeholder="Pesquisar por conteúdo" :rules="[validateSearch]">
                             <template v-slot:prepend>
-                                <QIcon v-if="!search" name="search" />
-                                <QIcon v-else name="clear" class="cursor-pointer" @click="closeSearchCard" />
+                                <QIcon name="search" />
                             </template>
                         </QInput>
 
-                        <QList class="q-mt-sm search-list">
-                            <template v-if="!loading && links.data.length">
-                                <QItem v-ripple clickable v-for="(content, index) in links.data" :key="index"
-                                    :href="content.link" target="_blank">
+                        <QList class="search-list">
+                            <template v-if="searchedLinks.data.length">
+                                <QItem v-for="(content, index) in searchedLinks.data" :key="index" :href="content.link"
+                                    target="_blank" class="q-pa-sm" clickable v-ripple>
                                     <QItemSection no-wrap>
-                                        <QItemLabel :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
+                                        <QItemLabel lines="1">
                                             {{ content.title }}
                                         </QItemLabel>
-                                        <QItemLabel caption class="ellipsis">{{ content.description }}</QItemLabel>
+                                        <QItemLabel caption class="ellipsis text-grey" lines="2">
+                                            {{ content.description }}
+                                        </QItemLabel>
+                                    </QItemSection>
+                                    <QItemSection avatar>
+                                        <QIcon name="open_in_new" color="primary" />
                                     </QItemSection>
                                 </QItem>
                             </template>
 
-                            <template v-if="!loading && noResults && search.trim()">
+                            <template v-else-if="!isLoadingResults">
                                 <QItem>
-                                    <QItemSection>
-                                        <span :class="`${$q.dark.isActive ? 'text-grey' : 'text-dark'} text-center`">
-                                            Nenhum resultado para a pesquisa.
+                                    <QItemSection class="items-center text-center q-pa-sm">
+                                        <QIcon :name="feedbackIcon" :color="feedbackColor" size="md" class="q-mb-sm" />
+                                        <span :class="feedbackColor">
+                                            {{ feedbackMessage }}
                                         </span>
                                     </QItemSection>
                                 </QItem>
@@ -99,26 +122,30 @@ onClickOutside(searchCard, closeSearchCard);
 .search-card {
     width: 90%;
     max-width: 500px;
-    min-height: 30vh;
+    min-height: 27.5vh;
+
+    @media(max-width: 768px) {
+        min-height: 30vh;
+    }
 }
 
 .search-list {
     max-height: 300px;
-    overflow-x: auto;
+    overflow-y: auto;
 }
 
-.v-enter-active,
-.v-leave-active {
+.fade-enter-active,
+.fade-leave-active {
     transition: opacity 0.3s ease;
 }
 
-.v-enter-from,
-.v-leave-to {
+.fade-enter-from,
+.fade-leave-to {
     opacity: 0;
 }
 
 .fixed-overlay {
-    background-color: rgba($grey-10, .6);
+    background-color: rgba($grey-10, 0.6);
     backdrop-filter: blur(2px);
 }
 </style>
