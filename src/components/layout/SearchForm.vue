@@ -133,8 +133,8 @@ watch(searchQuery, (newQuery) => {
                             <QItemSection class="text-subtitle2 text-grey">
                                 <div class="row justify-between q-px-sm items-center q-gutter-sm">
                                     <span>Pesquisas recentes</span>
-                                    <QBtn flat size="sm" label="Apagar" @click="clearRecentSearchesFromStorage">
-                                        <QTooltip>Apagar pesquisas recentes</QTooltip>
+                                    <QBtn flat size="sm" color="blue" label="Remover"
+                                        @click="clearRecentSearchesFromStorage">
                                     </QBtn>
                                 </div>
                             </QItemSection>
@@ -172,7 +172,7 @@ watch(searchQuery, (newQuery) => {
 
                 <QSeparator />
 
-                <QCardActions align="center">
+                <QCardActions>
                     <QBtn flat icon="mail_outline" size="sm" label="Sugerir um link"
                         href="https://lezzin.github.io#contact-section" target="_blank" />
                 </QCardActions>
