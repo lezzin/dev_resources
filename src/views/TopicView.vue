@@ -1,9 +1,9 @@
 <script setup>
 import { doc, onSnapshot } from 'firebase/firestore';
 import { useRoute, useRouter } from 'vue-router'
-import { watch, onMounted, reactive } from 'vue';
+import { watch, onMounted, reactive, ref, markRaw } from 'vue';
 import { storeToRefs } from 'pinia';
-import { QTable, QTh, QTd, QTr, QBtn, QBtnGroup, QTooltip, QPage, useQuasar } from 'quasar';
+import { QTable, QTh, QTd, QTr, QBtn, QBtnGroup, QTooltip, QPage, useQuasar, QDialog } from 'quasar';
 
 import errorMessages from '../utils/errorMessages';
 import { notifyUser } from '../utils/notification';
@@ -12,10 +12,15 @@ import { useAuth } from '../stores/useAuth';
 import { useTopic } from '../composables/useTopic';
 import { useContent } from '../composables/useContent';
 import { PAGE_TITLE } from '../utils/variables';
+import { useModal } from '../composables/useModal';
+import TopicEditDialog from '../components/dialog/TopicEditDialog.vue';
+import ContentAddDialog from '../components/dialog/ContentAddDialog.vue';
+import ContentEditDialog from '../components/dialog/ContentEditDialog.vue';
 
 const $q = useQuasar();
 const router = useRouter();
 const route = useRoute();
+const modal = useModal();
 
 const topicComposable = useTopic();
 const contentComposable = useContent();
@@ -112,6 +117,23 @@ const handleError = (error) => {
     notifyUser(errorMessages[error.code] || errorMessages.generalError(error), 'error');
 };
 
+const openEditTopicModal = () => {
+    modal.component.value = markRaw(TopicEditDialog);
+    modal.show.value = true;
+}
+
+const openAddContentModal = () => {
+    modal.component.value = markRaw(ContentAddDialog);
+    modal.show.value = true;
+}
+
+const editingContentId = ref('');
+const openEditContentModal = async (contentId) => {
+    modal.component.value = markRaw(ContentEditDialog);
+    modal.show.value = true;
+    editingContentId.value = contentId;
+};
+
 onMounted(() => {
     const topicId = route.params.id;
     loadTopic(topicId);
@@ -139,8 +161,7 @@ watch(user, (newUser) => {
                             </h2>
 
                             <QBtnGroup rounded v-if="isUserCreated(topicData.created_by)">
-                                <QBtn unelevated outline color="primary" :to="`/topic/${topicData.id}/edit`"
-                                    icon="edit">
+                                <QBtn unelevated outline color="primary" @click="openEditTopicModal" icon="edit">
                                     <QTooltip>Editar tópico</QTooltip>
                                 </QBtn>
 
@@ -148,7 +169,7 @@ watch(user, (newUser) => {
                                     <QTooltip>Remover tópico</QTooltip>
                                 </QBtn>
 
-                                <QBtn unelevated color="primary" :to="`/topic/${topicData.id}/content-form`" icon="add">
+                                <QBtn unelevated color="primary" @click="openAddContentModal" icon="add">
                                     <QTooltip>Adicionar novo conteúdo</QTooltip>
                                 </QBtn>
                             </QBtnGroup>
@@ -177,7 +198,7 @@ watch(user, (newUser) => {
                             <QTd v-if="isUserCreated(props.row.created_by)">
                                 <QBtnGroup>
                                     <QBtn unelevated outline size="sm" color="primary"
-                                        :to="`/topic/${$route.params.id}/content/${props.row.id}/edit`" icon="edit">
+                                        @click="openEditContentModal(props.row.id)" icon="edit">
                                         <QTooltip>Editar conteúdo</QTooltip>
                                     </QBtn>
 
@@ -202,4 +223,8 @@ watch(user, (newUser) => {
             </div>
         </section>
     </QPage>
+
+    <QDialog v-model="modal.show.value" backdrop-filter="blur(4px)">
+        <component :is="modal.component.value" :contentId="editingContentId" @close="modal.hideModal" />
+    </QDialog>
 </template>

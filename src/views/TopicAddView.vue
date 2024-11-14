@@ -41,7 +41,7 @@ onMounted(() => (document.title = `${PAGE_TITLE} Adicionar tópico`));
 
 <template>
     <QPage>
-        <FormCard title="Adicionar novo tópico" @send="addTopic" formId="add-topic-form">
+        <FormCard title="Adicionar novo tópico" @send="addTopic" formId="add-topic-form" isNotDialog>
             <MyInput v-model="title" label="Título do tópico" :rules="[validateTitle]" :hint="titleHint" />
         </FormCard>
     </QPage>

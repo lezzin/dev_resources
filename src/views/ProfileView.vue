@@ -10,9 +10,12 @@ import { useAuth } from '../stores/useAuth';
 import { validateEmail } from '../utils/validations';
 import { notifyUser } from '../utils/notification';
 import { PAGE_TITLE } from '../utils/variables';
+import { useRouter } from 'vue-router';
 
 import FormCard from '../components/FormCard.vue';
 import MyInput from '../components/MyInput.vue';
+
+const router = useRouter();
 
 const authUser = useAuth();
 const { user } = storeToRefs(authUser);
@@ -32,11 +35,15 @@ onMounted(() => {
     document.title = `${PAGE_TITLE} Perfil`;
     email.value = user.value.email;
 });
+
+watch(user, (newUser) => {
+    if (!newUser) router.push('/');
+});
 </script>
 
 <template>
     <QPage>
-        <FormCard title="Seu perfil de administrador" @send="updatePassword" formId="profile-form">
+        <FormCard title="Seu perfil de administrador" @send="updatePassword" formId="profile-form" isNotDialog>
             <MyInput v-model="email" label="Email" type="email" :rules="[validateEmail]" />
         </FormCard>
     </QPage>

@@ -1,7 +1,7 @@
 <script setup>
 import { QBtn, QCard, QCardActions, QCardSection, QForm, QSeparator } from 'quasar';
 
-const emit = defineEmits(["send"]);
+const emit = defineEmits(["send", "close"]);
 
 const props = defineProps({
     title: {
@@ -12,13 +12,15 @@ const props = defineProps({
         type: String,
         required: true
     },
+    isNotDialog: {
+        type: Boolean,
+        default: false
+    }
 })
-
-const ACTIONS_ALIGNMENT = "right";
 </script>
 
 <template>
-    <section class="flex justify-center items-center q-pa-md" style="min-height: 90vh;">
+    <section :class="isNotDialog && 'not-dialog row justify-center items-center q-pa-md'">
         <QCard flat bordered class="my-card">
             <QCardSection>
                 <h2 class="text-h4 q-ma-none">{{ props.title }}</h2>
@@ -32,9 +34,11 @@ const ACTIONS_ALIGNMENT = "right";
                 </QForm>
             </QCardSection>
 
-            <QCardActions :align="ACTIONS_ALIGNMENT" class="q-gutter-sm">
+            <QCardActions align="right" class="q-gutter-sm">
                 <QBtn type="submit" color="primary" icon="check" label="Enviar formulário" :form="formId" />
-                <QBtn color="red" @click="$router.back()" icon="arrow_back" label="Voltar" />
+                <QBtn v-if="isNotDialog" color="negative" outline icon="cancel" label="Voltar"
+                    @click="$router.back()" />
+                <QBtn v-else color="negative" outline icon="cancel" label="Fechar" @click="$emit('close')" />
             </QCardActions>
         </QCard>
     </section>
@@ -44,5 +48,9 @@ const ACTIONS_ALIGNMENT = "right";
 .my-card {
     width: 100%;
     max-width: 500px;
+}
+
+.not-dialog {
+    min-height: 90vh;
 }
 </style>

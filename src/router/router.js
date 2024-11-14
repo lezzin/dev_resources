@@ -55,27 +55,6 @@ const router = createRouter({
             }
         },
         {
-            path: '/topic/:id/content-form',
-            component: () => import('../views/ContentAddView.vue'),
-            meta: {
-                requiresAuth: true
-            }
-        },
-        {
-            path: '/topic/:id/edit',
-            component: () => import('../views/TopicEditView.vue'),
-            meta: {
-                requiresAuth: true
-            }
-        },
-        {
-            path: '/topic/:id/content/:contentId/edit',
-            component: () => import('../views/ContentEditView.vue'),
-            meta: {
-                requiresAuth: true
-            }
-        },
-        {
             path: '/:catchAll(.*)',
             component: () => import('../views/NotFoundView.vue'),
             meta: {

@@ -18,7 +18,7 @@ watchEffect(() => setCssVar('negative', $q.dark.isActive ? '#f44336' : 'red'));
 
 <template>
     <QLayout view="hHh lpR lFf">
-        <QHeader elevated>
+        <QHeader>
             <MyHeader />
         </QHeader>
 

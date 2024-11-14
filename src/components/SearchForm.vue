@@ -1,5 +1,5 @@
 <script setup>
-import { QBtn, QCard, QCardSection, QIcon, QInnerLoading, QInput, QItem, QItemLabel, QItemSection, QList, QSpinnerGears, QTooltip, useQuasar } from 'quasar';
+import { QBtn, QCard, QCardSection, QDialog, QIcon, QInnerLoading, QInput, QItem, QItemLabel, QItemSection, QList, QSpinnerGears, QTooltip, useQuasar } from 'quasar';
 import { ref, reactive, watch, computed } from 'vue';
 
 import { useContent } from '../composables/useContent';
@@ -67,63 +67,56 @@ watch(searchText, searchLinks);
             <QTooltip>Pesquisar por link</QTooltip>
         </QBtn>
 
-        <Transition name="fade">
-            <div v-if="isShowingSearchCard" class="fixed-overlay fixed-full z-top" @click.self="closeSearchCard">
-                <QCard bordered class="search-card fixed-center">
-                    <QInnerLoading :showing="isLoadingResults" class="z-top">
-                        <QSpinnerGears size="50px" color="primary" />
-                    </QInnerLoading>
+        <QDialog v-model="isShowingSearchCard" backdrop-filter="blur(4px)">
+            <QCard bordered class="search-card fixed-center">
+                <QInnerLoading :showing="isLoadingResults" class="z-top">
+                    <QSpinnerGears size="50px" color="primary" />
+                </QInnerLoading>
 
-                    <QCardSection>
-                        <QInput clearable autofocus filled dense v-model="searchText" debounce="500"
-                            ref="searchInputRef" placeholder="Pesquisar por conteúdo" :rules="[validateSearch]">
-                            <template v-slot:prepend>
-                                <QIcon name="search" />
-                            </template>
-                        </QInput>
+                <QCardSection>
+                    <QInput clearable autofocus filled dense v-model="searchText" debounce="500" ref="searchInputRef"
+                        placeholder="Pesquisar por conteúdo" :rules="[validateSearch]">
+                        <template v-slot:prepend>
+                            <QIcon name="search" />
+                        </template>
+                    </QInput>
 
-                        <QList class="search-list">
-                            <template v-if="searchedLinks.data.length">
-                                <QItem v-for="(content, index) in searchedLinks.data" :key="index" :href="content.link"
-                                    target="_blank" class="q-pa-sm" clickable v-ripple>
-                                    <QItemSection no-wrap>
-                                        <QItemLabel lines="1">
-                                            {{ content.title }}
-                                        </QItemLabel>
-                                        <QItemLabel caption class="ellipsis text-grey" lines="2">
-                                            {{ content.description }}
-                                        </QItemLabel>
-                                    </QItemSection>
-                                    <QItemSection avatar>
-                                        <QIcon name="open_in_new" color="primary" />
-                                    </QItemSection>
-                                </QItem>
-                            </template>
+                    <QList class="search-list">
+                        <template v-if="searchedLinks.data.length">
+                            <QItem v-for="(content, index) in searchedLinks.data" :key="index" :href="content.link"
+                                target="_blank" class="q-pa-sm" clickable v-ripple>
+                                <QItemSection no-wrap>
+                                    <QItemLabel lines="1">
+                                        {{ content.title }}
+                                    </QItemLabel>
+                                    <QItemLabel caption class="ellipsis text-grey" lines="2">
+                                        {{ content.description }}
+                                    </QItemLabel>
+                                </QItemSection>
+                                <QItemSection avatar>
+                                    <QIcon name="open_in_new" color="primary" />
+                                </QItemSection>
+                            </QItem>
+                        </template>
 
-                            <template v-else-if="!isLoadingResults">
-                                <QItem>
-                                    <QItemSection class="items-center text-center q-pa-sm">
-                                        <QIcon :name="feedbackIcon" :color="feedbackColor" size="md" class="q-mb-sm" />
-                                        <span :class="feedbackColor">
-                                            {{ feedbackMessage }}
-                                        </span>
-                                    </QItemSection>
-                                </QItem>
-                            </template>
-                        </QList>
-                    </QCardSection>
-                </QCard>
-            </div>
-        </Transition>
+                        <template v-else-if="!isLoadingResults">
+                            <QItem>
+                                <QItemSection class="items-center text-center q-pa-sm">
+                                    <QIcon :name="feedbackIcon" :color="feedbackColor" size="md" class="q-mb-sm" />
+                                    <span :class="feedbackColor">
+                                        {{ feedbackMessage }}
+                                    </span>
+                                </QItemSection>
+                            </QItem>
+                        </template>
+                    </QList>
+                </QCardSection>
+            </QCard>
+        </QDialog>
     </div>
 </template>
 
 <style scoped lang="scss">
-.fixed-overlay {
-    background-color: rgba($grey-10, 0.6);
-    backdrop-filter: blur(2px);
-}
-
 .search-card {
     width: 90%;
     max-width: 500px;
@@ -137,15 +130,5 @@ watch(searchText, searchLinks);
 .search-list {
     max-height: 300px;
     overflow-y: auto;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
 }
 </style>
