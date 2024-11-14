@@ -1,6 +1,6 @@
 import { createApp, h } from 'vue';
 import router from "./router/router";
-import { Notify, Quasar, Loading } from 'quasar'
+import { Notify, Quasar, Loading, LocalStorage } from 'quasar'
 import '@quasar/extras/material-icons/material-icons.css'
 
 import 'quasar/src/css/index.sass'
@@ -14,7 +14,8 @@ const app = createApp({ render: () => h(App) });
 app.use(Quasar, {
     plugins: {
         Notify,
-        Loading
+        Loading,
+        LocalStorage
     },
     config: {
         dark: 'auto'

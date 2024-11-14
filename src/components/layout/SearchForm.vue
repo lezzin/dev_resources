@@ -1,7 +1,6 @@
 <script setup>
 import { QBtn, QCard, QCardActions, QCardSection, QDialog, QIcon, QInnerLoading, QInput, QItem, QItemLabel, QItemSection, QList, QSeparator, QSpinnerGears, QTooltip, useQuasar } from 'quasar';
-import { ref, reactive, watch, computed } from 'vue';
-
+import { ref, reactive, computed, watch } from 'vue';
 import { useContent } from '../../composables/useContent';
 import { validateSearch } from '../../utils/validations';
 import { notifyUser } from '../../utils/notification';
@@ -10,54 +9,101 @@ import { SEARCH_MIN_LENGTH } from '../../utils/variables';
 const $q = useQuasar();
 const contentComposable = useContent();
 
-const searchText = ref("");
-const searchedLinks = reactive({ data: [] });
-const isShowingSearchCard = ref(false);
-const isLoadingResults = ref(false);
-const isNoResults = ref(false);
+const MAX_STORAGE_ITEMS = 6;
+const DEBOUNCE_MILLISECONDS = 500;
+const STORAGE_KEY = "recent_searched_links";
 
-const feedbackIcon = computed(() => (isNoResults.value ? 'search_off' : 'search'));
+const searchQuery = ref("");
+const isSearchCardVisible = ref(false);
+const isSearching = ref(false);
+const hasNoResults = ref(false);
+const hasRecentSearches = ref(false);
+const recentSearchResults = reactive({ data: [] });
+
+const feedbackIcon = computed(() => (hasNoResults.value ? 'search_off' : 'search'));
 const feedbackColor = computed(() => ($q.dark.isActive ? 'grey-4' : 'dark'));
 const feedbackMessage = computed(() => (
-    isNoResults.value ?
-        'Nenhum resultado encontrado.' :
-        `Digite pelo menos ${SEARCH_MIN_LENGTH} caracteres para começar a pesquisar...`
+    hasNoResults.value ? 'Nenhum resultado encontrado.' : `Digite pelo menos ${SEARCH_MIN_LENGTH} caracteres para começar a pesquisar...`
 ));
 
 const openSearchCard = () => {
-    isShowingSearchCard.value = true;
+    isSearchCardVisible.value = true;
 };
 
 const closeSearchCard = () => {
-    isShowingSearchCard.value = false;
-    searchedLinks.data = {};
-    searchText.value = "";
+    isSearchCardVisible.value = false;
+    resetSearchState();
 };
 
-const clearSearchCard = () => {
-    searchedLinks.data = {};
+const resetSearchState = () => {
+    recentSearchResults.data = [];
+    searchQuery.value = "";
+    hasRecentSearches.value = false;
 };
 
-const searchLinks = async () => {
-    isNoResults.value = false;
+const saveSearchResultsToStorage = (newResults) => {
+    const existingResults = getRecentSearchesFromStorage();
+    const uniqueResults = [...newResults, ...existingResults]
+        .filter((result, index, self) => self.findIndex(r => r.id === result.id) === index)
+        .slice(0, MAX_STORAGE_ITEMS);
 
-    if (!searchText.value || searchText.value.trim().length < SEARCH_MIN_LENGTH) return;
+    const newResultsJSON = JSON.stringify(uniqueResults);
+    $q.localStorage.set(STORAGE_KEY, newResultsJSON);
+};
 
-    isLoadingResults.value = true;
+const clearRecentSearchesFromStorage = () => {
+    $q.localStorage.removeItem(STORAGE_KEY);
+    resetSearchState();
+};
+
+const getRecentSearchesFromStorage = () => {
+    const storedItems = JSON.parse($q.localStorage.getItem(STORAGE_KEY)) ?? [];
+    hasRecentSearches.value = storedItems.length > 0;
+    return storedItems;
+};
+
+const searchForLinks = async () => {
+    hasNoResults.value = false;
+    if (!searchQuery.value || searchQuery.value.trim().length < SEARCH_MIN_LENGTH) return;
+    isSearching.value = true;
 
     try {
-        const results = await contentComposable.searchContent(searchText.value);
-        isNoResults.value = results.length === 0;
-        searchedLinks.data = results;
+        const searchResults = await contentComposable.searchContent(searchQuery.value);
+        hasRecentSearches.value = false;
+
+        if (searchResults.length > 0) {
+            saveSearchResultsToStorage(searchResults);
+            recentSearchResults.data = searchResults;
+            hasNoResults.value = false;
+            return;
+        }
+
+        recentSearchResults.data = [];
+        hasNoResults.value = true;
     } catch (error) {
         console.error(error);
         notifyUser('Erro ao pesquisar por conteúdos', 'error');
     } finally {
-        isLoadingResults.value = false;
+        isSearching.value = false;
     }
 };
 
-watch(searchText, searchLinks);
+watch(isSearchCardVisible, (isVisible) => {
+    if (isVisible) {
+        recentSearchResults.data = getRecentSearchesFromStorage();
+    }
+});
+
+watch(searchQuery, (newQuery) => {
+    if (!newQuery) {
+        recentSearchResults.data = getRecentSearchesFromStorage();
+        hasRecentSearches.value = recentSearchResults.data.length > 0;
+        return;
+    }
+
+    searchForLinks();
+    hasRecentSearches.value = false;
+});
 </script>
 
 <template>
@@ -65,28 +111,38 @@ watch(searchText, searchLinks);
         <QBtn round unelevated flat color="white" icon="search" @click="openSearchCard">
             <QTooltip>Pesquisar por link</QTooltip>
         </QBtn>
-
     </div>
 
     <Teleport to="#dialog">
-        <QDialog v-model="isShowingSearchCard" backdrop-filter="blur(4px)" @hide="closeSearchCard">
+        <QDialog v-model="isSearchCardVisible" backdrop-filter="blur(4px)" @hide="closeSearchCard">
             <QCard bordered class="search-card fixed-center">
-                <QInnerLoading :showing="isLoadingResults" class="z-top">
+                <QInnerLoading :showing="isSearching" class="z-top">
                     <QSpinnerGears size="50px" color="primary" />
                 </QInnerLoading>
 
                 <QCardSection>
-                    <QInput clearable autofocus filled dense v-model="searchText" debounce="500"
-                        placeholder="Pesquisar por link" :rules="[validateSearch]" @clear="clearSearchCard">
+                    <QInput clearable autofocus filled dense v-model="searchQuery" :debounce="DEBOUNCE_MILLISECONDS"
+                        placeholder="Pesquisar por link" :rules="[validateSearch]" @clear="resetSearchState">
                         <template v-slot:prepend>
                             <QIcon name="search" />
                         </template>
                     </QInput>
 
                     <QList class="search-list">
-                        <template v-if="searchedLinks.data.length">
-                            <QItem v-for="(content, index) in searchedLinks.data" :key="index" :href="content.link"
-                                target="_blank" class="q-pa-sm" clickable v-ripple>
+                        <template v-if="hasRecentSearches">
+                            <QItemSection class="text-subtitle2 text-grey">
+                                <div class="row justify-between q-px-sm items-center q-gutter-sm">
+                                    <span>Pesquisas recentes</span>
+                                    <QBtn flat size="sm" label="Apagar" @click="clearRecentSearchesFromStorage">
+                                        <QTooltip>Apagar pesquisas recentes</QTooltip>
+                                    </QBtn>
+                                </div>
+                            </QItemSection>
+                        </template>
+
+                        <template v-if="recentSearchResults.data.length">
+                            <QItem v-for="(content, index) in recentSearchResults.data" :key="index"
+                                :href="content.link" target="_blank" class="q-pa-sm" clickable v-ripple>
                                 <QItemSection avatar>
                                     <QIcon name="open_in_new" color="primary" />
                                 </QItemSection>
@@ -101,7 +157,7 @@ watch(searchText, searchLinks);
                             </QItem>
                         </template>
 
-                        <template v-else-if="!isLoadingResults">
+                        <template v-else-if="!isSearching">
                             <QItem>
                                 <QItemSection class="items-center text-center q-pa-sm">
                                     <QIcon :name="feedbackIcon" :color="feedbackColor" size="md" class="q-mb-sm" />
@@ -127,18 +183,12 @@ watch(searchText, searchLinks);
 
 <style scoped lang="scss">
 .search-card {
-    --min-height: 31vh;
     width: 90%;
     max-width: 500px;
-    min-height: 31vh;
-
-    @media(max-width: 768px) {
-        min-height: calc(var(--min-height) + 3.5vh);
-    }
 }
 
 .search-list {
-    max-height: 300px;
+    height: 300px;
     overflow-y: auto;
 }
 </style>
