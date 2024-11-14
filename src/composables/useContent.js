@@ -61,7 +61,8 @@ const loadContent = async (contentId, topicId) => {
 
         return content;
     } catch (error) {
-        throwError(error);
+        console.error(error);
+        throwError(error.code);
     }
 }
 
@@ -86,7 +87,7 @@ const addContent = async (topicId, description, link, title, created_by) => {
         await updateDoc(topicRef, { contents: topicData.contents });
     } catch (error) {
         console.error(error);
-        throwError('addContentError');
+        throwError(error.code);
     }
 };
 
@@ -113,7 +114,7 @@ const editContent = async (contentId, topicId, description, link, title) => {
         await updateDoc(topicRef, { contents: updatedContents });
     } catch (error) {
         console.error(error);
-        throwError('editContentError');
+        throwError(error.code);
     }
 };
 
@@ -130,7 +131,8 @@ const deleteContent = async (contentId, topicId) => {
         const newContents = topicData.contents.filter(content => content.id !== contentId);
         await updateDoc(docRef, { contents: newContents });
     } catch (error) {
-        throwError('deleteContentError', error.message);
+        console.error(error);
+        throwError(error.code);
     }
 };
 

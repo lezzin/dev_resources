@@ -27,20 +27,18 @@ const addTopic = async (title, userId) => {
 
         return docRef.id;
     } catch (error) {
-        console.log(error);
-        throwError('addTopicError');
+        console.error(error);
+        throwError(error.code);
     };
 };
 
 const editTopic = async (title, topicId) => {
     try {
         const topicRef = doc(db, 'topics', topicId);
-
         await updateDoc(topicRef, { title: title });
     } catch (error) {
-        console.log(error);
-
-        throwError('editTopicError');
+        console.error(error);
+        throwError(error.code);
     }
 };
 
@@ -49,7 +47,7 @@ const deleteTopic = async (topicId) => {
         await deleteDoc(doc(db, 'topics', topicId));
     } catch (error) {
         console.error(error);
-        throwError('deleteTopicError');
+        throwError(error.code);
     }
 };
 
@@ -64,13 +62,17 @@ const loadTopic = async (topicId) => {
 
         const topicData = docSnap.data();
 
+        if (!topicData) {
+            throwError('topicNotFound');
+        }
+
         return {
             ...topicData,
             contents: sortContents(topicData.contents)
         };
     } catch (error) {
         console.error(error);
-        throwError("loadTopicError");
+        throwError(error.code);
     }
 };
 

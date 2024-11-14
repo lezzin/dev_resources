@@ -3,7 +3,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { useRoute, useRouter } from 'vue-router'
 import { watch, onMounted, reactive, ref, markRaw } from 'vue';
 import { storeToRefs } from 'pinia';
-import { QTable, QTh, QTd, QTr, QBtn, QBtnGroup, QTooltip, QPage, useQuasar, QDialog } from 'quasar';
+import { QTable, QTh, QTd, QTr, QBtn, QBtnGroup, QTooltip, QPage, useQuasar, QDialog, QIcon } from 'quasar';
 
 import errorMessages from '../utils/errorMessages';
 import { notifyUser } from '../utils/notification';
@@ -83,6 +83,10 @@ const loadTopic = async (topicId) => {
             updateActionColumn();
         });
     } catch (error) {
+        if (error.code === "topicNotFound") {
+            router.push('/');
+        }
+
         handleError(error);
     } finally {
         $q.loading.hide();
@@ -212,12 +216,10 @@ watch(user, (newUser) => {
                     </template>
 
                     <template v-slot:no-data>
-                        <div class="full-width row flex-center q-gutter-sm">
-                            <q-icon size="1rem" name="sentiment_dissatisfied" />
-                            <span>
-                                Nenhum conteúdo disponível por enquanto. Que tal explorar outros tópicos enquanto isso?
-                            </span>
-                        </div>
+                        <p class="full-width text-body2 text-center q-mb-none">
+                            <QIcon size="1rem" name="sentiment_dissatisfied" />
+                            Nenhum conteúdo disponível por enquanto. Que tal explorar outros tópicos enquanto isso?
+                        </p>
                     </template>
                 </QTable>
             </div>
