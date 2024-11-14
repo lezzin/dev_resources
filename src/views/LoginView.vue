@@ -42,10 +42,12 @@ onMounted(() => {
 </script>
 
 <template>
-    <QPage>
-        <FormCard title="Entrar como administrador" @send="loginUser" formId="login-form" isNotDialog>
-            <MyInput v-model="email" label="Email" type="email" :rules="[validateEmail]" />
-            <MyInput v-model="password" label="Senha" type="password" :rules="[validatePassword]" />
-        </FormCard>
+    <QPage padding>
+        <section class="row justify-center items-center q-pa-md">
+            <FormCard title="Entrar como administrador" @send="loginUser" formId="login-form" isNotDialog>
+                <MyInput v-model="email" label="Email" type="email" :rules="[validateEmail]" />
+                <MyInput v-model="password" label="Senha" type="password" :rules="[validatePassword]" />
+            </FormCard>
+        </section>
     </QPage>
 </template>

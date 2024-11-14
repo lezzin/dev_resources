@@ -20,37 +20,31 @@ const props = defineProps({
 </script>
 
 <template>
-    <section :class="isNotDialog && 'not-dialog row justify-center items-center q-pa-md'">
-        <QCard flat bordered class="my-card">
-            <QCardSection>
-                <h2 class="text-h4 q-ma-none">{{ props.title }}</h2>
-            </QCardSection>
+    <QCard flat bordered class="my-card">
+        <QCardSection>
+            <h2 class="text-h5 q-ma-none">{{ props.title }}</h2>
+        </QCardSection>
 
-            <QSeparator />
+        <QSeparator />
 
-            <QCardSection class="q-px-sm">
-                <QForm @submit.prevent="emit('send')" :id="formId" class="q-gutter-sm">
-                    <slot></slot>
-                </QForm>
-            </QCardSection>
+        <QCardSection class="q-px-sm">
+            <QForm @submit.prevent="emit('send')" :id="formId" class="q-gutter-sm">
+                <slot></slot>
+            </QForm>
+        </QCardSection>
 
-            <QCardActions align="right" class="q-gutter-sm">
-                <QBtn type="submit" color="primary" icon="check" label="Enviar formulário" :form="formId" />
-                <QBtn v-if="isNotDialog" color="negative" outline icon="cancel" label="Voltar"
-                    @click="$router.back()" />
-                <QBtn v-else color="negative" outline icon="cancel" label="Fechar" @click="$emit('close')" />
-            </QCardActions>
-        </QCard>
-    </section>
+        <QCardActions align="right" class="q-gutter-sm">
+            <QBtn type="submit" color="primary" icon="check" label="Enviar" :form="formId" />
+            <QBtn v-if="isNotDialog" color="negative" outline icon="arrow_back" label="Voltar"
+                @click="$router.back()" />
+            <QBtn v-else color="negative" outline icon="cancel" label="Fechar" @click="$emit('close')" />
+        </QCardActions>
+    </QCard>
 </template>
 
 <style scoped>
 .my-card {
     width: 100%;
     max-width: 500px;
-}
-
-.not-dialog {
-    min-height: 90vh;
 }
 </style>

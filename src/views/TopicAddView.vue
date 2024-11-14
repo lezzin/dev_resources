@@ -32,17 +32,17 @@ const addTopic = async () => {
     }
 };
 
-const titleHint = computed(() => {
-    return `Insira até ${TITLE_MAX_LENGTH} caracteres - (${title.value.length} de ${TITLE_MAX_LENGTH})`;
-});
+const titleHint = computed(() => (`Insira até ${TITLE_MAX_LENGTH} caracteres - (${title.value.length} de ${TITLE_MAX_LENGTH})`));
 
 onMounted(() => (document.title = `${PAGE_TITLE} Adicionar tópico`));
 </script>
 
 <template>
-    <QPage>
-        <FormCard title="Adicionar novo tópico" @send="addTopic" formId="add-topic-form" isNotDialog>
-            <MyInput v-model="title" label="Título do tópico" :rules="[validateTitle]" :hint="titleHint" />
-        </FormCard>
+    <QPage padding>
+        <section class="row justify-center items-center q-pa-md">
+            <FormCard title="Adicionar novo tópico" @send="addTopic" formId="add-topic-form" isNotDialog>
+                <MyInput v-model="title" label="Título do tópico" :rules="[validateTitle]" :hint="titleHint" />
+            </FormCard>
+        </section>
     </QPage>
 </template>

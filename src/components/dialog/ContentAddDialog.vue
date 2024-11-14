@@ -44,13 +44,8 @@ const addContent = async () => {
     }
 };
 
-const titleHint = computed(() => {
-    return `Insira até ${TITLE_MAX_LENGTH} caracteres - (${contentTitle.value.length} de ${TITLE_MAX_LENGTH})`;
-});
-
-const descriptionHint = computed(() => {
-    return `Insira até ${DESCRIPTION_MAX_LENGTH} caracteres - (${contentDescription.value.length} de ${DESCRIPTION_MAX_LENGTH})`;
-});
+const titleHint = computed(() => (`Insira até ${TITLE_MAX_LENGTH} caracteres - (${contentTitle.value.length} de ${TITLE_MAX_LENGTH})`));
+const descriptionHint = computed(() => (`Insira até ${DESCRIPTION_MAX_LENGTH} caracteres - (${contentDescription.value.length} de ${DESCRIPTION_MAX_LENGTH})`));
 </script>
 
 <template>

@@ -44,9 +44,7 @@ const loadTopic = async () => {
     }
 };
 
-const titleHint = computed(() => {
-    return `Insira até ${TITLE_MAX_LENGTH} caracteres - (${title.value.length} de ${TITLE_MAX_LENGTH})`;
-});
+const titleHint = computed(() => (`Insira até ${TITLE_MAX_LENGTH} caracteres - (${title.value.length} de ${TITLE_MAX_LENGTH})`));
 
 onMounted(loadTopic);
 </script>
