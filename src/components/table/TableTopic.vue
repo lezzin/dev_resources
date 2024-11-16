@@ -39,7 +39,7 @@ const computedColumns = computed(() => {
 <template>
     <div class="table-responsive">
         <QTable :rows="props.topic.contents" :columns="computedColumns" flat row-key="id"
-            rows-per-page-label="Linhas por página:" class="q-pa-md">
+            rows-per-page-label="Linhas por página:" class="q-pa-md" :rows-per-page-options="[10, 15, 20, 25, 50, 0]">
 
             <template v-slot:top>
                 <div class="flex justify-between items-center full-width q-gutter-md">
